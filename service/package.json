@@ -1,0 +1,36 @@
+{
+  "name": "sanity",
+  "version": "0.0.1",
+  "description": "Distributed Sanity Test Suite Runner",
+  "main": "service/handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tophat/sanity-runner.git"
+  },
+  "author": "",
+  "license": "UNLICENCED",
+  "bugs": {
+  },
+  "url": "https://github.com/tophat/sanity-runner/issues",
+  "homepage": "https://github.com/tophat/sanity-runner#readme",
+  "devDependencies": {
+    "aws-sdk": "^2.259.1",
+    "serverless": "1.27.3"
+  },
+  "dependencies": {
+    "expect-puppeteer": "^3.2.0",
+    "fs-extra": "^6.0.1",
+    "jest": "23.1.0",
+    "jest-environment-node": "23.1.0",
+    "jest-junit": "^5.1.0",
+    "node-pre-gyp": "^0.10.3",
+    "posix": "^4.1.2",
+    "puppeteer": "1.0.0",
+    "tar": "^4.4.4",
+    "uuid": "^3.2.1",
+    "waitpid2": "git://github.com/joshiggins/node-waitpid2.git#2270e88"
+  }
+}

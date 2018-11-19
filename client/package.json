@@ -1,0 +1,20 @@
+{
+    "name": "sanity-runner",
+    "version": "0.0.0",
+    "description": "Sanity cli client",
+    "author": "Top Hat Monocle Inc.",
+    "license": "UNLICENSED",
+    "files": [
+        "src"
+    ],
+    "dependencies": {
+        "aws-sdk": "^2.259.1",
+        "commander": "^2.15.1",
+        "fs-extra": "^6.0.1",
+        "glob": "^7.1.2",
+        "promise-retry": "^1.1.1"
+    },
+    "bin": {
+        "sanity-runner": "./src/cli.js"
+    }
+}

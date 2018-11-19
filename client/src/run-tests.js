@@ -1,0 +1,80 @@
+const fs = require('fs-extra')
+const path = require('path')
+const promiseRetry = require('promise-retry')
+
+const AWS = require('aws-sdk')
+
+async function testResultPromise(functionName, testFiles, testVariables) {
+    const lambda = new AWS.Lambda()
+    const params = {
+        FunctionName: functionName,
+        Payload: JSON.stringify({testFiles, testVariables})
+    }
+    const retryOptions = {
+        minTimeout: 3000,
+        maxTimeout: 15000,
+        randomize: true
+    }
+    const response = await promiseRetry(function(retry, number) {
+        return lambda.invoke(params).promise().catch(function(err) {
+            if (err.statusCode == 429) {
+                retry(err)
+            }
+            throw err
+        })
+    }, retryOptions)
+    const results = JSON.parse(response.Payload)
+    if (results && results.errorMessage) {
+        throw new Error(`Fatal lambda error: ${results.errorMessage}`)
+    }
+    if (!results || !results.testResults) {
+        throw new Error(`Inconsistent service response`)
+    }
+    if (results.errors && results.errors.length > 0) {
+        results.errors.forEach((error) => {
+            console.error(error.message)
+        })
+        throw new Error('There have been problems executing your test suite')
+    }
+    return results
+}
+
+function reduceTestResults(accumulated, current) {
+    return {
+        passed: accumulated.passed && current.passed,
+        testResults: Object.assign(accumulated.testResults, current.testResults),
+        screenshots: Object.assign(accumulated.screenshots || {}, current.screenshots || {})
+    }
+}
+
+/**
+ * Send all sanity tests to the launcher service. Output test results to
+ * given directory.
+ * @param {string} functionName
+ * @param {Object.<string, string>} testFiles
+ * @param {string} outputDir
+ * @param {Object.<string, string>} testVariables
+ */
+async function runTests(functionName, testFiles, outputDir, testVariables) {
+    const promises = Object.entries(testFiles).map(
+        entry => testResultPromise(functionName, {[entry[0]]: entry[1]}, testVariables)
+    )
+    return Promise.all(promises).then(results => {
+        const aggregatedResults = results.reduce(reduceTestResults)
+        _archiveTestResults(outputDir, aggregatedResults.testResults)
+        console.log(aggregatedResults)
+        return aggregatedResults.passed
+    }, reason => {
+        console.log(reason)
+        throw reason
+    })
+}
+
+function _archiveTestResults(outputDir, testResults) {
+    Object.entries(testResults).forEach(([key, value]) => {
+        const outputPath = path.join(outputDir, key)
+        fs.outputFileSync(outputPath, value, 'utf8')
+    })
+}
+
+module.exports = runTests

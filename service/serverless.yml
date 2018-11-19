@@ -1,0 +1,61 @@
+---
+
+frameworkVersion: 1.27.3
+
+service: sanity
+
+provider:
+  name: aws
+  region: us-east-1
+  stage: dev
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+      Resource:
+        - "arn:aws:s3:::${self:custom.chrome_bucket}/*"
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+      Resource:
+        - "arn:aws:s3:::${self:custom.screenshot_bucket}/*"
+  environment:
+    SLS_STAGE: ${self:custom.stage}
+    CHROME_BUCKET: ${self:custom.chrome_bucket}
+    SCREENSHOT_BUCKET: ${self:custom.screenshot_bucket}
+
+custom:
+  region: ${opt:region, self:provider.region}
+  stage: ${opt:stage, self:provider.stage}
+  chrome_bucket: thm-chrome-images-${self:custom.stage}
+  screenshot_bucket: thm-sanity-screenshots-${self:custom.stage}
+
+package:
+  exclude:
+    - chrome/**
+    - test/**
+    - Makefile
+    - yarn.lock
+
+functions:
+  sanityLauncher:
+    runtime: nodejs8.10
+    memorySize: 2048
+    timeout: 60
+    handler: src/lambdaHandler.handler
+
+resources:
+  Resources:
+    THMChromeImages:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.chrome_bucket}
+    THMSanityScreenshots:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.screenshot_bucket}
+        LifecycleConfiguration:
+          Rules:
+            - ExpirationInDays: 30
+              Status: Enabled

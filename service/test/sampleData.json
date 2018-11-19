@@ -1,0 +1,9 @@
+{
+    "testFiles": {
+        "filename.test.js": "describe('Failing Suite', () => {\nit('Testing Top Hat', async () => {\nawait page.goto('https://tophat.com')\nawait page.waitFor('.class-doesnt-exist-so-test-breaks')\n})\ntest('Testing Google', async () => {\nawait page.goto(global.SANITY_VARIABLES.TEST_URL)\nawait page.waitFor('#viewport')\n})\n})",
+        "e2e-1/subdirectory.test.js": "describe('Passing Suite', () => {\ntest('Sample E2E Test', async () => {\nawait page.goto(global.SANITY_VARIABLES.TEST_URL)\nawait page.waitFor('#viewport')\n})\n})"
+    },
+    "testVariables": {
+        "TEST_URL": "https://google.com"
+    }
+}
