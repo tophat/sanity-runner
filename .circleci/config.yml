@@ -23,7 +23,11 @@ jobs:
       - run:
           name: "Publish Release on Github"
           command: |
-            VERSION=0.0.0
+            VERSION=v0.0.0
+            echo $CIRCLE_PROJECT_USERNAME
+            echo $CIRCLE_PROJECT_REPONAME
+            echo $CIRCLE_SHA1
+            echo $VERSION
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ~/workspace/client/bin/*
 workflows:
   version: 2
