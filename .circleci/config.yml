@@ -28,7 +28,7 @@ jobs:
             echo $CIRCLE_PROJECT_REPONAME
             echo $CIRCLE_SHA1
             echo $VERSION
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ~/workspace/client/bin/*
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ~/workspace/client/bin/
 workflows:
   version: 2
   build_and_test:
