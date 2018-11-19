@@ -10,7 +10,7 @@ jobs:
       - run: make -C service install-ci
       - run: make -C client package
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: ~/repo
           paths: client/bin
 
   deploy:
