@@ -12,9 +12,13 @@
         "commander": "^2.15.1",
         "fs-extra": "^6.0.1",
         "glob": "^7.1.2",
-        "promise-retry": "^1.1.1"
+        "promise-retry": "^1.1.1",
+        "pkg": "^4.3.3"
     },
     "bin": {
         "sanity-runner": "./src/cli.js"
+    },
+    "pkg": {
+      "scripts": "./src/*.js"
     }
 }

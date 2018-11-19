@@ -9,6 +9,10 @@ install: check-versions
 deploy-production:
 	./scripts/deploy.sh
 
+.PHONY: package
+package:
+	pkg . --out-path bin/
+
 # ----- Helpers -----
 .PHONY: check-versions
 check-versions:
@@ -17,3 +21,4 @@ check-versions:
 .PHONY: clean
 clean:
 	@rm -rf node_modules
+
