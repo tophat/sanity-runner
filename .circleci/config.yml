@@ -10,8 +10,8 @@ jobs:
       - run: make -C service install-ci
       - run: make -C client package
       - store_artifacts:
-        path: client/bin/
-        destiniation: "${CIRCLE_BRANCH}"
+          path: client/bin/
+          destination: "${CIRCLE_BRANCH}"
   deploy:
     docker:
       - image: cibuilds/github:0.10
