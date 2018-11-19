@@ -10,8 +10,8 @@ jobs:
       - run: make -C service install-ci
       - run: make -C client package
       - persist_to_workspace:
-        root: /tmp/workspace
-        paths: client/bin
+          root: /tmp/workspace
+          paths: client/bin
 
   deploy:
     docker:
