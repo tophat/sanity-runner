@@ -1,5 +1,5 @@
 const fs = require('fs-extra')
-const http = require('http')
+const https = require('https')
 const path = require('path')
 const promiseRetry = require('promise-retry')
 
