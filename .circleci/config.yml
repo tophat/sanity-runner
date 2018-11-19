@@ -16,5 +16,7 @@ jobs:
     branches:
       only:
         - master
+    steps:
+      - run: echo "test"
 
 
