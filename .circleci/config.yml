@@ -3,20 +3,25 @@ jobs:
   build:
     docker:
       - image: circleci/node:8.10.0
-      
     working_directory: ~/repo
     steps:
       - checkout
       - run: make -C client install
       - run: make -C service install-ci
       - run: make -C client package
+      - store_artifacts:
+        path: client/bin/
+        destiniation: "${CIRCLE_BRANCH}"	
   deploy:
     docker:
       - image: cibuilds/github:0.10
     branches:
       only:
         - master
+        
     steps:
+      - attach_workspace:
+          at: ./artifacts
       - run: echo "test"
 
 
