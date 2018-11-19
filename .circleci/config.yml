@@ -7,10 +7,9 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: |
-        make -C client install
-        make -C service install-ci
-        make -C client package
+      - run: make -C client install
+      - run: make -C service install-ci
+      - run: make -C client package
   deploy:
     docker:
       - image: cibuilds/github:0.10
