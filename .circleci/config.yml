@@ -14,9 +14,6 @@ jobs:
   deploy:
     docker:
       - image: cibuilds/github:0.10
-    branches:
-      only:
-        - master
     steps:
       - attach_workspace:
           at: ./artifacts
