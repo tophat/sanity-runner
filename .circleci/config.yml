@@ -23,6 +23,8 @@ jobs:
           name: "Publish Release on Github"
           command: |
             VERSION=0.0.0
+            ls -la /tmp/workspace/*
+            ls -la  /tmp/workspace/bin/*
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} /tmp/workspace/bin/*
 workflows:
   version: 2
