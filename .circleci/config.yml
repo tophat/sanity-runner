@@ -9,22 +9,23 @@ jobs:
       - run: make -C client install
       - run: make -C service install-ci
       - run: make -C client package
+      - run: ls -la ./client/bin/*
       - persist_to_workspace:
-          root: ~/repo
-          paths: client/bin/*
+          root: ./
+          paths: client/bin/
 
   deploy:
     docker:
       - image: cibuilds/github:0.10
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: ~/workspace
       - run:
           name: "Publish Release on Github"
           command: |
             VERSION=0.0.0
-            ls -la /tmp/workspace/*
-            ls -la  /tmp/workspace/bin/*
+            ls -la ~/workspace/*
+            ls -la  ~/workspace/bin/*
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} /tmp/workspace/bin/*
 workflows:
   version: 2
