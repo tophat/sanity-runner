@@ -11,17 +11,6 @@ jobs:
       - run: make -C client package
       - store_artifacts:
           path: client/bin/
-          destination: "${CIRCLE_BRANCH}"
-  deploy:
-    docker:
-      - image: cibuilds/github:0.10
-    branches:
-      only:
-        - master
-        
-    steps:
-      - attach_workspace:
-          at: ./artifacts
-      - run: echo "test"
+
 
 
