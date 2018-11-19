@@ -11,6 +11,17 @@ jobs:
       - run: make -C client package
       - store_artifacts:
           path: client/bin/
+  deploy:
+    docker:
+      - image: cibuilds/github:0.10
+    branches:
+      only:
+        - master
+    steps:
+      - attach_workspace:
+          at: ./artifacts
+      - run: ls -la ./artifacts/*
+
 
 
 
