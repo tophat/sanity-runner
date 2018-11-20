@@ -15,8 +15,10 @@ jobs:
           paths: 
             - client/bin/
             - client/version.txt
-
   deploy:
+    branches:
+      only:
+        - master
     docker:
       - image: cibuilds/github:0.10
     steps:
