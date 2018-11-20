@@ -42,7 +42,7 @@ step "Determining version to publish..."
 last_published_version="$(git tag | tail -1 | tr -d v )"
 echo "Last published version is $last_published_version"
 
-packaged_version="$(jq '.version' --raw-output ../package.json)"
+packaged_version="$(jq '.version' --raw-output package.json)"
 echo "Version in package.json is $packaged_version"
 
 new_version=$last_published_version
@@ -60,5 +60,5 @@ new_version_with_v="v$new_version"
 echo "New version with v is $new_version_with_v"
 echo "Version to publish is $new_version"
 
-export VERSION=$new_version
+echo $new_version > version.txt
 

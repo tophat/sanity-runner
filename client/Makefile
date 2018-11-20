@@ -5,13 +5,13 @@ export PATH := $(shell yarn bin):$(PATH)
 install: check-versions
 	yarn install
 
-.PHONY: deploy-production
-deploy-production:
-	./scripts/deploy.sh
-
 .PHONY: package
 package:
 	pkg . --out-path bin/
+
+.PHONY: release-version
+release-version:
+	./scripts/version.sh
 
 # ----- Helpers -----
 .PHONY: check-versions
@@ -21,4 +21,5 @@ check-versions:
 .PHONY: clean
 clean:
 	@rm -rf node_modules
+	
 

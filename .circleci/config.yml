@@ -9,10 +9,12 @@ jobs:
       - run: make -C client install
       - run: make -C service install-ci
       - run: make -C client package
-      - run: ls -la ./client/bin/*
+      - run: make -C client release-version
       - persist_to_workspace:
           root: ./
-          paths: client/bin/
+          paths: 
+            - client/bin/
+            - client/version.txt
 
   deploy:
     docker:
@@ -23,11 +25,7 @@ jobs:
       - run:
           name: "Publish Release on Github"
           command: |
-            VERSION=v0.0.0
-            echo $CIRCLE_PROJECT_USERNAME
-            echo $CIRCLE_PROJECT_REPONAME
-            echo $CIRCLE_SHA1
-            echo $VERSION
+            VERSION=`cat ~/workspace/client/version.txt`
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ~/workspace/client/bin/
 workflows:
   version: 2
