@@ -38,14 +38,11 @@ function vercomp () {
     return 0
 }
 
-PACKAGE_VERSION_JSON=package.json
-PACKAGE_VERSION_NPM=sanity-client
-
 step "Determining version to publish..."
-last_published_version="$(npm view $PACKAGE_VERSION_NPM version)"
+last_published_version="$(git tag | tail -1 | tr -d v )"
 echo "Last published version is $last_published_version"
 
-packaged_version="$(jq '.version' --raw-output $PACKAGE_VERSION_JSON)"
+packaged_version="$(jq '.version' --raw-output package.json)"
 echo "Version in package.json is $packaged_version"
 
 new_version=$last_published_version
@@ -61,8 +58,7 @@ step "Incrementing version $new_version"
 new_version="$(echo "${new_version%.*}.$((${new_version##*.}+1))")"
 new_version_with_v="v$new_version"
 echo "New version with v is $new_version_with_v"
-echo "Version to publish is $new_version\n\n"
+echo "Version to publish is $new_version"
 
-step "Deploy packages with yarn"
-yarn publish --non-interactive --new-version $new_version
-echo "Deployed packages!\n\n"
+echo $new_version > version.txt
+

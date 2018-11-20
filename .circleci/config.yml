@@ -1,0 +1,40 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.10.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: make -C client install
+      - run: make -C service install-ci
+      - run: make -C client package
+      - run: make -C client release-version
+      - persist_to_workspace:
+          root: ./
+          paths: 
+            - client/bin/
+            - client/version.txt
+  deploy:
+    docker:
+      - image: cibuilds/github:0.10
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: "Publish Release on Github"
+          command: |
+            VERSION=`cat ~/workspace/client/version.txt`
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} ~/workspace/client/bin/
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
