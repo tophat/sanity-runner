@@ -16,9 +16,6 @@ jobs:
             - client/bin/
             - client/version.txt
   deploy:
-    branches:
-      only:
-        - master
     docker:
       - image: cibuilds/github:0.10
     steps:
@@ -37,4 +34,7 @@ workflows:
       - deploy:
           requires:
             - build
+          filters:
+            branches:
+              only: master
 
