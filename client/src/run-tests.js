@@ -1,4 +1,5 @@
 const fs = require('fs-extra')
+const https = require('https')
 const path = require('path')
 const promiseRetry = require('promise-retry')
 
@@ -59,9 +60,10 @@ async function runTests(functionName, testFiles, outputDir, testVariables) {
     const promises = Object.entries(testFiles).map(
         entry => testResultPromise(functionName, {[entry[0]]: entry[1]}, testVariables)
     )
-    return Promise.all(promises).then(results => {
+    return Promise.all(promises).then(async results => {
         const aggregatedResults = results.reduce(reduceTestResults)
         _archiveTestResults(outputDir, aggregatedResults.testResults)
+        await _archiveTestScreenshots(outputDir, aggregatedResults.screenshots)
         console.log(aggregatedResults)
         return aggregatedResults.passed
     }, reason => {
@@ -75,6 +77,25 @@ function _archiveTestResults(outputDir, testResults) {
         const outputPath = path.join(outputDir, key)
         fs.outputFileSync(outputPath, value, 'utf8')
     })
+}
+
+async function _archiveTestScreenshots(outputDir, screenshots) {
+    const promises = Object
+        .entries(screenshots)
+        .map(async ([key, value]) => {
+            const outputPath = path.join(outputDir, key)
+            await fs.ensureFile(outputPath)
+            return new Promise((resolve, reject) => {
+                const screenshot = fs.createWriteStream(outputPath)
+                screenshot.on('finish', () => resolve())
+                screenshot.on('error', err => reject(err))
+                https.get(value, (res) => {
+                    res.pipe(screenshot)
+                    res.on('error', err => reject(err))
+                })
+            })
+        })
+    await Promise.all(promises)
 }
 
 module.exports = runTests
