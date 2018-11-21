@@ -6,3 +6,6 @@ node_modules/
 yarn-error.log
 npm-debug.log
 dist/
+example/repo/yarn.lock
+example/repo/node_modules/
+example/repo/output/
