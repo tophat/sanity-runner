@@ -87,14 +87,11 @@ async function _archiveTestScreenshots(outputDir, screenshots) {
             await fs.ensureFile(outputPath)
             return new Promise((resolve, reject) => {
                 const screenshot = fs.createWriteStream(outputPath)
+                screenshot.on('finish', () => resolve())
+                screenshot.on('error', err => reject(err))
                 https.get(value, (res) => {
                     res.pipe(screenshot)
-                    res.on('end', () => {
-                        resolve()
-                    })
-                    res.on('error', err => {
-                        reject(err)
-                    })
+                    res.on('error', err => reject(err))
                 })
             })
         })
