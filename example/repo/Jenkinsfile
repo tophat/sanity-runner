@@ -1,0 +1,13 @@
+pipeline {
+    agent any
+    stages {
+        stage('E2E') {
+            steps {
+                sh 'rm -rf artifacts'
+                sh 'bash bootstrap.sh -p .'
+                // Insert AWS Creds 
+                sh './sanity-runner --test-dir dist --output-dir artifacts'            
+            }
+        }
+    }
+}
