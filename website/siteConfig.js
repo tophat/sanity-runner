@@ -2,7 +2,7 @@ const siteConfig = {
     title: 'Sanity Runner',
     tagline: 'Sanity Runner',
     // For deploy
-    cname: 'sanity-runner.js.org',
+    // cname: 'sanity-runner.js.org',
     url: 'https://tophat.github.io',
     baseUrl: '/sanity-runner/',
     projectName: 'sanity-runner',
