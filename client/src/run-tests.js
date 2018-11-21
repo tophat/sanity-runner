@@ -80,6 +80,10 @@ function _archiveTestResults(outputDir, testResults) {
 }
 
 async function _archiveTestScreenshots(outputDir, screenshots) {
+    if (!screenshots) {
+        return
+    }
+
     const promises = Object
         .entries(screenshots)
         .map(async ([key, value]) => {
