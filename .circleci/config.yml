@@ -1,4 +1,27 @@
-version: 2
+version: 2.1
+
+website_docker_defaults: &website_docker_defaults
+  docker:
+    - image: circleci/node:8.11.3
+
+commands:
+  prep_website_env:
+    description: Prepapres environment with cache
+    steps:
+      - checkout:
+          path: ~/repo
+      - restore_cache:
+          name: Restore node_modules cache
+          key: website-{{ .Branch }}-{{ checksum "yarn.lock" }}
+  save_website_cache:
+    description: Saves environment cache
+    steps:
+      - save_cache:
+          name: Save node_modules cache
+          key: website-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules/
+
 jobs:
   build:
     docker:
@@ -12,7 +35,7 @@ jobs:
       - run: make -C client release-version
       - persist_to_workspace:
           root: ./
-          paths: 
+          paths:
             - client/bin/
             - client/version.txt
   deploy:
@@ -26,6 +49,35 @@ jobs:
           command: |
             VERSION=`cat ~/workspace/client/version.txt`
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} ~/workspace/client/bin/
+  website:
+    <<: *website_docker_defaults
+    working_directory: ~/repo/website
+    steps:
+      - prep_website_env
+      - run: yarn install
+      - save_website_cache
+      - run: yarn build
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - build/
+  deploy_website:
+    <<: *website_docker_defaults
+    working_directory: ~/repo/website
+    steps:
+      - prep_website_env
+      - attach_workspace:
+          at: ./
+      - add_ssh_keys:
+          fingerprints:
+            - "30:d8:05:7f:03:23:c8:0e:85:d2:18:85:d6:8c:57:13"
+      - run:
+          name: Setup git user and deploy website
+          command: |
+            git config --global user.email "circleci-sanity-runner@users.noreply.github.com"
+            git config --global user.name "CircleCI Sanity Runner"
+            USE_SSH=true yarn publish-gh-pages
+
 workflows:
   version: 2
   build_and_test:
@@ -37,4 +89,12 @@ workflows:
           filters:
             branches:
               only: master
+      - website
+      - deploy_website:
+          requires:
+            - website
+          filters:
+            branches:
+              only:
+                - master
 
