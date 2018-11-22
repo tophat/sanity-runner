@@ -3,4 +3,6 @@ id: faq
 title: FAQ
 ---
 
-## `TODO`
+## Have a question that wasn't answered?
+
+Join our slack community(https://tophat-opensource.slack.com) and ask!

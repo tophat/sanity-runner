@@ -15,7 +15,7 @@ A distributed sanity test runner.
 
 ### Bootstrap Scripts
 
-#### Serverless // Lambda 
+#### Serverless // Lambda
 ```
 nvm use
 export AWS_PROFILE=<AWS account>
@@ -23,7 +23,7 @@ export AWS_REGION=<AWS region>
 
 bash service/boostrap.sh                    # Deploy current source
 bash service/boostrap.sh -v latest          # Deploy Latest Release
-bash service/boostrap.sh -v X.X.X           # Deploy specific release 
+bash service/boostrap.sh -v X.X.X           # Deploy specific release
 ```
 #### Client
 Default installs binary to /usr/local/bin/sanity-runner
@@ -35,7 +35,7 @@ bash client/bootstrap.sh -p <path>           # installs binary to specfied path
 
 ### Build From Source
 
-#### Serverless // Lambda 
+#### Serverless // Lambda
 ```
 export AWS_PROFILE=<AWS account>
 export AWS_REGION=<AWS region>
