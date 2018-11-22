@@ -1,0 +1,5 @@
+testDir: ./example
+outputDir: ./output
+var:
+  TEST_NAME: some name
+  TEST_NUM: 1
