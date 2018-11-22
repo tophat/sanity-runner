@@ -8,4 +8,4 @@ You can view the [README on GitHub](http://github.com/tophat/sanity-runner) for 
 
 ## Have a question that wasn't answered?
 
-Join our slack community(https://tophat-opensource.slack.com) and ask!
+Join our [slack community](https://tophat-opensource.slack.com) and ask!
