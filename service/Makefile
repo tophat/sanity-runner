@@ -4,9 +4,19 @@ export PATH := $(shell yarn bin):$(PATH)
 ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
 
+.PHONE: docker
+docker: 
+	docker build . 
+
+.PHONE: install-mac
+install-mac: docker
+	docker run \
+	-v $(shell pwd)/..:/sanities \
+	sanity make -C /sanities/service install
+
 .PHONY: install
-install: check-versions clean
-	yarn install
+install:
+	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
 
 .PHONY: invoke
 invoke: check-versions
@@ -35,9 +45,6 @@ deploy: check-versions
 check-versions:
 	@../infrastructure/scripts/check-versions.sh
 
-.PHONY: install-ci
-install-ci:
-	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
 
 .PHONY: clean
 clean:
