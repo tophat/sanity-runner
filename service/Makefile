@@ -23,11 +23,11 @@ tail: check-versions
 .PHONY: package
 package: check-versions
 	@rm -rf "${BUILD_DIR}"
-	serverless package --package "${BUILD_DIR}" --stage shawn-chrome-upgrade
+	serverless package --package "${BUILD_DIR}"
 
 .PHONY: deploy
 deploy: check-versions
-	serverless deploy --package "${BUILD_DIR}" --stage shawn-chrome-upgrade
+	serverless deploy --package "${BUILD_DIR}"
 	aws s3 sync ./chrome s3://thm-chrome-images-dev  --no-progress
 
 # ----- Helpers -----
