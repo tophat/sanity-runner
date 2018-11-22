@@ -39,7 +39,7 @@ jobs:
           paths:
             - client/bin/
             - client/version.txt
-            - service/artifacts/build
+            - service/artifacts/build/
   deploy:
     docker:
       - image: cibuilds/github:0.10
@@ -50,7 +50,7 @@ jobs:
           name: "Publish Release on Github"
           command: |
             VERSION=`cat ~/workspace/client/version.txt`
-            tar cvf sanity-runner-serverless-${VERSION}.tar ~/workspace/artifacts/build 
+            tar cvf sanity-runner-serverless-${VERSION}.tar ~/workspace/service/artifacts/build/
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} ~/workspace/client/bin/
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} sanity-runner-serverless-${VERSION}.tar 
 
