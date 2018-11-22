@@ -30,7 +30,7 @@ jobs:
     steps:
       - checkout
       - run: make -C client install
-      - run: make -C service install-ci
+      - run: make -C service install
       - run: make -C client package
       - run: make -C client release-version
       - persist_to_workspace:
