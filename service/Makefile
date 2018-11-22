@@ -15,7 +15,7 @@ install-mac: docker
 	sanity make -C /sanities/service install
 
 .PHONY: install
-install:
+install: check-versions clean
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
 
 .PHONY: invoke
