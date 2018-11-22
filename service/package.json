@@ -12,8 +12,7 @@
   },
   "author": "",
   "license": "UNLICENCED",
-  "bugs": {
-  },
+  "bugs": {},
   "url": "https://github.com/tophat/sanity-runner/issues",
   "homepage": "https://github.com/tophat/sanity-runner#readme",
   "devDependencies": {
@@ -28,7 +27,7 @@
     "jest-junit": "^5.1.0",
     "node-pre-gyp": "^0.10.3",
     "posix": "^4.1.2",
-    "puppeteer": "1.0.0",
+    "puppeteer": "1.6.2",
     "tar": "^4.4.4",
     "uuid": "^3.2.1",
     "waitpid2": "git://github.com/joshiggins/node-waitpid2.git#2270e88"
