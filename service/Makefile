@@ -6,7 +6,7 @@ BUILD_DIR = ${ARTIFACTS_DIR}/build
 
 .PHONE: docker
 docker: 
-	docker build . 
+	docker build ../.
 
 .PHONE: install-mac
 install-mac: docker
