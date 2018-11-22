@@ -98,3 +98,9 @@ workflows:
               only:
                 - master
 
+experimental:
+  notify:
+    branches:
+      only:
+        - master
+
