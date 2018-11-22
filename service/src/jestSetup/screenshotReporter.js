@@ -29,7 +29,7 @@ class PuppeteerScreenshotReporter {
         for (let result of testResult.testResults) {
             const relativePath = path.join(result.fullName, this._options.filename || 'screenshot.png')
             const screenshot = path.join(this._options.output, relativePath)
-            if (result.status !== 'passed') {
+            if (result.status === 'failed') {
                 const downloadLink = await this.uploadScreenshotToS3(screenshot)
 
                 result.failureMessages.push(`Screenshot available at ${relativePath}`)
