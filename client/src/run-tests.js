@@ -5,6 +5,8 @@ const promiseRetry = require('promise-retry')
 
 const AWS = require('aws-sdk')
 
+const { formatTestResults } = require('./utils')
+
 async function testResultPromise(functionName, testFiles, testVariables) {
     const lambda = new AWS.Lambda()
     const params = {
@@ -64,7 +66,7 @@ async function runTests(functionName, testFiles, outputDir, testVariables) {
         const aggregatedResults = results.reduce(reduceTestResults)
         _archiveTestResults(outputDir, aggregatedResults.testResults)
         await _archiveTestScreenshots(outputDir, aggregatedResults.screenshots)
-        console.log(aggregatedResults)
+        await formatTestResults(aggregatedResults.testResults)
         return aggregatedResults.passed
     }, reason => {
         console.log(reason)

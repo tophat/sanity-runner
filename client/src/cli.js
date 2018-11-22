@@ -59,10 +59,10 @@ const outputDir = path.resolve(program.outputDir || DEFAULT_OUTPUT_DIR)
 const testVariables = program.var
 
 runTests(functionName, testFiles, outputDir, testVariables).then(function(testsPassed) {
-    console.log('done')
+    console.log('All test suites ran.')
     process.exit(testsPassed ? EXIT_CODES : EXIT_CODES.TEST_FAILED)
 }).catch(function(err) {
-    console.log('caught rejection')
+    console.log('Caught rejection')
     console.log(err)
     process.exit(EXIT_CODES.FATAL_ERROR)
 })
