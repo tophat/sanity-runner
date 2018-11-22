@@ -1,29 +1,72 @@
-# sanity
+<div align="center"> <img src="./runner.png" width="400px;"/>
+
+[![Builds](https://img.shields.io/circleci/project/github/tophat/sanity-runner/master.svg)](https://circleci.com/gh/tophat/sanity-runner)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat)](#Contributing)
+[![Maturity badge - level 2](https://img.shields.io/badge/Maturity-Level%202%20--%20First%20Release-yellowgreen.svg)](https://github.com/tophat/getting-started/blob/master/scorecard.md)
+[![Slack workspace](https://slackinvite.dev.tophat.com/badge.svg)](https://tophat-opensource.slack.com/)
+
+</div>
+
+# Sanity-Runner
 
 A distributed sanity test runner.
 
-### Usage
+## Installation
 
-**TODO: write this**
+### Bootstrap Scripts
 
-### Examples
+#### Serverless // Lambda 
+```
+nvm use
+export AWS_PROFILE=<AWS account>
+export AWS_REGION=<AWS region>
 
-[Example with Webpack](examples/precompiling/README.md) - for how to use Webpack to precompile your test suite (and why you may want to)
+bash service/boostrap.sh                    # Deploy current source
+bash service/boostrap.sh -v latest          # Deploy Latest Release
+bash service/boostrap.sh -v X.X.X           # Deploy specific release 
+```
+#### Client
+Default installs binary to /usr/local/bin/sanity-runner
+```
+bash client/bootstrap.sh                    # gets latest client binary release
+bash client/bootstrap.sh -v X.X.X           # gets specific release of client binary
+bash client/bootstrap.sh -p <path>           # installs binary to specfied path
+```
 
-### Pinned Packages
+### Build From Source
 
-**BEWARE UPGRADING THE PINNED PACKAGES**
+#### Serverless // Lambda 
+```
+export AWS_PROFILE=<AWS account>
+export AWS_REGION=<AWS region>
+make -C service install-ci
+make -C service package
+make -C service deploy
+```
+#### Client
+```
+make -C client install
+make -C client package
+```
+## Usage
 
-`jest` is pinned, because we are using a sketchy internal API to get the name of the test in the `afterEach` block. This is impossible otherwise, and necessary to take screenshots of failed tests. When upgrading `jest`, make sure you're still able to get screenshots of failed tests.
+Ensure AWS Creds are setup
+```
+export AWS_PROFILE=<AWS account>
+export AWS_REGION=<AWS region>
+```
 
-`puppeteer` is pinned, because it has to be compatible with the specific version of the Chrome binary. See the [Chrome Binaries](#chrome-binaries) section for more info.
+Run Client against folder with written sanity tests
+```
+sanity-runner --test-dir example/repo/sanities --output-dir output
+```
 
-### Chrome Binaries
+## References
 
-The Chrome binaries are specifically built for AWS Lambda. To build a new binary, see https://github.com/adieuadieu/serverless-chrome
-
-A new binary may not simply work, and neither may upgrading Puppeteer. The versions of both are linked, and you must make sure they are compatible or tests may not be able to run.
-
+- https://github.com/smooth-code/jest-puppeteer
+- https://github.com/smooth-code/jest-puppeteer/tree/master/packages/expect-puppeteer
+- https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors
+- https://github.com/adieuadieu/serverless-chrome
 
 ## Contributing
 
