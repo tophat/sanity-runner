@@ -21,19 +21,19 @@ const collectVariables = async (variable, variableMap) => {
 /**
  * Retrieve test configuration from the Commander program object
  * @param {*} program
+ * @param {Array} acceptedConfigs
+ * @param {Object?} baseConfiguration
  */
-const retrieveConfigurations = program => {
-    const CONFIG_OPTIONS = ['testDir', 'outputDir', 'lambdaFunction', 'var']
-
-    const configuration = {}
+const retrieveConfigurations = (program, acceptedConfigs, baseConfiguration={}) => {
+    const configuration = baseConfiguration
     if (program.config) {
         const jsonConfigs = _.pick(
             JSON.parse(fs.readFileSync(program.config, 'utf8')),
-            CONFIG_OPTIONS,
+            acceptedConfigs,
         )
         _.merge(configuration, jsonConfigs)
     }
-    const flagConfigs = _.pick(program, CONFIG_OPTIONS)
+    const flagConfigs = _.pick(program, acceptedConfigs)
     return _.merge(configuration, flagConfigs)
 }
 
