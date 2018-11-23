@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 if ! type -p jq &>/dev/null; then
     echo "Could not find dependency 'jq'. Aborting."
@@ -16,6 +16,7 @@ cd $OUTPUT_DIR
 fi
 
 DOWNLOAD_URL=`curl --silent https://api.github.com/repos/adieuadieu/serverless-chrome/releases/tags/${SERVERLESS_CHROME_VERSION} | jq -r '.assets[] | select(.name | startswith("stable")) | .browser_download_url'`
+echo "Downloading from URL: ${DOWLOAD_URL}"
 curl -L $DOWNLOAD_URL --output serverless_chromium.zip
 
 unzip serverless_chromium.zip

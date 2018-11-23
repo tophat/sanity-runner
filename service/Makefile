@@ -3,7 +3,6 @@ export PATH := $(shell yarn bin):$(PATH)
 
 ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
-SERVERLESS_CHROME_VERSION ?=v1.0.0-55
 
 .PHONY: install
 install: check-versions clean
