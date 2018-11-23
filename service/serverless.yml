@@ -28,8 +28,8 @@ provider:
 custom:
   region: ${opt:region, self:provider.region}
   stage: ${opt:stage, self:provider.stage}
-  chrome_bucket: sanity-runner-chrome-images-${env:AWS_PROFILE}
-  screenshot_bucket: sanity-runner-screenshots-${env:AWS_PROFILE}
+  chrome_bucket: sanity-runner-chrome-images-${env:AWS_PROFILE, dev}
+  screenshot_bucket: sanity-runner-screenshots-${env:AWS_PROFILE, dev}
 
 package:
   exclude:
