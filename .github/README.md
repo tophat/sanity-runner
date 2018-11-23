@@ -37,7 +37,7 @@ sh sanity-runner-bootstrap.sh -v X.X.X
 ```
 export AWS_PROFILE=<AWS account>
 export AWS_REGION=<AWS region>
-make -C service install-ci
+make -C service install
 make -C service package
 make -C service deploy
 ```
