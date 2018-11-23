@@ -30,14 +30,16 @@ jobs:
     steps:
       - checkout
       - run: make -C client install
-      - run: make -C service install-ci
+      - run: make -C service install
       - run: make -C client package
       - run: make -C client release-version
+      - run: make -C service package
       - persist_to_workspace:
           root: ./
           paths:
             - client/bin/
             - client/version.txt
+            - service/artifacts/build/
   deploy:
     docker:
       - image: cibuilds/github:0.10
@@ -47,8 +49,13 @@ jobs:
       - run:
           name: "Publish Release on Github"
           command: |
+            mkdir release-archive
             VERSION=`cat ~/workspace/client/version.txt`
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} ~/workspace/client/bin/
+            tar cvf sanity-runner-serverless-${VERSION}.tar ~/workspace/service/artifacts/build/
+            mv sanity-runner-serverless-${VERSION}.tar release-archive/
+            mv ~/workspace/client/bin/* release-archive/
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} release-archive/
+
   website:
     <<: *website_docker_defaults
     working_directory: ~/repo/website
@@ -97,4 +104,10 @@ workflows:
             branches:
               only:
                 - master
+
+experimental:
+  notify:
+    branches:
+      only:
+        - master
 
