@@ -32,7 +32,7 @@ module.exports.handler = async function(event, context, callback) {
     const chrome = new ChromeInstaller({
         executablePath: paths.chrome(),
         s3Bucket: process.env.CHROME_BUCKET,
-        s3Key: 'HeadlessChromium-69.0.3497.81.tar.gz',
+        s3Key: 'HeadlessChromium-v1.0.0-55.tar.gz',
         debug: process.env.DEBUG || false,
     })
     await chrome.setupChrome()

@@ -3,6 +3,7 @@ export PATH := $(shell yarn bin):$(PATH)
 
 ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
+SERVERLESS_CHROME_VERSION ?=v1.0.0-55
 
 .PHONY: install
 install: check-versions clean
@@ -26,7 +27,7 @@ package: check-versions
 	serverless package --package "${BUILD_DIR}"
 
 .PHONY: deploy
-deploy: check-versions
+deploy: check-versions download-serverless-chrome
 	serverless deploy --package "${BUILD_DIR}"
 	aws s3 sync ./chrome s3://thm-chrome-images-dev  --no-progress
 
@@ -38,6 +39,10 @@ check-versions:
 .PHONY: install-ci
 install-ci:
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
+
+.PHONY: download-serverless-chrome
+download-serverless-chrome: 
+	OUTPUT_DIR=./chrome ../infrastructure/scripts/download-serverless-chrome.sh
 
 .PHONY: clean
 clean:
