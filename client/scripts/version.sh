@@ -39,7 +39,9 @@ function vercomp () {
 }
 
 step "Determining version to publish..."
-last_published_version="$(curl --silent "https://api.github.com/repos/tophat/sanity-runner/releases/latest" | sed -n -e '/"tag_name":/ s/^.*"\(.*\)".*/\1/p')"
+
+last_published_version="$(curl --silent "https://api.github.com/repos/tophat/sanity-runner/releases/latest" | sed -n -e '/"tag_name":/ s/^.*"\(.*\)".*/\1/p' | tr -d v )"
+
 echo "Last published version is $last_published_version"
 
 packaged_version="$(jq '.version' --raw-output package.json)"
