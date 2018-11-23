@@ -1,3 +1,6 @@
+const fs = require('fs-extra')
+
+const _ = require('lodash')
 const chalk = require('chalk')
 const xml2js = require('xml2js')
 
@@ -13,6 +16,25 @@ const collectVariables = async (variable, variableMap) => {
     const key = variable.substring(0, equalPos)
     const value = variable.substring(equalPos + 1)
     return Object.assign({}, variableMap, {[key]: value})
+}
+
+/**
+ * Retrieve test configuration from the Commander program object
+ * @param {*} program
+ * @param {Array} acceptedConfigs
+ * @param {Object?} baseConfiguration
+ */
+const retrieveConfigurations = (program, acceptedConfigs, baseConfiguration={}) => {
+    const configuration = baseConfiguration
+    if (program.config) {
+        const jsonConfigs = _.pick(
+            JSON.parse(fs.readFileSync(program.config, 'utf8')),
+            acceptedConfigs,
+        )
+        _.merge(configuration, jsonConfigs)
+    }
+    const flagConfigs = _.pick(program, acceptedConfigs)
+    return _.merge(configuration, flagConfigs)
 }
 
 /**
@@ -145,4 +167,5 @@ const formatTestResults = async results => {
 module.exports = {
     collectVariables,
     formatTestResults,
+    retrieveConfigurations,
 }
