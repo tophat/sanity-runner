@@ -1,4 +1,10 @@
 #!/bin/bash
+
+if ! type -p jq &>/dev/null; then
+    echo "Could not find dependency 'jq'. Aborting."
+    exit 1
+fi
+
 if [ -z $SERVERLESS_CHROME_VERSION ]
 then
 SERVERLESS_CHROME_VERSION=v1.0.0-55
