@@ -49,10 +49,12 @@ jobs:
       - run:
           name: "Publish Release on Github"
           command: |
+            mkdir release-archive
             VERSION=`cat ~/workspace/client/version.txt`
             tar cvf sanity-runner-serverless-${VERSION}.tar ~/workspace/service/artifacts/build/
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} ~/workspace/client/bin/
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} sanity-runner-serverless-${VERSION}.tar 
+            mv sanity-runner-serverless-${VERSION}.tar release-archive/
+            mv ~/workspace/client/bin/* release-archive/
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} release-archive/
 
   website:
     <<: *website_docker_defaults
