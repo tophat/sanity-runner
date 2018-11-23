@@ -15,7 +15,7 @@ then
 cd $OUTPUT_DIR
 fi
 
-DOWNLOAD_URL=`curl --silent https://api.github.com/repos/adieuadieu/serverless-chrome/releases/tags/${SERVERLESS_CHROME_VERSION} | jq -r '.assets[] | select(.name | startswith("stable")) | .browser_download_url'`	
+DOWNLOAD_URL=`curl --silent https://api.github.com/repos/adieuadieu/serverless-chrome/releases/tags/${SERVERLESS_CHROME_VERSION} | jq -r '.assets[] | select(.name | startswith("stable")) | .browser_download_url'`
 curl -L $DOWNLOAD_URL --output serverless_chromium.zip
 
 unzip serverless_chromium.zip

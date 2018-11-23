@@ -41,7 +41,7 @@ install-ci:
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
 
 .PHONY: download-serverless-chrome
-download-serverless-chrome: 
+download-serverless-chrome:
 	OUTPUT_DIR=./chrome ../infrastructure/scripts/download-serverless-chrome.sh
 
 .PHONY: clean
