@@ -37,7 +37,7 @@ package: check-versions
 	serverless package --package "${BUILD_DIR}"
 
 .PHONY: deploy
-deploy: check-versions
+deploy: check-versions download-serverless-chrome
 	serverless deploy --package "${BUILD_DIR}"
 	aws s3 sync ./chrome s3://sanity-runner-chrome-images-${AWS_PROFILE}
 
@@ -46,6 +46,10 @@ deploy: check-versions
 check-versions:
 	@../infrastructure/scripts/check-versions.sh
 
+
+.PHONY: download-serverless-chrome
+download-serverless-chrome:
+	OUTPUT_DIR=./chrome ../infrastructure/scripts/download-serverless-chrome.sh
 
 .PHONY: clean
 clean:

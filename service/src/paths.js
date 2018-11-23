@@ -3,7 +3,7 @@ const path = require('path')
 
 module.exports = {
     chrome: function() {
-        return path.join(os.tmpdir(), 'headless_shell')
+        return path.join(os.tmpdir(), 'headless-chromium')
     },
     jest: function() {
         return path.resolve(__dirname, '../node_modules/jest-cli/bin/jest.js')

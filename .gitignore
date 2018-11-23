@@ -9,3 +9,6 @@ dist/
 example/repo/yarn.lock
 example/repo/node_modules/
 example/repo/output/
+
+serverless_chromium.zip
+headless-chromium
