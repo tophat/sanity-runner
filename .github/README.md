@@ -11,27 +11,27 @@
 
 A distributed sanity test runner.
 
+
 ## Installation
+* requires aws-cli
+* requires jq
+
 
 ### Bootstrap Scripts
+latest release 
+```
+npm install -g serverless@1.27.3
+curl -o sanity-runner-bootstrap.sh -L https://raw.githubusercontent.com/tophat/sanity-runner/master/bootstrap.sh
+sh sanity-runner-bootstrap.sh
+```
 
-#### Serverless // Lambda
+specific git release 
 ```
-nvm use
-export AWS_PROFILE=<AWS account>
-export AWS_REGION=<AWS region>
+npm install -g serverless@1.27.3
+curl -o sanity-runner-bootstrap.sh -L https://raw.githubusercontent.com/tophat/sanity-runner/master/bootstrap.sh
+sh sanity-runner-bootstrap.sh -v X.X.X
+```
 
-bash service/boostrap.sh                    # Deploy current source
-bash service/boostrap.sh -v latest          # Deploy Latest Release
-bash service/boostrap.sh -v X.X.X           # Deploy specific release
-```
-#### Client
-Default installs binary to /usr/local/bin/sanity-runner
-```
-bash client/bootstrap.sh                    # gets latest client binary release
-bash client/bootstrap.sh -v X.X.X           # gets specific release of client binary
-bash client/bootstrap.sh -p <path>           # installs binary to specfied path
-```
 
 ### Build From Source
 
@@ -39,7 +39,7 @@ bash client/bootstrap.sh -p <path>           # installs binary to specfied path
 ```
 export AWS_PROFILE=<AWS account>
 export AWS_REGION=<AWS region>
-make -C service install-ci
+make -C service install
 make -C service package
 make -C service deploy
 ```

@@ -14,25 +14,23 @@ A distributed sanity test runner.
 Allows you to automate your sanities tests against a chrome browser running in AWS Lambda. This can be implemented into deployment pipelines for easy post-deploy tests or can be ran on the regular to determine if your site starts regressing
 
 ## Installation
+* requires aws-cli
+* requires jq
+
+
 ### Bootstrap Scripts
-
-#### Serverless // Lambda
+latest release 
 ```
-nvm use
-export AWS_PROFILE=<AWS account>
-export AWS_REGION=<AWS region>
-
-bash service/boostrap.sh                    # Deploy current source
-bash service/boostrap.sh -v latest          # Deploy Latest Release
-bash service/boostrap.sh -v X.X.X           # Deploy specific release
+npm install -g serverless@1.27.3
+curl -o sanity-runner-bootstrap.sh -L https://raw.githubusercontent.com/tophat/sanity-runner/master/bootstrap.sh
+sh sanity-runner-bootstrap.sh
 ```
 
-#### Client
-Default installs binary to /usr/local/bin/sanity-runner
+specific git release 
 ```
-bash client/bootstrap.sh                    # gets latest client binary release
-bash client/bootstrap.sh -v X.X.X           # gets specific release of client binary
-bash client/bootstrap.sh -p <path>           # installs binary to specfied path
+npm install -g serverless@1.27.3
+curl -o sanity-runner-bootstrap.sh -L https://raw.githubusercontent.com/tophat/sanity-runner/master/bootstrap.sh
+sh sanity-runner-bootstrap.sh -v X.X.X
 ```
 
 ### Build From Source
