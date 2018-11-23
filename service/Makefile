@@ -30,6 +30,7 @@ invoke-remote: check-versions
 tail: check-versions
 	serverless logs --function sanityLauncher --tail
 
+
 .PHONY: package
 package: check-versions
 	@rm -rf "${BUILD_DIR}"
@@ -38,7 +39,7 @@ package: check-versions
 .PHONY: deploy
 deploy: check-versions
 	serverless deploy --package "${BUILD_DIR}"
-	aws s3 sync ./chrome s3://thm-chrome-images-dev  --no-progress
+	aws s3 sync ./chrome s3://sanity-runner-chrome-images-${AWS_PROFILE}
 
 # ----- Helpers -----
 .PHONY: check-versions
