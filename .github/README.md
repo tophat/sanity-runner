@@ -11,11 +11,13 @@
 
 A distributed sanity test runner.
 
+
 ## Installation
+* requires aws-cli
+* requires jq
+
 
 ### Bootstrap Scripts
-* requires aws-cli
-
 latest release 
 ```
 npm install -g serverless@1.27.3
