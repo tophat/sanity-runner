@@ -3,7 +3,6 @@ const fs = require('fs-extra')
 const _ = require('lodash')
 const chalk = require('chalk')
 const xml2js = require('xml2js')
-const yaml = require('js-yaml')
 
 /**
  * @param {string} variable
@@ -28,11 +27,11 @@ const retrieveConfigurations = program => {
 
     const configuration = {}
     if (program.config) {
-        const ymlConfigs = _.pick(
-            yaml.safeLoad(fs.readFileSync(program.config, 'utf8')),
+        const jsonConfigs = _.pick(
+            JSON.parse(fs.readFileSync(program.config, 'utf8')),
             CONFIG_OPTIONS,
         )
-        _.merge(configuration, ymlConfigs)
+        _.merge(configuration, jsonConfigs)
     }
     const flagConfigs = _.pick(program, CONFIG_OPTIONS)
     return _.merge(configuration, flagConfigs)

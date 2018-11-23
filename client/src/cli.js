@@ -15,7 +15,7 @@ const DEFAULT_OUTPUT_DIR = './output'
 program
     .version(require('../package.json').version)
     .option('--config <path>', 'The path to a sanity runner ' +
-        'configuration file, in the YAML syntax. It specifies how to find ' +
+        'configuration file, in the JSON syntax. It specifies how to find ' +
         'and execute tests. It will overridden if the corresponding flag values.')
     .option('--test-dir <directory>', 'Test suites directory')
     .option(
