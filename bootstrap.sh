@@ -2,6 +2,8 @@
 
 BUILD_DIR=/tmp/root/workspace/service/artifacts/build/
 CUR_DIR=`pwd`
+AWS_ACCESS_KEY_ID=`aws configure get aws_access_key_id | tr "[:upper:]" "[:lower:]" `
+DEFAULT_S3_BUCKET=sr-chrome-dev-${AWS_ACCESS_KEY_ID}
 
 # PARSE ARGUMENTS 
 while getopts "v:p:" OPTION
@@ -50,8 +52,9 @@ curl -L https://github.com/adieuadieu/serverless-chrome/releases/download/v1.0.0
 curl -L https://raw.githubusercontent.com/tophat/sanity-runner/$VERSION/service/serverless.yml --output /tmp/serverless.yml
 
 tar xvf /tmp/sanity-runner-serverless-$VERSION_STRIPPED.tar -C /tmp
-cd /tmp; serverless deploy --package "${BUILD_DIR}"
-aws s3 sync ./chrome s3://thm-chrome-images-dev
-
+cd /tmp; 
+sed -i 's/sr-chrome-dev-default/${DEFAULT_S3_BUCKET}/g' *
+serverless deploy --package "${BUILD_DIR}"
+aws s3 sync ./chrome s3://${DEFAULT_S3_BUCKET}
 cd $CUR_DIR
 exit

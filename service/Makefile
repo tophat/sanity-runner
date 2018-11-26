@@ -4,6 +4,9 @@ export PATH := $(shell yarn bin):$(PATH)
 ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
 
+export SERVERLESS_STAGE := ${shell git branch | grep \* | cut -d ' ' -f2}
+export AWS_ACCESS_KEY_ID := ${shell aws configure get aws_access_key_id  | tr "[:upper:]" "[:lower:]"}
+
 .PHONE: docker
 docker: 
 	docker build ../. -t "sanity"
@@ -13,9 +16,6 @@ install-mac: docker
 	docker run \
 	-v $(shell pwd)/..:/sanities \
 	sanity make -C /sanities/service install
-
-export SERVERLESS_STAGE := ${shell git branch | grep \* | cut -d ' ' -f2}
-export SERVERLESS_TAG := ${shell aws configure get aws_access_key_id}
 
 .PHONY: install
 install: check-versions clean

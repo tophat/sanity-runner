@@ -8,6 +8,7 @@ provider:
   name: aws
   region: us-east-1
   stage: dev
+  tag: default
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -28,10 +29,10 @@ provider:
 custom:
   region: ${env:SERVERLESS_REGION, self:provider.region}
   stage: ${env:SERVERLESS_STAGE, self:provider.stage}
-  tag: ${env:AWS_PROFILE, env:SERVERLESS_TAG}
-  chrome_bucket: sanity-runner-chrome-images-${self:custom.stage}-${self:custom.tag}
-  screenshot_bucket: sanity-runner-screenshots-${self:custom.stage}-${self:custom.tag}
-  functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}-sanityLauncher
+  tag: ${env:AWS_ACCESS_KEY_ID, self:provider.tag}
+  chrome_bucket: sr-chrome-${self:custom.stage}-${self:custom.tag}
+  screenshot_bucket: sr-screenshots-${self:custom.stage}-${self:custom.tag}
+  functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}
 
 package:
   exclude:
