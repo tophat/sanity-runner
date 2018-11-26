@@ -14,6 +14,9 @@ install-mac: docker
 	-v $(shell pwd)/..:/sanities \
 	sanity make -C /sanities/service install
 
+export SERVERLESS_STAGE := ${shell git branch | grep \* | cut -d ' ' -f2}
+export SERVERLESS_TAG := ${shell aws configure get aws_access_key_id}
+
 .PHONY: install
 install: check-versions clean
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
