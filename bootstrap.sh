@@ -53,11 +53,11 @@ curl -L https://github.com/adieuadieu/serverless-chrome/releases/download/v$CHRO
 curl -L https://raw.githubusercontent.com/tophat/sanity-runner/$VERSION/service/serverless.yml --output /tmp/serverless.yml
 
 tar xvf /tmp/sanity-runner-serverless-$VERSION_STRIPPED.tar -C /tmp
-cd /tmp;
+cd /tmp/root/workspace/service/artifacts/build;
 if [ $OS == "macos"]; then
-    sed -i'' -e 's/dev-default/dev-'$REPLACE_TAG'/g' /tmp/root/workspace/service/artifacts/build/*.json
+    sed -i '' -e 's/dev-default/'$REPLACE_TAG'/g' ./*.json
 fi
-#serverless deploy --package "${BUILD_DIR}"
-#aws s3 sync ./chrome s3://${DEFAULT_S3_BUCKET}
-#cd $CUR_DIR
-# exitgit 
+serverless deploy --package .
+aws s3 sync /tmp/HeadlessChromium-$CHROME_VERSION.tar.gz s3://sr-chrome-$REPLACE_TAG
+cd $CUR_DIR
+exit 
