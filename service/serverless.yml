@@ -29,7 +29,7 @@ provider:
 custom:
   region: ${env:SERVERLESS_REGION, self:provider.region}
   stage: ${env:SERVERLESS_STAGE, self:provider.stage}
-  tag: ${env:AWS_ACCESS_KEY_ID, self:provider.tag}
+  tag: ${env:SERVERLESS_TAG, self:provider.tag}
   chrome_bucket: sr-chrome-${self:custom.stage}-${self:custom.tag}
   screenshot_bucket: sr-screenshots-${self:custom.stage}-${self:custom.tag}
   functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}
