@@ -47,7 +47,7 @@ functions:
     memorySize: 2048
     timeout: 60
     handler: src/lambdaHandler.handler
-    name: ${self:custom.functon_name}
+    name: ${env:SERVERLESS_FUNC, self:custom.functon_name}
 
 resources:
   Resources:
