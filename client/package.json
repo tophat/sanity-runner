@@ -7,6 +7,10 @@
     "files": [
         "src"
     ],
+    "scripts": {
+        "lint": "eslint . --max-warnings 0",
+        "lint-fix": "eslint --fix ."
+    },
     "dependencies": {
         "aws-sdk": "^2.259.1",
         "chalk": "^2.4.1",
@@ -23,5 +27,12 @@
     },
     "pkg": {
         "scripts": "./src/*.js"
+    },
+    "devDependencies": {
+        "@tophat/eslint-config": "^0.1.4",
+        "eslint": "^5.9.0",
+        "eslint-config-prettier": "^3.3.0",
+        "eslint-plugin-prettier": "^3.0.0",
+        "prettier": "^1.15.3"
     }
 }

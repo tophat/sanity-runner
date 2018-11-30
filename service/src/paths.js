@@ -8,19 +8,19 @@ module.exports = {
     jest: function() {
         return path.resolve(__dirname, '../node_modules/jest-cli/bin/jest.js')
     },
-    junit: function(run_id) {
-        return path.join(this.results(run_id), this.junitFileName(run_id))
+    junit: function(runId) {
+        return path.join(this.results(runId), this.junitFileName(runId))
     },
-    junitFileName: function(run_id) {
-        return `${run_id}.junit.xml`
+    junitFileName: function(runId) {
+        return `${runId}.junit.xml`
     },
-    run: function(run_id) {
-        return path.join(os.tmpdir(), 'runs', run_id)
+    run: function(runId) {
+        return path.join(os.tmpdir(), 'runs', runId)
     },
-    suite: function(run_id) {
-        return path.join(this.run(run_id), 'suites')
+    suite: function(runId) {
+        return path.join(this.run(runId), 'suites')
     },
-    results: function(run_id) {
-        return path.join(this.run(run_id), 'results')
-    }
+    results: function(runId) {
+        return path.join(this.run(runId), 'results')
+    },
 }

@@ -14,7 +14,11 @@ beforeEach(async () => {
 afterEach(async () => {
     const testName = getState().currentTestName
 
-    const screenshotPath = path.join(global.SCREENSHOT_OUTPUT, testName, SCREENSHOT_FILENAME)
+    const screenshotPath = path.join(
+        global.SCREENSHOT_OUTPUT,
+        testName,
+        SCREENSHOT_FILENAME,
+    )
 
     await fs.ensureDir(path.dirname(screenshotPath))
     await global.page.screenshot({

@@ -14,10 +14,7 @@ module.exports = async () => {
         ],
     }
     if (!process.env.IS_LOCAL) {
-        config.args.push(
-            '--disable-gpu',
-            '--single-process',
-        )
+        config.args.push('--disable-gpu', '--single-process')
         config.executablePath = process.env.CHROME_PATH
     }
     const browser = await puppeteer.launch(config)
