@@ -1,5 +1,5 @@
 # This config file will prevent tests from being run on the gh-pages branch.
-version: 2.1
+version: 2.0
 jobs:
   build:
     machine: true
