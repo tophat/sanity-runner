@@ -1,6 +1,7 @@
 <div align="center"> <img src="./runner.png" width="400px;"/>
 
 [![Builds](https://img.shields.io/circleci/project/github/tophat/sanity-runner/master.svg)](https://circleci.com/gh/tophat/sanity-runner)
+[![Greenkeeper badge](https://badges.greenkeeper.io/tophat/sanity-runner.svg)](https://greenkeeper.io/) <br />
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat)](#Contributing)
 [![Maturity badge - level 2](https://img.shields.io/badge/Maturity-Level%202%20--%20First%20Release-yellowgreen.svg)](https://github.com/tophat/getting-started/blob/master/scorecard.md)
 [![Slack workspace](https://slackinvite.dev.tophat.com/badge.svg)](https://opensource.tophat.com/slack)
