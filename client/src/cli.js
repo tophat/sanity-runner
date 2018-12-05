@@ -16,7 +16,7 @@ const CONFIG_OPTIONS = [
     'testPathPattern',
     'var',
 ]
-const DEFAULT_FUNCTION_NAME = 'sanity-dev-sanityLauncher'
+const DEFAULT_FUNCTION_NAME = 'sanity-runner-dev-default'
 const DEFAULT_TEST_DIR = '.'
 const DEFAULT_OUTPUT_DIR = './output'
 

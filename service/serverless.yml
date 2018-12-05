@@ -8,6 +8,7 @@ provider:
   name: aws
   region: us-east-1
   stage: dev
+  tag: default
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -26,10 +27,12 @@ provider:
     SCREENSHOT_BUCKET: ${self:custom.screenshot_bucket}
 
 custom:
-  region: ${opt:region, self:provider.region}
-  stage: ${opt:stage, self:provider.stage}
-  chrome_bucket: sanity-runner-chrome-images-${env:AWS_PROFILE, self:provider.stage}
-  screenshot_bucket: sanity-runner-screenshots-${env:AWS_PROFILE, self:provider.stage}
+  region: ${env:SERVERLESS_REGION, self:provider.region}
+  stage: ${env:SERVERLESS_STAGE, self:provider.stage}
+  tag: ${env:SERVERLESS_TAG, self:provider.tag}
+  chrome_bucket: sr-chrome-${self:custom.stage}-${self:custom.tag}
+  screenshot_bucket: sr-screenshots-${self:custom.stage}-${self:custom.tag}
+  functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}
 
 package:
   exclude:
@@ -44,6 +47,7 @@ functions:
     memorySize: 2048
     timeout: 60
     handler: src/lambdaHandler.handler
+    name: ${env:SERVERLESS_FUNC, self:custom.functon_name}
 
 resources:
   Resources:
