@@ -8,7 +8,7 @@ const xml2js = require('xml2js')
  * @param {string} variable
  * @param {object} variableMap
  */
-const collectVariables = async (variable, variableMap) => {
+const collectVariables = (variable, variableMap) => {
     const equalPos = variable.indexOf('=')
     if (equalPos < 0) {
         return variableMap
