@@ -21,7 +21,6 @@ commands:
           key: website-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules/
-
 jobs:
   build:
     docker:
@@ -34,19 +33,30 @@ jobs:
       - run: make -C client package
       - run: make -C client release-version
       - run: make -C service package
-      - run:
-          name: "Build and Cache Container"
-          command: |
-            make -C client build-docker
-            mkdir -p docker-cache
-            docker save -o docker-cache/sanity-runner.tar tophatmonocle/sanity-runner
       - persist_to_workspace:
           root: ./
           paths:
             - client/bin/
             - client/version.txt
+            - client/Dockerfile
             - service/artifacts/build/
             - docker-cache/
+  publish-docker:
+    docker:
+      - image: docker:latest
+    steps:
+      - attach_workspace:
+        at: ~/workspace
+      - run:
+          name: "Build and Tag Container"
+          command: |
+            VERSION=`cat ~/workspace/client/version.txt`
+            docker build ~/workspace/client -t tophatmonocle/sanity-runner:${VERSION}
+      - run:
+          name: "Publish Container"
+          commmand: |
+            cat ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
+            docker push tophatmonocle/sanity-runner:${VERSION}
   deploy:
     docker:
       - image: cibuilds/github:0.10
@@ -62,7 +72,6 @@ jobs:
             mv sanity-runner-serverless-${VERSION}.tar release-archive/
             mv ~/workspace/client/bin/* release-archive/
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} release-archive/
-
   website:
     <<: *website_docker_defaults
     working_directory: ~/repo/website
@@ -103,6 +112,9 @@ workflows:
           filters:
             branches:
               only: master
+      - docker:
+        requires:
+          - build
       - website
       - deploy_website:
           requires:
