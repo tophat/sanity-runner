@@ -48,13 +48,10 @@ jobs:
       - attach_workspace:
           at: ~/workspace
       - run:
-          name: "Build and Tag Container"
+          name: "Build and Publish Tag Container"
           command: |
             VERSION=`cat ~/workspace/client/version.txt`
             docker build ~/workspace/client -t tophatmonocle/sanity-runner:${VERSION}
-      - run:
-          name: "Publish Container"
-          commmand: |
             cat ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
             docker push tophatmonocle/sanity-runner:${VERSION}
   deploy:
