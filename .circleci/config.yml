@@ -34,12 +34,20 @@ jobs:
       - run: make -C client package
       - run: make -C client release-version
       - run: make -C service package
+      - run:
+        name: "Build and Cache Container"
+        command: |
+          make -C client build-docker
+          mkdir -p docker-cache
+          docker save -o docker-cache/sanity-runner.tar tophatmonocle/sanity-runner
+
       - persist_to_workspace:
           root: ./
           paths:
             - client/bin/
             - client/version.txt
             - service/artifacts/build/
+            - docker-cache/
   deploy:
     docker:
       - image: cibuilds/github:0.10
