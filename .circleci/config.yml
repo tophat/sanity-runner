@@ -46,7 +46,7 @@ jobs:
       - image: docker:latest
     steps:
       - attach_workspace:
-        at: ~/workspace
+          at: ~/workspace
       - run:
           name: "Build and Tag Container"
           command: |
