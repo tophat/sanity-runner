@@ -56,12 +56,9 @@ jobs:
       - attach_workspace:
           at: ~/workspace
       - run:
-          name: "Publish Release on Github"
-          command: |
-            VERSION=`cat ~/workspace/client/version.txt`
-      - run:
           name: "Publish Release on Docker"
           command: |
+            VERSION=`cat ~/workspace/client/version.txt`
             docker load < ~/workspace/docker-cache/sanity-docker.tar
             docker tag tophatmonocle/sanity-runner:latest tophatmonocle/sanity-runner:${VERSION}
             cat ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
