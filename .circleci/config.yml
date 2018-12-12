@@ -61,7 +61,7 @@ jobs:
             VERSION=`cat ~/workspace/client/version.txt`
             docker load < ~/workspace/docker-cache/sanity-docker.tar
             docker tag tophatmonocle/sanity-runner:latest tophatmonocle/sanity-runner:${VERSION}
-            cat ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
+            echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
   deploy:
     docker:
       - image: cibuilds/github:0.10
