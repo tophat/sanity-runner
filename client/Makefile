@@ -26,10 +26,3 @@ clean:
 build-docker:
 	@echo "Building Docker Container"
 	docker build . -t tophatmonocle/sanity-runner
-
-.PHONY: publish-docker
-publish-docker:
-	@echo "Publishing Docker Container"
-	echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
-	docker tag tophatmonocle/sanity-runner tophatmonocle/sanity-runner:${VERSION}
-
