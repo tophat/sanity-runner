@@ -45,6 +45,7 @@ jobs:
     docker:
       - image: docker:latest
     steps:
+      - setup_remote_docker
       - attach_workspace:
           at: ~/workspace
       - run:
