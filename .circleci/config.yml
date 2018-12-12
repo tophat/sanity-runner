@@ -34,7 +34,7 @@ jobs:
       - run: make -C client package
       - run: make -C client release-version
       - run: make -C service package
-      - run: make -C build-docker
+      - run: make -C client build-docker
       - run:
           name: "Cache Docker Image"
           command: |
