@@ -28,11 +28,18 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - setup_remote_docker
       - run: make -C client install
       - run: make -C service install
       - run: make -C client package
       - run: make -C client release-version
       - run: make -C service package
+      - run: make -C build-docker
+      - run:
+          name: "Cache Docker Image"
+          command: |
+            mkdir -p docker-cache
+            docker save -o docker-cache/sanity-docker.tar tophatmonocle/sanity-runner:latest
       - persist_to_workspace:
           root: ./
           paths:
@@ -41,20 +48,6 @@ jobs:
             - client/Dockerfile
             - service/artifacts/build/
             - docker-cache/
-  publish-docker:
-    docker:
-      - image: docker:latest
-    steps:
-      - setup_remote_docker
-      - attach_workspace:
-          at: ~/workspace
-      - run:
-          name: "Build and Publish Tag Container"
-          command: |
-            VERSION=`cat ~/workspace/client/version.txt`
-            docker build ~/workspace/client -t tophatmonocle/sanity-runner:${VERSION}
-            cat ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
-            docker push tophatmonocle/sanity-runner:${VERSION}
   deploy:
     docker:
       - image: cibuilds/github:0.10

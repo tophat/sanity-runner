@@ -21,9 +21,9 @@ check-versions:
 .PHONY: clean
 clean:
 	@rm -rf node_modules
-	
+
 .PHONY: build-docker
-build-docker: release-version
+build-docker:
 	@echo "Building Docker Container"
 	docker build . -t tophatmonocle/sanity-runner
 
