@@ -103,9 +103,6 @@ workflows:
           filters:
             branches:
               only: master
-      - publish-docker:
-          requires:
-            - build
       - website
       - deploy_website:
           requires:
