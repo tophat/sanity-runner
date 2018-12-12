@@ -48,7 +48,7 @@ jobs:
             - client/Dockerfile
             - service/artifacts/build/
             - docker-cache/
-  deploy-docker:
+  docker-deploy:
     docker:
       - image: docker:stable
     steps:
@@ -121,7 +121,7 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - test-deploy:
+      - docker-deploy:
           requires:
             - build      
       - deploy:
