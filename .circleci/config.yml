@@ -48,9 +48,9 @@ jobs:
             - client/Dockerfile
             - service/artifacts/build/
             - docker-cache/
-  test-deploy:
+  deploy-docker:
     docker:
-      - image: cibuilds/github:0.10
+      - image: docker:stable
     steps:
       - setup_remote_docker
       - attach_workspace:
