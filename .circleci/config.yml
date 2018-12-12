@@ -48,10 +48,28 @@ jobs:
             - client/Dockerfile
             - service/artifacts/build/
             - docker-cache/
+  test-deploy:
+    docker:
+      - image: cibuilds/github:0.10
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: "Publish Release on Github"
+          command: |
+            VERSION=`cat ~/workspace/client/version.txt`
+      - run:
+          name: "Publish Release on Docker"
+          command: |
+            docker load < ~/workspace/docker-cache/sanity-docker.tar
+            docker tag tophatmonocle/sanity-runner:latest tophatmonocle/sanity-runner:${VERSION}
+            cat ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
   deploy:
     docker:
       - image: cibuilds/github:0.10
     steps:
+      - setup_remote_docker
       - attach_workspace:
           at: ~/workspace
       - run:
@@ -63,6 +81,12 @@ jobs:
             mv sanity-runner-serverless-${VERSION}.tar release-archive/
             mv ~/workspace/client/bin/* release-archive/
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} release-archive/
+      - run:
+          name: "Publish Release on Docker"
+          command: |
+            docker load < ~/workspace/docker-cache/sanity-docker.tar
+            docker tag tophatmonocle/sanity-runner:latest tophatmonocle/sanity-runner:${VERSION}
+            cat ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
   website:
     <<: *website_docker_defaults
     working_directory: ~/repo/website
@@ -97,6 +121,9 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - test-deploy:
+          requires:
+            - build      
       - deploy:
           requires:
             - build
