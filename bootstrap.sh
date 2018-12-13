@@ -5,7 +5,6 @@
 ################
 _set_defaults(){
     CUR_DIR=$(pwd)
-    CHROME_VERSION=1.0.0-55
     TMP_DIR=/tmp/sanity-bootstrap
 }
 _set_defaults
@@ -37,8 +36,8 @@ function _exit_cmd {
 ### TRAP EXIT CODES
 ###################
 
-#trap _exit_cmd EXIT
-#trap _exit_cmd ERR
+trap _exit_cmd EXIT
+trap _exit_cmd ERR
 
 ###################
 ### PARSE ARGUMENTS
@@ -86,6 +85,31 @@ _confirm_aws(){
 }
 _confirm_aws
 
+################
+### CONFIRM NPM
+################
+_confirm_npm(){
+    if [ -z $ONLY_CLIENT ]; then
+        if ! npm -v > /dev/null; then
+            echo "Please Install NPM before running this script"
+            exit 1
+        fi
+    fi
+}
+_confirm_npm
+
+######################
+### INSTALL SERVERLESS
+######################
+_install_aws(){
+    if [ -z $ONLY_CLIENT ]; then
+        if ! serverless -v; then
+            npm install -g serverless@1.34.1
+        fi
+    fi
+}
+_install_aws
+
 ###############
 ### GET OS INFO
 ###############
@@ -122,7 +146,7 @@ _get_version
 _get_deploy_path(){
     if [ -z "$BIN_PATH" ]
     then
-        DEPLOY_PATH=/usr/local/bin
+        DEPLOY_PATH=/usr/local/bin/sanity-runner
     fi
 }
 
