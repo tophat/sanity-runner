@@ -4,6 +4,7 @@ export PATH := $(shell yarn bin):$(PATH)
 ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
 
+
 .PHONE: docker
 docker: 
 	docker build ../. -t "sanity"
@@ -39,7 +40,7 @@ package: check-versions
 .PHONY: deploy
 deploy: check-versions download-serverless-chrome
 	serverless deploy --package "${BUILD_DIR}"
-	aws s3 sync ./chrome s3://sanity-runner-chrome-images-${AWS_PROFILE}
+	aws s3 sync ./chrome s3://sr-chrome-${SERVERLESS_STAGE}-${SERVERLESS_TAG}
 
 # ----- Helpers -----
 .PHONY: check-versions
