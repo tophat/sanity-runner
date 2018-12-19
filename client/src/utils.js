@@ -31,7 +31,8 @@ const retrieveConfigurations = (
 ) => {
     const configuration = baseConfiguration
     if (program.config) {
-        const jsonConfigs = _.pick(JSON.parse(fs.readFileSync(program.config, 'utf8')),
+        const jsonConfigs = _.pick(
+            JSON.parse(fs.readFileSync(program.config, 'utf8')),
             acceptedConfigs,
         )
         _.merge(configuration, jsonConfigs)
