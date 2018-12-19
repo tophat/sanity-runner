@@ -34,9 +34,9 @@ jobs:
       - run: make -C service install
       - run: make -C service lint
       - store_test_results:
-        paths:
-          - client/artifacts/reports/lint
-          - service/artifacts/reports/lint
+          paths:
+            - client/artifacts/reports/lint
+            - service/artifacts/reports/lint
   build:
     docker:
       - image: circleci/node:8.10.0
