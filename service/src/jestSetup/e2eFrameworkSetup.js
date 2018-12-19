@@ -5,7 +5,7 @@ const getState = require('expect/build/jest_matchers_object').getState
 
 require('expect-puppeteer') // modifies globals!
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000 //eslint-disable-line
 
 beforeEach(async () => {
     global.page = await global.browser.newPage()
