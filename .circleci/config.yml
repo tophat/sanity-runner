@@ -23,13 +23,15 @@ commands:
             - node_modules/
 
 jobs:
-  lint:
+  test-lint:
     docker:
       - image: circleci/node:8.10.0
     working_directory: ~/repo
     steps:
       - checkout
+      - run: make -C client install
       - run: make -C client lint
+      - run: make -C service install
       - run: make -C service lint
   build:
     docker:
@@ -97,10 +99,8 @@ workflows:
   version: 2
   build_and_test:
     jobs:
+      - test-lint
       - build
-      - lint:
-          requires:
-            - build
       - deploy:
           requires:
             - build
