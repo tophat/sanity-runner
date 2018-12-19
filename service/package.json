@@ -22,7 +22,8 @@
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-jest": "^22.1.2",
     "eslint-plugin-prettier": "^3.0.0",
-    "prettier": "^1.15.3"
+    "prettier": "^1.15.3",
+    "serverless": "^1.35.1"
   },
   "dependencies": {
     "expect-puppeteer": "^3.2.0",
