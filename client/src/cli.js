@@ -72,12 +72,10 @@ const testFiles = testFileNames.reduce((payload, filename) => {
 }, {})
 
 if (Object.keys(testFiles).length === 0) {
-    if (includeRegex) {
-        console.log(`No test file is found matching "${configuration.include}".`)
-    } else if (excludeRegex) {
-        console.log(`Every test file was found matching "${configuration.exclude}".`)
-    }else {
-        console.log(`No test file is found.`)
+    if (includeRegex || excludeRegex) {
+        console.log(`No test file(s) is found matching the regex supplied in your config settings.`)
+    } else {
+        console.log(`No test file(s) is found.`)
     }
     process.exit(EXIT_CODES.INVALID_ARGUMENT)
 }
