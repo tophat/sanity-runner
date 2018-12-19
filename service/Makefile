@@ -3,7 +3,7 @@ export PATH := $(shell yarn bin):$(PATH)
 
 ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
-TEST_REPORTS_DIR?=$(ARTIFACT_DIR)/service/reports
+TEST_REPORTS_DIR?=$(ARTIFACT_DIR)/reports
 
 ifdef CI
 	ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml

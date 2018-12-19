@@ -2,7 +2,7 @@ SHELL := /bin/bash
 export PATH := $(shell yarn bin):$(PATH)
 
 ARTIFACT_DIR?=artifacts
-TEST_REPORTS_DIR?=$(ARTIFACT_DIR)/client/reports
+TEST_REPORTS_DIR?=$(ARTIFACT_DIR)/reports
 
 ifdef CI
 	ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml
