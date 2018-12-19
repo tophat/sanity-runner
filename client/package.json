@@ -7,10 +7,6 @@
     "files": [
         "src"
     ],
-    "scripts": {
-        "lint": "eslint . --max-warnings 0",
-        "lint-fix": "eslint --fix ."
-    },
     "dependencies": {
         "aws-sdk": "^2.259.1",
         "chalk": "^2.4.1",
