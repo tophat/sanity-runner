@@ -31,12 +31,12 @@ jobs:
       - checkout
       - run: make -C client install
       - run: make -C client lint
+      - store_test_results:
+          path: client/artifacts/reports
       - run: make -C service install
       - run: make -C service lint
       - store_test_results:
-          paths:
-            - client/artifacts/reports/lint
-            - service/artifacts/reports/lint
+          path: service/artifacts/reports
   build:
     docker:
       - image: circleci/node:8.10.0
