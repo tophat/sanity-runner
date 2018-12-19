@@ -1,19 +1,5 @@
-env:
-  es6: true
-  node: true
-  jasmine: true
-extends: '@tophat'
-parserOptions:
-  ecmaVersion: 2017
-  sourceType: module
+extends:
+  - '@tophat'
+  - '@tophat/eslint-config/jest'
 rules:
   no-console: 'off'
-  indent:
-    - error
-    - 4
-  linebreak-style:
-    - error
-    - unix
-  semi:
-    - error
-    - never
