@@ -11,20 +11,23 @@ async function testResultPromise(functionName, testFiles, testVariables) {
     const lambda = new AWS.Lambda()
     const params = {
         FunctionName: functionName,
-        Payload: JSON.stringify({testFiles, testVariables})
+        Payload: JSON.stringify({ testFiles, testVariables }),
     }
     const retryOptions = {
         minTimeout: 3000,
         maxTimeout: 15000,
-        randomize: true
+        randomize: true,
     }
-    const response = await promiseRetry(function(retry, number) {
-        return lambda.invoke(params).promise().catch(function(err) {
-            if (err.statusCode == 429) {
-                retry(err)
-            }
-            throw err
-        })
+    const response = await promiseRetry(function(retry) {
+        return lambda
+            .invoke(params)
+            .promise()
+            .catch(function(err) {
+                if (err.statusCode === 429) {
+                    retry(err)
+                }
+                throw err
+            })
     }, retryOptions)
     const results = JSON.parse(response.Payload)
     if (results && results.errorMessage) {
@@ -34,7 +37,7 @@ async function testResultPromise(functionName, testFiles, testVariables) {
         throw new Error(`Inconsistent service response`)
     }
     if (results.errors && results.errors.length > 0) {
-        results.errors.forEach((error) => {
+        results.errors.forEach(error => {
             console.error(error.message)
         })
         throw new Error('There have been problems executing your test suite')
@@ -45,8 +48,14 @@ async function testResultPromise(functionName, testFiles, testVariables) {
 function reduceTestResults(accumulated, current) {
     return {
         passed: accumulated.passed && current.passed,
-        testResults: Object.assign(accumulated.testResults, current.testResults),
-        screenshots: Object.assign(accumulated.screenshots || {}, current.screenshots || {})
+        testResults: Object.assign(
+            accumulated.testResults,
+            current.testResults,
+        ),
+        screenshots: Object.assign(
+            accumulated.screenshots || {},
+            current.screenshots || {},
+        ),
     }
 }
 
@@ -59,19 +68,29 @@ function reduceTestResults(accumulated, current) {
  * @param {Object.<string, string>} testVariables
  */
 async function runTests(functionName, testFiles, outputDir, testVariables) {
-    const promises = Object.entries(testFiles).map(
-        entry => testResultPromise(functionName, {[entry[0]]: entry[1]}, testVariables)
+    const promises = Object.entries(testFiles).map(entry =>
+        testResultPromise(
+            functionName,
+            { [entry[0]]: entry[1] },
+            testVariables,
+        ),
     )
-    return Promise.all(promises).then(async results => {
-        const aggregatedResults = results.reduce(reduceTestResults)
-        _archiveTestResults(outputDir, aggregatedResults.testResults)
-        await _archiveTestScreenshots(outputDir, aggregatedResults.screenshots)
-        await formatTestResults(aggregatedResults.testResults)
-        return aggregatedResults.passed
-    }, reason => {
-        console.log(reason)
-        throw reason
-    })
+    return Promise.all(promises).then(
+        async results => {
+            const aggregatedResults = results.reduce(reduceTestResults)
+            _archiveTestResults(outputDir, aggregatedResults.testResults)
+            await _archiveTestScreenshots(
+                outputDir,
+                aggregatedResults.screenshots,
+            )
+            await formatTestResults(aggregatedResults.testResults)
+            return aggregatedResults.passed
+        },
+        reason => {
+            console.log(reason)
+            throw reason
+        },
+    )
 }
 
 function _archiveTestResults(outputDir, testResults) {
@@ -86,21 +105,19 @@ async function _archiveTestScreenshots(outputDir, screenshots) {
         return
     }
 
-    const promises = Object
-        .entries(screenshots)
-        .map(async ([key, value]) => {
-            const outputPath = path.join(outputDir, key)
-            await fs.ensureFile(outputPath)
-            return new Promise((resolve, reject) => {
-                const screenshot = fs.createWriteStream(outputPath)
-                screenshot.on('finish', () => resolve())
-                screenshot.on('error', err => reject(err))
-                https.get(value, (res) => {
-                    res.pipe(screenshot)
-                    res.on('error', err => reject(err))
-                })
+    const promises = Object.entries(screenshots).map(async ([key, value]) => {
+        const outputPath = path.join(outputDir, key)
+        await fs.ensureFile(outputPath)
+        return new Promise((resolve, reject) => {
+            const screenshot = fs.createWriteStream(outputPath)
+            screenshot.on('finish', () => resolve())
+            screenshot.on('error', err => reject(err))
+            https.get(value, res => {
+                res.pipe(screenshot)
+                res.on('error', err => reject(err))
             })
         })
+    })
     await Promise.all(promises)
 }
 

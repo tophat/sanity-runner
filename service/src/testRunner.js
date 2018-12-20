@@ -2,15 +2,19 @@ const paths = require('./paths')
 const execa = require('execa')
 const Run = require('./run')
 
-const runJest = async function(chrome_path, ...args) {
+const runJest = async function(chromePath, ...args) {
     const env = Object.assign({}, process.env, {
-        CHROME_PATH: chrome_path,
+        CHROME_PATH: chromePath,
     })
-    const result = await execa(paths.jest(), ['--json', '--runInBand', ...args], {
-        cwd: process.cwd(),
-        env,
-        reject: false
-    })
+    const result = await execa(
+        paths.jest(),
+        ['--json', '--runInBand', ...args],
+        {
+            cwd: process.cwd(),
+            env,
+            reject: false,
+        },
+    )
     try {
         result.json = JSON.parse((result.stdout || '').toString())
     } catch (e) {
@@ -20,7 +24,7 @@ const runJest = async function(chrome_path, ...args) {
               ERROR: ${e.name} ${e.message}
               STDOUT: ${result.stdout}
               STDERR: ${result.stderr}
-            `
+            `,
         )
     }
     return result
@@ -38,7 +42,8 @@ module.exports = class {
             const results = await runJest(
                 this.chromePath,
                 '--config',
-                JSON.stringify(run.jestConfig()))
+                JSON.stringify(run.jestConfig()),
+            )
             return await run.format(results.json)
         } finally {
             await run.cleanup()
