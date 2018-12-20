@@ -13,8 +13,9 @@ const CONFIG_OPTIONS = [
     'lambdaFunction',
     'outputDir',
     'testDir',
-    'testPathPattern',
+    'include',
     'var',
+    'exclude',
 ]
 const DEFAULT_FUNCTION_NAME = 'sanity-runner-dev-default'
 const DEFAULT_TEST_DIR = '.'
@@ -31,8 +32,12 @@ program
     )
     .option('--test-dir <directory>', 'Test suites directory')
     .option(
-        '--test-path-pattern <regexForTestFiles>',
-        'Run only tests with paths matching the given regex',
+        '--include <regexForTestFiles>',
+        'Have the client ONLY run test files matching the supplied regex',
+    )
+    .option(
+        '--exclude <regexForTestFiles>',
+        'Have the client ignore NOT run test files matching the supplied regex',
     )
     .option(
         '--lambda-function [functionName]',
@@ -62,12 +67,20 @@ const testFileNames = glob.sync('**/*.js', { cwd: testDir })
 
 console.log(`Reading test files in ${testDir}...`)
 
-const testPathsRegex = configuration.testPathPattern
-    ? new RegExp(configuration.testPathPattern)
+const includeRegex = configuration.include
+    ? new RegExp(configuration.include)
     : null
+const excludeRegex = configuration.exclude
+    ? new RegExp(configuration.exclude)
+    : null
+
 const testFiles = testFileNames.reduce((payload, filename) => {
     const filePath = path.join(testDir, filename)
-    if (testPathsRegex && !testPathsRegex.test(filePath)) return payload
+    if (
+        (includeRegex && !includeRegex.test(filePath)) ||
+        (excludeRegex && excludeRegex.test(filePath))
+    )
+        return payload
 
     console.log(`- ${filename}`)
     const fileContent = fs.readFileSync(filePath, 'utf8')
@@ -75,14 +88,12 @@ const testFiles = testFileNames.reduce((payload, filename) => {
 }, {})
 
 if (Object.keys(testFiles).length === 0) {
-    if (testPathsRegex) {
+    if (includeRegex || excludeRegex) {
         console.log(
-            `No test file is found matching "${
-                configuration.testPathPattern
-            }".`,
+            `No test file(s) is found matching the regex supplied in your config settings.`,
         )
     } else {
-        console.log(`No test file is found.`)
+        console.log(`No test file(s) is found.`)
     }
     process.exit(EXIT_CODES.INVALID_ARGUMENT)
 }
