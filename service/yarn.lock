@@ -2757,10 +2757,12 @@ jest-jasmine2@^23.6.0:
     jest-util "^23.4.0"
     pretty-format "^23.6.0"
 
-jest-junit@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-5.1.0.tgz#e8e497d810a829bf02783125aab74b5df6caa8fe"
+jest-junit@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-6.0.0.tgz#6e3ce9583b9416b6b07d52375a655d2b12a9a2b2"
+  integrity sha512-tEQtceScdJ33N22Cn7ltOcFucMmjRWQ1LjU6KZXV34KvE114IOuHhE2hpWvWsIBXPdSc7+hzFQO1mssNK1+ChA==
   dependencies:
+    jest-config "^23.6.0"
     jest-validate "^23.0.1"
     mkdirp "^0.5.1"
     strip-ansi "^4.0.0"
