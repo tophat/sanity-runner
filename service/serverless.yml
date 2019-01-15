@@ -2,7 +2,7 @@
 
 frameworkVersion: 1.34.1
 
-service: sanity
+service: matt-sanity
 
 provider:
   name: aws
@@ -13,25 +13,21 @@ provider:
     - Effect: Allow
       Action:
         - s3:GetObject
-      Resource:
-        - "arn:aws:s3:::${self:custom.chrome_bucket}/*"
-    - Effect: Allow
-      Action:
-        - s3:GetObject
         - s3:PutObject
       Resource:
-        - "arn:aws:s3:::${self:custom.screenshot_bucket}/*"
+        - "arn:aws:s3:::${self:custom.s3_bucket}/*"
   environment:
     SLS_STAGE: ${self:custom.stage}
-    CHROME_BUCKET: ${self:custom.chrome_bucket}
-    SCREENSHOT_BUCKET: ${self:custom.screenshot_bucket}
+    S3_BUCKET: ${self:custom.s3_bucket}
+    CHROME_BUCKET: ${self:custom.s3_bucket}/chrome
+    SCREENSHOT_BUCKET: ${self:custom.s3_bucket}/screenshots
+
 
 custom:
   region: ${env:SERVERLESS_REGION, self:provider.region}
   stage: ${env:SERVERLESS_STAGE, self:provider.stage}
   tag: ${env:SERVERLESS_TAG, self:provider.tag}
-  chrome_bucket: sr-chrome-${self:custom.stage}-${self:custom.tag}
-  screenshot_bucket: sr-screenshots-${self:custom.stage}-${self:custom.tag}
+  s3_bucket: sr-${self:custom.stage}-${self:custom.tag}
   functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}
 
 package:
@@ -54,12 +50,4 @@ resources:
     THMChromeImages:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.chrome_bucket}
-    THMSanityScreenshots:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.screenshot_bucket}
-        LifecycleConfiguration:
-          Rules:
-            - ExpirationInDays: 30
-              Status: Enabled
+        BucketName: ${self:custom.s3_bucket}
