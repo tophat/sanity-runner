@@ -39,7 +39,7 @@ jobs:
           name: "Cache Docker Image"
           command: |
             mkdir -p docker-cache
-            docker save -o docker-cache/sanity-docker.tar tophatmonocle/sanity-runner:latest
+            docker save -o docker-cache/sanity-docker.tar tophat/sanity-runner:latest
       - persist_to_workspace:
           root: ./
           paths:
