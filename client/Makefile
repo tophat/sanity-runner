@@ -25,4 +25,4 @@ clean:
 .PHONY: build-docker
 build-docker:
 	@echo "Building Docker Container"
-	docker build . -t tophatmonocle/sanity-runner
+	docker build . -t tophat/sanity-runner
