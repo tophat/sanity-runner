@@ -15,7 +15,7 @@ const collectVariables = (variable, variableMap) => {
     }
     const key = variable.substring(0, equalPos)
     const value = variable.substring(equalPos + 1)
-    return Object.assign({}, variableMap, {[key]: value})
+    return Object.assign({}, variableMap, { [key]: value })
 }
 
 /**
@@ -24,7 +24,11 @@ const collectVariables = (variable, variableMap) => {
  * @param {Array} acceptedConfigs
  * @param {Object?} baseConfiguration
  */
-const retrieveConfigurations = (program, acceptedConfigs, baseConfiguration={}) => {
+const retrieveConfigurations = (
+    program,
+    acceptedConfigs,
+    baseConfiguration = {},
+) => {
     const configuration = baseConfiguration
     if (program.config) {
         const jsonConfigs = _.pick(
@@ -41,15 +45,16 @@ const retrieveConfigurations = (program, acceptedConfigs, baseConfiguration={}) 
  * Convert JUnit XML string into object
  * @param {string} resultXML JUnit result for the
  */
-const _parseResultString = async resultXML => new Promise((resolve, reject) => {
-    xml2js.parseString(resultXML, (err, result) => {
-        if (err) {
-            reject(err)
-            return
-        }
-        resolve(result)
+const _parseResultString = async resultXML =>
+    new Promise((resolve, reject) => {
+        xml2js.parseString(resultXML, (err, result) => {
+            if (err) {
+                reject(err)
+                return
+            }
+            resolve(result)
+        })
     })
-})
 
 /**
  * Pretty-print test result
@@ -63,17 +68,29 @@ const _printTestResult = result => {
         const numSkipped = Number(suite.$.skipped)
         const numTests = Number(suite.$.tests)
         if (numFailures) {
-            console.log(`${chalk.black.bold.bgRed(' FAIL ')} ${suite.$.name} (${suite.$.time}s)`)
+            console.log(
+                `${chalk.black.bold.bgRed(' FAIL ')} ${suite.$.name} (${
+                    suite.$.time
+                }s)`,
+            )
             _printTestFailures(suite.testcase)
             return
         }
 
         if (numSkipped === numTests) {
-            console.log(`${chalk.black.bold.bgYellow(' SKIP ')} ${suite.$.name} (${suite.$.time}s)`)
+            console.log(
+                `${chalk.black.bold.bgYellow(' SKIP ')} ${suite.$.name} (${
+                    suite.$.time
+                }s)`,
+            )
             return
         }
 
-        console.log(`${chalk.black.bold.bgGreen(' PASS ')} ${suite.$.name} (${suite.$.time}s)`)
+        console.log(
+            `${chalk.black.bold.bgGreen(' PASS ')} ${suite.$.name} (${
+                suite.$.time
+            }s)`,
+        )
     })
 }
 
@@ -155,7 +172,7 @@ const formatTestResults = async results => {
     console.log('\n')
 
     const parsedResults = []
-    for (key in results) {
+    for (const key in results) {
         const result = await _parseResultString(results[key])
         _printTestResult(result)
         parsedResults.push(result.testsuites)

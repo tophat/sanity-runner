@@ -3,10 +3,20 @@ export PATH := $(shell yarn bin):$(PATH)
 
 ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
+TEST_REPORTS_DIR ?= $(ARTIFACTS_DIR)/reports
 
+ifdef CI
+	ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml
+else
+	ESLINT_EXTRA_ARGS=
+endif
+
+ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
+NODE_MODULES_BIN := node_modules/.bin
+ESLINT := $(NODE_MODULES_BIN)/eslint $(ESLINT_ARGS)
 
 .PHONE: docker
-docker: 
+docker:
 	docker build ../. -t "sanity"
 
 .PHONE: install-mac
@@ -40,7 +50,7 @@ package: check-versions
 .PHONY: deploy
 deploy: check-versions download-serverless-chrome
 	serverless deploy --package "${BUILD_DIR}"
-	aws s3 sync ./chrome s3://sr-chrome-${SERVERLESS_STAGE}-${SERVERLESS_TAG}
+	aws s3 sync ./chrome s3://sr-${SERVERLESS_STAGE}-${SERVERLESS_TAG}/chrome
 
 # ----- Helpers -----
 .PHONY: check-versions
@@ -57,3 +67,11 @@ clean:
 	@rm -rf .serverless
 	@rm -rf node_modules
 	@rm -rf "${ARTIFACTS_DIR}"
+
+.PHONY: lint
+lint:
+	$(ESLINT) .
+
+.PHONY: lint-fix
+lint-fix:
+	$(ESLINT) --fix .

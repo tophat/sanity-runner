@@ -15,40 +15,44 @@ module.exports = class {
     jestConfig() {
         return {
             bail: false,
-            globalSetup: "<rootDir>/src/jestSetup/puppeteer/setup.js",
-            globalTeardown: "<rootDir>/src/jestSetup/puppeteer/teardown.js",
+            globalSetup: '<rootDir>/src/jestSetup/puppeteer/setup.js',
+            globalTeardown: '<rootDir>/src/jestSetup/puppeteer/teardown.js',
             globals: {
                 SANITY_VARIABLES: this.variables || {},
-                SCREENSHOT_OUTPUT: paths.results(this.id)
+                SCREENSHOT_OUTPUT: paths.results(this.id),
             },
             notify: false,
             reporters: [
                 'default',
                 ['jest-junit', { output: paths.junit(this.id) }],
-                ['<rootDir>/src/jestSetup/screenshotReporter', {
-                    output: paths.results(this.id),
-                    urlExpirySeconds: 3600,
-                    bucket: process.env.SCREENSHOT_BUCKET
-                }],
+                [
+                    '<rootDir>/src/jestSetup/screenshotReporter',
+                    {
+                        output: paths.results(this.id),
+                        urlExpirySeconds: 3600,
+                        bucket: process.env.SCREENSHOT_BUCKET,
+                    },
+                ],
             ],
             resetMocks: false,
             resetModules: false,
-            roots: [
-                paths.suite(this.id),
-            ],
+            roots: [paths.suite(this.id)],
             rootDir: process.cwd(),
-            setupTestFrameworkScriptFile: "<rootDir>/src/jestSetup/e2eFrameworkSetup.js",
-            testEnvironment: "<rootDir>/src/jestSetup/puppeteer/environment.js",
-            timers: "real",
-            verbose: false
+            setupTestFrameworkScriptFile:
+                '<rootDir>/src/jestSetup/e2eFrameworkSetup.js',
+            testEnvironment: '<rootDir>/src/jestSetup/puppeteer/environment.js',
+            timers: 'real',
+            verbose: false,
         }
     }
 
     async writeSuites(testFiles) {
         const destination = paths.suite(this.id)
-        await Promise.all(Object.entries(testFiles).map(entry => 
-            fs.outputFile(`${destination}/${entry[0]}`, entry[1])
-        ))
+        await Promise.all(
+            Object.entries(testFiles).map(entry =>
+                fs.outputFile(`${destination}/${entry[0]}`, entry[1]),
+            ),
+        )
     }
 
     async format(results) {
@@ -59,7 +63,7 @@ module.exports = class {
             screenshots: results.screenshots,
             errors: extractRuntimeErrors(results),
             testResults: {
-                [paths.junitFileName(this.id)]: junitContents
+                [paths.junitFileName(this.id)]: junitContents,
             },
         }
     }
@@ -72,15 +76,14 @@ module.exports = class {
 const extractRuntimeErrors = function(results) {
     const errors = []
     if (results.numRuntimeErrorTestSuites > 0) {
-        results.testResults.forEach((tc) => {
-            if (tc.assertionResults.length == 0 && tc.status == 'failed') {
+        results.testResults.forEach(tc => {
+            if (tc.assertionResults.length === 0 && tc.status === 'failed') {
                 errors.push({
-                    'message': tc.message,
-                    'name': tc.name
+                    message: tc.message,
+                    name: tc.name,
                 })
             }
         })
     }
     return errors
 }
-
