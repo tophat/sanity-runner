@@ -68,7 +68,7 @@ jobs:
             tar cvf sanity-runner-serverless-${VERSION}.tar ~/workspace/service/artifacts/build/
             mv sanity-runner-serverless-${VERSION}.tar release-archive/
             mv ~/workspace/client/bin/* release-archive/
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} release-archive/
+            ghr -t ${GH_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} release-archive/
 
   website:
     <<: *website_docker_defaults
