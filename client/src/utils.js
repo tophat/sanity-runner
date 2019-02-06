@@ -154,7 +154,7 @@ const _printTestSummary = results => {
 const _formatTotal = (failures, skipped, total) => {
     const result = []
     if (failures) {
-        result.push(chalk.bold.red(`${failures} passed`))
+        result.push(chalk.bold.red(`${failures} failed`))
     }
     if (skipped) {
         result.push(chalk.bold.yellow(`${skipped} skipped`))
