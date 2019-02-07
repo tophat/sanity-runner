@@ -2,6 +2,7 @@
   "groups": {
     "default": {
       "packages": [
+        "package.json",
         "client/package.json",
         "service/package.json",
         "website/package.json"

@@ -1,0 +1,23 @@
+{
+  "name": "sanity-runner",
+  "version": "1.0.0",
+  "description": "Automate your sanity tests against a chrome browser running in AWS Lambda",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tophat/sanity-runner.git"
+  },
+  "scripts": {
+    "commit": "npx git-cz"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/tophat/sanity-runner/issues"
+  },
+  "homepage": "https://sanity-runner.js.org",
+  "devDependencies": {
+    "cz-conventional-changelog": "^2.1.0",
+    "git-cz": "^1.8.0",
+    "semantic-release": "^15.13.3"
+  }
+}

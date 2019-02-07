@@ -4,6 +4,10 @@ website_docker_defaults: &website_docker_defaults
   docker:
     - image: circleci/node:8.11.3
 
+docker_defaults: &docker_defaults
+  docker:
+    - image: circleci/node:8.10.0
+
 commands:
   prep_website_env:
     description: Prepapres environment with cache
@@ -24,8 +28,7 @@ commands:
 
 jobs:
   lint:
-    docker:
-      - image: circleci/node:8.10.0
+    <<: *docker_defaults
     working_directory: ~/repo
     steps:
       - checkout
@@ -38,38 +41,30 @@ jobs:
       - store_test_results:
           path: service/artifacts/reports
   build:
-    docker:
-      - image: circleci/node:8.10.0
+    <<: *docker_defaults
     working_directory: ~/repo
     steps:
       - checkout
       - run: make -C client install
       - run: make -C service install
       - run: make -C client package
-      - run: make -C client release-version
       - run: make -C service package
+      - run: make install
+      - run: make create-release-package
+      - run: make deploy-release-dry
       - persist_to_workspace:
           root: ./
           paths:
-            - client/bin/
-            - client/version.txt
-            - service/artifacts/build/
+            - release-archive/
   deploy:
-    docker:
-      - image: cibuilds/github:0.10
+    <<: *docker_defaults
+    working_directory: ~/repo
     steps:
+      - checkout
       - attach_workspace:
-          at: ~/workspace
-      - run:
-          name: "Publish Release on Github"
-          command: |
-            mkdir release-archive
-            VERSION=`cat ~/workspace/client/version.txt`
-            tar cvf sanity-runner-serverless-${VERSION}.tar ~/workspace/service/artifacts/build/
-            mv sanity-runner-serverless-${VERSION}.tar release-archive/
-            mv ~/workspace/client/bin/* release-archive/
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete v${VERSION} release-archive/
-
+          at: ~/release-archive
+      - run: make install
+      - run: make deploy-release
   website:
     <<: *website_docker_defaults
     working_directory: ~/repo/website
@@ -97,7 +92,7 @@ jobs:
           command: |
             git config --global user.email "circleci-sanity-runner@users.noreply.github.com"
             git config --global user.name "CircleCI Sanity Runner"
-            USE_SSH=true yarn publish-gh-pages
+            CUSTOM_COMMIT_MESSAGE="[skip ci]" USE_SSH=true yarn publish-gh-pages
 
 workflows:
   version: 2

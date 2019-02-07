@@ -22,10 +22,6 @@ install: check-versions
 package:
 	pkg . --out-path bin/
 
-.PHONY: release-version
-release-version:
-	./scripts/version.sh
-
 # ----- Helpers -----
 .PHONY: check-versions
 check-versions:
