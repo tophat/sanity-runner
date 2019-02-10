@@ -62,7 +62,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/release-archive
+          at: ~/repo
       - run: make install
       - run: make deploy-release
   website:
