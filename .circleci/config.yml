@@ -14,7 +14,6 @@ commands:
     steps:
       - checkout:
           path: ~/repo
-      - setup_remote_docker
       - restore_cache:
           name: Restore node_modules cache
           key: website-{{ .Branch }}-{{ checksum "yarn.lock" }}
@@ -46,6 +45,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - setup_remote_docker
       - run: make -C client install
       - run: make -C service install
       - run: make -C client package
