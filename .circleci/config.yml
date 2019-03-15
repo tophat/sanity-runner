@@ -14,6 +14,7 @@ commands:
     steps:
       - checkout:
           path: ~/repo
+      - setup_remote_docker
       - restore_cache:
           name: Restore node_modules cache
           key: website-{{ .Branch }}-{{ checksum "yarn.lock" }}
@@ -52,10 +53,31 @@ jobs:
       - run: make install
       - run: make create-release-package
       - run: make deploy-release-dry
+      - run: make -C client build-docker
+      - run:
+          name: "Cache Docker Image"
+          command: |
+            mkdir -p docker-cache
+            docker save -o docker-cache/sanity-docker.tar tophat/sanity-runner:latest
       - persist_to_workspace:
           root: ./
           paths:
             - release-archive/
+docker-deploy:
+    docker:
+      - image: docker:stable
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: ~/workspace
+      - run:
+          name: "Publish Release on Docker"
+          command: |
+            VERSION=`cat ~/workspace/client/version.txt`
+            docker load < ~/workspace/docker-cache/sanity-docker.tar
+            docker tag tophat/sanity-runner:latest tophat/sanity-runner:${VERSION}
+            echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
+            docker push tophat/sanity-runner:${VERSION}
   deploy:
     <<: *docker_defaults
     working_directory: ~/repo
@@ -100,6 +122,12 @@ workflows:
     jobs:
       - lint
       - build
+      - docker-deploy:
+          requires:
+            - build     
+          filters:
+            branches:
+              only: master 
       - deploy:
           requires:
             - build
