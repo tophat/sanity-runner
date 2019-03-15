@@ -63,21 +63,6 @@ jobs:
           root: ./
           paths:
             - release-archive/
-  docker-deploy:
-    docker:
-      - image: docker:stable
-    steps:
-      - setup_remote_docker
-      - attach_workspace:
-          at: ~/workspace
-      - run:
-          name: "Publish Release on Docker"
-          command: |
-            VERSION=`cat ~/workspace/client/version.txt`
-            docker load < ~/workspace/docker-cache/sanity-docker.tar
-            docker tag tophat/sanity-runner:latest tophat/sanity-runner:${VERSION}
-            echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin
-            docker push tophat/sanity-runner:${VERSION}
   deploy:
     <<: *docker_defaults
     working_directory: ~/repo
@@ -86,6 +71,10 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run: make install
+      - run: 
+        name: "Get Docker Image"
+        command: |
+          docker load < ~/workspace/docker-cache/sanity-docker.tar
       - run: make deploy-release
   website:
     <<: *website_docker_defaults
@@ -121,10 +110,7 @@ workflows:
   build_and_test:
     jobs:
       - lint
-      - build
-      - docker-deploy:
-          requires:
-            - build     
+      - build  
       - deploy:
           requires:
             - build
