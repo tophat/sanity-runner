@@ -68,13 +68,14 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - setup_remote_docker
       - attach_workspace:
           at: ~/repo
       - run: make install
       - run: 
-        name: "Get Docker Image"
-        command: |
-          docker load < ~/workspace/docker-cache/sanity-docker.tar
+          name: "Get Docker Image"
+          command: |
+            docker load < ~/workspace/docker-cache/sanity-docker.tar
       - run: make deploy-release
   website:
     <<: *website_docker_defaults
