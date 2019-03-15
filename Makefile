@@ -7,7 +7,7 @@ install: check-versions
 
 .PHONY: deploy-release-dry
 deploy-release-dry:
-	yarn run semantic-release --dry-run
+	yarn run semantic-release --dry-run -b add-docker
 
 .PHONY: deploy-release
 deploy-release:
