@@ -63,7 +63,7 @@ jobs:
           root: ./
           paths:
             - release-archive/
-docker-deploy:
+  docker-deploy:
     docker:
       - image: docker:stable
     steps:
