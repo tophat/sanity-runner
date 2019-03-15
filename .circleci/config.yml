@@ -50,10 +50,10 @@ jobs:
       - run: make -C service install
       - run: make -C client package
       - run: make -C service package
+      - run: make -C client build-docker
       - run: make install
       - run: make create-release-package
       - run: make deploy-release-dry
-      - run: make -C client build-docker
       - run:
           name: "Cache Docker Image"
           command: |
