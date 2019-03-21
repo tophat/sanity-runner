@@ -1,6 +1,6 @@
 # sanity-runner (client)
 
-The sanity-runner binary takes a te
+The sanity-runner client takes a suite of test files and distributes them to a different instance of the sanity-runner lambda function.  
 
 ## Usage 
 ```
