@@ -1482,9 +1482,10 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-expect-puppeteer@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/expect-puppeteer/-/expect-puppeteer-3.2.0.tgz#b4c322e28b86e9e74f5c6d636fb1e0dde5c4a559"
+expect-puppeteer@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/expect-puppeteer/-/expect-puppeteer-4.1.1.tgz#cda2ab7b6fa27ac24eba273bbb0296a0de538e6d"
+  integrity sha512-xNpu6uYJL9Qrrp4Z31MOpDWK68zAi+2qg5aMQlyOTVZNy7cAgBZiPvKCN0C1JmP3jgPZfcxhetVjZLaw/KcJOQ==
 
 expect@^23.6.0:
   version "23.6.0"
