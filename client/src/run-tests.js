@@ -7,7 +7,12 @@ const AWS = require('aws-sdk')
 
 const { formatTestResults } = require('./utils')
 
-async function testResultPromise(functionName, testFiles, testVariables, retryCount) {
+async function testResultPromise(
+    functionName,
+    testFiles,
+    testVariables,
+    retryCount,
+) {
     console.log(retryCount)
     const lambda = new AWS.Lambda()
     const params = {
@@ -68,13 +73,19 @@ function reduceTestResults(accumulated, current) {
  * @param {string} outputDir
  * @param {Object.<string, string>} testVariables
  */
-async function runTests(functionName, testFiles, outputDir, testVariables, retryCount) {
+async function runTests(
+    functionName,
+    testFiles,
+    outputDir,
+    testVariables,
+    retryCount,
+) {
     const promises = Object.entries(testFiles).map(entry =>
         testResultPromise(
             functionName,
             { [entry[0]]: entry[1] },
             testVariables,
-            retryCount
+            retryCount,
         ),
     )
     return Promise.all(promises).then(

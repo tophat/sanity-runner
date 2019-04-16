@@ -41,7 +41,7 @@ module.exports = class {
         try {
             await run.writeSuites(testFiles)
             const results = await retry(
-                async() => {
+                async () => {
                     const res = runJest(
                         this.chromePath,
                         '--config',

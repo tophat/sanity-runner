@@ -52,7 +52,7 @@ module.exports.handler = async function(event, context, callback) {
     const testResults = await runner.runTests(
         event.testFiles,
         event.testVariables,
-        event.retryCount
+        event.retryCount,
     )
     callback(null, testResults)
 }

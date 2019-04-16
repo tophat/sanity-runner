@@ -16,7 +16,7 @@ const CONFIG_OPTIONS = [
     'include',
     'var',
     'exclude',
-    'retryCount'
+    'retryCount',
 ]
 const DEFAULT_FUNCTION_NAME = 'sanity-runner-dev-default'
 const DEFAULT_TEST_DIR = '.'
@@ -54,7 +54,7 @@ program
     )
     .option(
         '--retry-count <retryCount>',
-        'Specify number of retries a test will perform if an error occurs (default 0)'
+        'Specify number of retries a test will perform if an error occurs (default 0)',
     )
     .parse(process.argv)
 
