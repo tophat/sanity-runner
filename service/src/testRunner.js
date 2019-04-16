@@ -36,7 +36,7 @@ module.exports = class {
         this.chromePath = chromePath
     }
 
-    async runTests(testFiles, testVariables) {
+    async runTests(testFiles, testVariables, retryCount) {
         const run = new Run(testVariables)
         try {
             await run.writeSuites(testFiles)
@@ -50,7 +50,7 @@ module.exports = class {
                     return res
                 },
                 {
-                    retries: 3,
+                    retries: retryCount,
                 },
             )
 
