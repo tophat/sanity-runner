@@ -3,7 +3,6 @@ const execa = require('execa')
 const Run = require('./run')
 const retry = require('async-retry')
 
-
 const runJest = async function(chromePath, ...args) {
     const env = Object.assign({}, process.env, {
         CHROME_PATH: chromePath,
@@ -41,16 +40,19 @@ module.exports = class {
         const run = new Run(testVariables)
         try {
             await run.writeSuites(testFiles)
-            const results = await retry(async bail => {
-                const res = runJest(
-                    this.chromePath,
-                    '--config',
-                    JSON.stringify(run.jestConfig()),
-                )
-                return res
-            }, {
-                retries: 3
-            })
+            const results = await retry(
+                async function() {
+                    const res = runJest(
+                        this.chromePath,
+                        '--config',
+                        JSON.stringify(run.jestConfig()),
+                    )
+                    return res
+                },
+                {
+                    retries: 3,
+                },
+            )
 
             return await run.format(results.json)
         } finally {
