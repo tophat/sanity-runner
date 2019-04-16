@@ -1,6 +1,8 @@
 const paths = require('./paths')
 const execa = require('execa')
 const Run = require('./run')
+const retry = require('async-retry')
+
 
 const runJest = async function(chromePath, ...args) {
     const env = Object.assign({}, process.env, {
@@ -39,11 +41,17 @@ module.exports = class {
         const run = new Run(testVariables)
         try {
             await run.writeSuites(testFiles)
-            const results = await runJest(
-                this.chromePath,
-                '--config',
-                JSON.stringify(run.jestConfig()),
-            )
+            const results = await retry(async bail => {
+                const res = runJest(
+                    this.chromePath,
+                    '--config',
+                    JSON.stringify(run.jestConfig()),
+                )
+                return res
+            }, {
+                retries: 3
+            })
+
             return await run.format(results.json)
         } finally {
             await run.cleanup()
