@@ -6,6 +6,13 @@
         "client/package.json",
         "service/package.json",
         "website/package.json"
+      ],
+      "ignore": [
+        "expect-puppeteer",
+        "jest",
+        "jest-environment-node",
+        "jest-junit",
+        "puppeteer"
       ]
     }
   }
