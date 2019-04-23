@@ -16,6 +16,15 @@ provider:
         - s3:PutObject
       Resource:
         - "arn:aws:s3:::${self:custom.s3_bucket}/*"
+    - Effect: Allow
+      Action: 
+        - secretsmanager:GetResourcePolicy
+        - secretsmanager:GetSecretValue
+        - secretsmanager:DescribeSecret
+        - secretsmanager:ListSecretVersionIds
+      Resource: 
+        - "arn:aws:secretsmanager:${self:custom.region}:${self:custom.tag}:secret:sanity_runner/*"
+
   environment:
     SLS_STAGE: ${self:custom.stage}
     S3_BUCKET: ${self:custom.s3_bucket}
