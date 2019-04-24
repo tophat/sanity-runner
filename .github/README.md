@@ -50,7 +50,7 @@ make -C service deploy
 make -C client install
 make -C client package
 ```
-## Usage
+## [Usage](./client/README.md)
 
 Ensure AWS Creds are setup
 ```
@@ -61,6 +61,22 @@ export AWS_REGION=<AWS region>
 Run Client against folder with written sanity tests
 ```
 sanity-runner --test-dir example/repo/sanities --output-dir output
+```
+
+## Docker 
+
+```
+docker pull tophat/sanity-runner:latest
+```
+
+To run your tests...
+```
+docker run -it -v <path to dir with your tests>:/tests -v ~/.aws/credentials -e AWS_PROFILE -e AWS_REGION sanity-runner
+```
+
+You can also pass in your own custom config.json file
+```
+docker run -it -v <path to your config.son>:/config.json -v <path to dir with your tests>:/tests sanity-runner
 ```
 
 ## References

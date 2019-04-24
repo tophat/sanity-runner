@@ -18,6 +18,11 @@ ESLINT := $(NODE_MODULES_BIN)/eslint $(ESLINT_ARGS)
 install: check-versions
 	yarn install
 
+.PHONY: build-docker
+build-docker:
+	@echo "Building Docker Container"
+	docker build . -t tophat/sanity-runner
+
 .PHONY: package
 package:
 	pkg . --out-path bin/
@@ -30,6 +35,7 @@ check-versions:
 .PHONY: clean
 clean:
 	@rm -rf node_modules
+
 
 .PHONY: lint
 lint:

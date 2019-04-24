@@ -6,6 +6,18 @@ module.exports = {
             "assets": [
                 {"path": "release-archive/*"}
             ]
+        }],
+        ['semantic-release-docker', {
+            "release": {
+                "verifyConditions": {
+                  "path": "semantic-release-docker",
+                  "registryUrl": "docker.io"
+                },
+                "publish": {
+                  "path": "semantic-release-docker",
+                  "name": "tophat/sanity-runner"
+                }
+              }
         }]
     ]
 }

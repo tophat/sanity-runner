@@ -1,0 +1,5 @@
+{
+    "testDir": "./dist",
+    "outputDir": "./output",
+    "lambdaFunction": "sanity-runner-dev-default"
+  }
