@@ -16,10 +16,12 @@ const CONFIG_OPTIONS = [
     'include',
     'var',
     'exclude',
+    'retryCount',
 ]
 const DEFAULT_FUNCTION_NAME = 'sanity-runner-dev-default'
 const DEFAULT_TEST_DIR = '.'
 const DEFAULT_OUTPUT_DIR = './output'
+const DEFAULT_RETRY_COUNT = 0
 
 program
     .version(require('../package.json').version)
@@ -49,6 +51,10 @@ program
         'Custom variables passed to all jest tests.',
         collectVariables,
         {},
+    )
+    .option(
+        '--retry-count <retryCount>',
+        'Specify number of retries a test will perform if an error occurs (default 0)',
     )
     .parse(process.argv)
 
@@ -101,8 +107,9 @@ if (Object.keys(testFiles).length === 0) {
 const functionName = configuration.lambdaFunction || DEFAULT_FUNCTION_NAME
 const outputDir = path.resolve(configuration.outputDir || DEFAULT_OUTPUT_DIR)
 const testVariables = configuration.var
+const retryCount = configuration.retryCount || DEFAULT_RETRY_COUNT
 
-runTests(functionName, testFiles, outputDir, testVariables)
+runTests(functionName, testFiles, outputDir, testVariables, retryCount)
     .then(function(testsPassed) {
         console.log('All test suites ran.')
         process.exit(testsPassed ? EXIT_CODES : EXIT_CODES.TEST_FAILED)
