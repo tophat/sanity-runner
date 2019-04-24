@@ -63,6 +63,7 @@ jobs:
           root: ./
           paths:
             - release-archive/
+            - docker-cache/
   deploy:
     <<: *docker_defaults
     working_directory: ~/repo
@@ -75,7 +76,7 @@ jobs:
       - run: 
           name: "Get Docker Image"
           command: |
-            docker load < ~/workspace/docker-cache/sanity-docker.tar
+            docker load < ~/repo/docker-cache/sanity-docker.tar
       - run: make deploy-release
   website:
     <<: *website_docker_defaults
