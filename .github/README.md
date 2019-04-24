@@ -13,7 +13,6 @@
 A distributed sanity test runner.
 
 
-
 ## Installation
 * requires aws-cli
 * requires jq
