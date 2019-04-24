@@ -60,7 +60,6 @@ module.exports = class {
                 {
                     retries: maxRetryCount,
                     onRetry: function() {
-                        console.warn('incrementing count')
                         retryCount++
                     },
                 },
