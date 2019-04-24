@@ -36,21 +36,33 @@ module.exports = class {
         this.chromePath = chromePath
     }
 
-    async runTests(testFiles, testVariables, retryCount) {
+    async runTests(testFiles, testVariables, maxRetryCount) {
+        let retryCount = 0
         const run = new Run(testVariables)
         try {
             await run.writeSuites(testFiles)
             const results = await retry(
                 async () => {
-                    const res = runJest(
+                    const res = await runJest(
                         this.chromePath,
                         '--config',
                         JSON.stringify(run.jestConfig()),
                     )
+                    // force retry if test was unsuccesfull
+                    // if last retry, return as normal
+                    if (!res.json.success) {
+                        if (retryCount != maxRetryCount) { // eslint-disable-line
+                            throw new Error('Test Failed!')
+                        }
+                    }
                     return res
                 },
                 {
-                    retries: retryCount,
+                    retries: maxRetryCount,
+                    onRetry: function() {
+                        console.warn('incrementing count')
+                        retryCount++
+                    },
                 },
             )
 
