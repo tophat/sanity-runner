@@ -1,6 +1,7 @@
 const paths = require('./paths')
 const execa = require('execa')
 const Run = require('./run')
+const retry = require('async-retry')
 
 const runJest = async function(chromePath, ...args) {
     const env = Object.assign({}, process.env, {
@@ -35,15 +36,35 @@ module.exports = class {
         this.chromePath = chromePath
     }
 
-    async runTests(testFiles, testVariables) {
+    async runTests(testFiles, testVariables, maxRetryCount) {
+        let retryCount = 0
         const run = new Run(testVariables)
         try {
             await run.writeSuites(testFiles)
-            const results = await runJest(
-                this.chromePath,
-                '--config',
-                JSON.stringify(run.jestConfig()),
+            const results = await retry(
+                async () => {
+                    const res = await runJest(
+                        this.chromePath,
+                        '--config',
+                        JSON.stringify(run.jestConfig()),
+                    )
+                    // force retry if test was unsuccesfull
+                    // if last retry, return as normal
+                    if (!res.json.success) {
+                        if (retryCount !== parseInt(ParmaxRetryCount)) { // eslint-disable-line
+                            throw new Error('Test Failed!')
+                        }
+                    }
+                    return res
+                },
+                {
+                    retries: maxRetryCount,
+                    onRetry: function() {
+                        retryCount++
+                    },
+                },
             )
+
             return await run.format(results.json)
         } finally {
             await run.cleanup()
