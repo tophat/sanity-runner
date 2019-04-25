@@ -2,12 +2,13 @@
 
 The sanity-runner client takes a suite of test files and distributes them to a different instance of the sanity-runner lambda function.  
 
-## Usage 
+## Usage
 ```
 sanity-runner --test-dir path/to/tests --output-dir path/to/output/dir --lambda-function lambdafunction-name
 ```
 
-## Supported Arguments 
+
+## Supported Arguments
 
 ```
 $sanity-runner --help
@@ -27,7 +28,7 @@ $sanity-runner --help
     -h, --help                        output usage information
 ```
 
-## Config File 
+## Config File
 Instead of command line arguments you may use a config file instead that can be used
 
 ```
