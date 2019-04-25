@@ -17,13 +17,19 @@ provider:
       Resource:
         - "arn:aws:s3:::${self:custom.s3_bucket}/*"
     - Effect: Allow
-      Action: 
+      Action:
         - secretsmanager:GetResourcePolicy
         - secretsmanager:GetSecretValue
         - secretsmanager:DescribeSecret
         - secretsmanager:ListSecretVersionIds
-      Resource: 
+      Resource:
         - "arn:aws:secretsmanager:${self:custom.region}:${self:custom.accountId}:secret:sanity_runner/*"
+    - Effect: Allow
+      Action:
+        - mobiletargeting:GetApps
+        - mobiletargeting:SendMessages
+      Resource:
+        - "arn:aws:secretsmanager:${self:custom.region}:${self:custom.accountId}:apps/*"
 
   environment:
     SLS_STAGE: ${self:custom.stage}
