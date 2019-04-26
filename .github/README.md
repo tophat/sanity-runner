@@ -50,7 +50,7 @@ make -C service deploy
 make -C client install
 make -C client package
 ```
-## [Usage](./client/README.md)
+## [Usage](../client/README.md)
 
 Ensure AWS Creds are setup
 ```
