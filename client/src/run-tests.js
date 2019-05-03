@@ -13,7 +13,6 @@ async function testResultPromise(
     testVariables,
     retryCount,
 ) {
-    console.log(retryCount)
     const lambda = new AWS.Lambda()
     const params = {
         FunctionName: functionName,
