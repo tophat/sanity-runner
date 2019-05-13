@@ -28,7 +28,7 @@
   "dependencies": {
     "async-retry": "^1.2.3",
     "expect-puppeteer": "^3.2.0",
-    "fs-extra": "^7.0.1",
+    "fs-extra": "^8.0.0",
     "jest": "23.6.0",
     "jest-environment-node": "23.4.0",
     "jest-junit": "^6.3.0",
