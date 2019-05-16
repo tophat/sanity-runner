@@ -31,13 +31,15 @@ const runJest = async function(chromePath, ...args) {
     return result
 }
 
-const logResults = function(results, testVariables, retryCount){
-    var newResult = new Object();
-    var duration = (results.testResults[0].endTime - results.testResults[0].startTime)/1000
-    var splitName = results.testResults[0].name.split("/")
-    var status = results.testResults[0].status
+const logResults = function(results, testVariables, retryCount) {
+    const newResult = new Object()
+    const duration =
+        (results.testResults[0].endTime - results.testResults[0].startTime) /
+        1000
+    const splitName = results.testResults[0].name.split('/')
+    let status = results.testResults[0].status
     if (results.numPendingTests > 0) {
-        status = "skipped"
+        status = 'skipped'
     }
 
     newResult.variables = testVariables
@@ -48,7 +50,7 @@ const logResults = function(results, testVariables, retryCount){
     newResult.startTime = results.testResults[0].startTime
     newResult.testName = splitName[splitName.length - 1]
 
-    console.log(JSON.stringify(newResult));
+    console.log(JSON.stringify(newResult))
 }
 
 module.exports = class {
