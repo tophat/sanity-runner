@@ -32,7 +32,7 @@ const runJest = async function(chromePath, ...args) {
 }
 
 const logResults = function(results, testVariables, retryCount) {
-    const newResult = new Object()
+    const newResult = {}
     const duration =
         (results.testResults[0].endTime - results.testResults[0].startTime) /
         1000
