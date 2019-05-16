@@ -49,7 +49,7 @@ const logResults = function(results, testVariables, retryCount) {
     newResult.endTime = results.testResults[0].endTime
     newResult.startTime = results.testResults[0].startTime
     newResult.testName = splitName[splitName.length - 1]
-    
+
     console.log(JSON.stringify(newResult))
 }
 
