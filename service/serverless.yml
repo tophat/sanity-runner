@@ -29,7 +29,7 @@ provider:
         - mobiletargeting:GetApps
         - mobiletargeting:SendMessages
       Resource:
-        - "arn:aws:secretsmanager:${self:custom.region}:${self:custom.accountId}:apps/*"
+        - "arn:aws:mobiletargeting:${self:custom.region}:${self:custom.accountId}:apps/*"
 
   environment:
     SLS_STAGE: ${self:custom.stage}
