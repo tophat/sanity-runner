@@ -57,7 +57,6 @@ module.exports = class {
 
     async format(results) {
         const junitContents = await fs.readFile(paths.junit(this.id), 'utf8')
-        console.log(results)
         return {
             passed: results.success,
             screenshots: results.screenshots,

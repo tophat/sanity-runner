@@ -31,6 +31,28 @@ const runJest = async function(chromePath, ...args) {
     return result
 }
 
+const logResults = function(results, testVariables, retryCount) {
+    const newResult = {}
+    const duration =
+        (results.testResults[0].endTime - results.testResults[0].startTime) /
+        1000
+    const splitName = results.testResults[0].name.split('/')
+    let status = results.testResults[0].status
+    if (results.numPendingTests > 0) {
+        status = 'skipped'
+    }
+
+    newResult.variables = testVariables
+    newResult.retryCount = retryCount
+    newResult.duration = duration
+    newResult.status = status
+    newResult.endTime = results.testResults[0].endTime
+    newResult.startTime = results.testResults[0].startTime
+    newResult.testName = splitName[splitName.length - 1]
+
+    console.log(JSON.stringify(newResult))
+}
+
 module.exports = class {
     constructor(chromePath) {
         this.chromePath = chromePath
@@ -64,7 +86,7 @@ module.exports = class {
                     },
                 },
             )
-
+            logResults(results.json, testVariables, retryCount)
             return await run.format(results.json)
         } finally {
             await run.cleanup()
