@@ -14,7 +14,7 @@ async function testResultPromise(
     retryCount,
 ) {
     const lambda = new AWS.Lambda({
-        apiVersion:'2015-03-31',
+        apiVersion: '2015-03-31',
         httpOptions: {
             timeout: 360000,
         },
