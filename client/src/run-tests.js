@@ -16,8 +16,8 @@ async function testResultPromise(
     const lambda = new AWS.Lambda({
         apiVersion:'2015-03-31',
         httpOptions: {
-            timeout: 360000
-        }
+            timeout: 360000,
+        },
     })
     const params = {
         FunctionName: functionName,
