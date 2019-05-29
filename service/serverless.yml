@@ -57,7 +57,7 @@ functions:
   sanityLauncher:
     runtime: nodejs8.10
     memorySize: 2048
-    timeout: 180
+    timeout: 360
     handler: src/lambdaHandler.handler
     name: ${env:SERVERLESS_FUNC, self:custom.functon_name}
 
