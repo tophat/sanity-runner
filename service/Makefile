@@ -50,6 +50,7 @@ package: check-versions
 .PHONY: deploy
 deploy: check-versions download-serverless-chrome
 	serverless deploy --package "${BUILD_DIR}"
+	echo Function: "sanity-runner-${SERVERLESS_STAGE}-${SERVERLESS_TAG}"
 	aws s3 sync ./chrome s3://sr-${SERVERLESS_STAGE}-${SERVERLESS_TAG}/chrome
 
 # ----- Helpers -----
