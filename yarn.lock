@@ -56,7 +56,7 @@
     import-from "^2.1.0"
     lodash "^4.17.4"
 
-"@semantic-release/error@^2.2.0":
+"@semantic-release/error@^2.1.0", "@semantic-release/error@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@semantic-release/error/-/error-2.2.0.tgz#ee9d5a09c9969eade1ec864776aeda5c5cddbbf0"
 
@@ -920,6 +920,11 @@ dir-glob@^2.0.0, dir-glob@^2.2.1:
   dependencies:
     path-type "^3.0.0"
 
+dom-walk@^0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
+  integrity sha1-ZyIm3HTI95mtNTB9+TaroRrNYBg=
+
 dot-prop@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-3.0.0.tgz#1b708af094a49c9a0e7dbcad790aba539dac1177"
@@ -1307,10 +1312,12 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-git-cz@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/git-cz/-/git-cz-3.0.0.tgz#f7eea129af0238ec9ebdde32a23229ac3da4ca0e"
-  integrity sha512-/64Km/xx0gyE+Sdf5NS9nDFdY/+ZIKpeRELBm46P2FJ+DHEZsa1kKOxgcL4UtkG2CUrS/QOdWMKYWM8luR9wzQ==
+git-cz@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/git-cz/-/git-cz-3.2.1.tgz#24c0719936064edf133c2886f56e321d3ae443c0"
+  integrity sha512-w4t/bnQOqN4i3F9Se+xMppRX80UKtvyzfUGzRcaNPOL9S9sowZfvri6GkYhSUJTUkgU7MKTSCyalWbAWvDcRwA==
+  dependencies:
+    global "^4.3.2"
 
 git-log-parser@^1.2.0:
   version "1.2.0"
@@ -1350,6 +1357,14 @@ global-dirs@^0.1.0:
   resolved "https://registry.yarnpkg.com/global-dirs/-/global-dirs-0.1.1.tgz#b319c0dd4607f353f3be9cca4c72fc148c49f445"
   dependencies:
     ini "^1.3.4"
+
+global@^4.3.2:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/global/-/global-4.4.0.tgz#3e7b105179006a323ed71aafca3e9c57a5cc6406"
+  integrity sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==
+  dependencies:
+    min-document "^2.19.0"
+    process "^0.11.10"
 
 globby@^9.0.0:
   version "9.0.0"
@@ -2211,6 +2226,13 @@ mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
 
+min-document@^2.19.0:
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/min-document/-/min-document-2.19.0.tgz#7bd282e3f5842ed295bb748cdd9f1ffa2c824685"
+  integrity sha1-e9KC4/WELtKVu3SM3Z8f+iyCRoU=
+  dependencies:
+    dom-walk "^0.1.0"
+
 minimatch@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
@@ -2933,6 +2955,11 @@ process-nextick-args@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.0.tgz#a37d732f4271b4ab1ad070d35508e8290788ffaa"
 
+process@^0.11.10:
+  version "0.11.10"
+  resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
+  integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
+
 promise-inflight@^1.0.1, promise-inflight@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/promise-inflight/-/promise-inflight-1.0.1.tgz#98472870bf228132fcbdd868129bad12c3c029e3"
@@ -3285,6 +3312,14 @@ safe-regex@^1.1.0:
 "safer-buffer@>= 2.1.2 < 3", safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
+
+semantic-release-docker@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/semantic-release-docker/-/semantic-release-docker-2.2.0.tgz#9a5e1c8b4fe2b85063e1dc64e15550e7bf26c26f"
+  integrity sha512-p5pZuyD05ax2OIJY3MTa9ekPbnR7hw3Pzv79sDELx4/MwHdkxjoLNsbNHnH4RNfgyRYGUfnS3R0CnYv3e713FQ==
+  dependencies:
+    "@semantic-release/error" "^2.1.0"
+    execa "^0.10.0"
 
 semantic-release@^15.13.3:
   version "15.13.3"
