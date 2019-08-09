@@ -10,7 +10,7 @@
     "dependencies": {
         "aws-sdk": "^2.259.1",
         "chalk": "^2.4.1",
-        "commander": "^2.15.1",
+        "commander": "^3.0.0",
         "fs-extra": "^8.0.0",
         "glob": "^7.1.2",
         "lodash": "^4.17.11",
