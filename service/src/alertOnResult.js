@@ -84,7 +84,7 @@ module.exports = async function(testFiles, results, testVariables) {
     if (testVariables.hasOwnProperty('ALERT')) {
         if (testVariables.ALERT && results.numFailedTests > 0) {
             for (const testFile of Object.keys(testFiles)) {
-                const testContents = testFiles[test]
+                const testContents = testFiles[testFile]
                 const testMetaData = parse(testContents)
                 await sendSlackMessage(
                     results,
