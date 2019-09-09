@@ -88,11 +88,7 @@ module.exports = class {
                 },
             )
             logResults(testFiles, results.json, testVariables, retryCount)
-            await alertOnResult(
-                testFiles,
-                results.json,
-                testVariables
-            )   
+            await alertOnResult(testFiles, results.json, testVariables)
             return await run.format(results.json)
         } finally {
             await run.cleanup()
