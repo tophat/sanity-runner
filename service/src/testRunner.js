@@ -2,6 +2,7 @@ const paths = require('./paths')
 const execa = require('execa')
 const Run = require('./run')
 const retry = require('async-retry')
+const alertOnResult = require('./alertOnResult')
 
 const runJest = async function(chromePath, ...args) {
     const env = Object.assign({}, process.env, {
@@ -31,7 +32,7 @@ const runJest = async function(chromePath, ...args) {
     return result
 }
 
-const logResults = function(results, testVariables, retryCount) {
+const logResults = function(testFiles, results, testVariables, retryCount) {
     const newResult = {}
     const duration =
         (results.testResults[0].endTime - results.testResults[0].startTime) /
@@ -86,7 +87,12 @@ module.exports = class {
                     },
                 },
             )
-            logResults(results.json, testVariables, retryCount)
+            logResults(testFiles, results.json, testVariables, retryCount)
+            await alertOnResult(
+                testFiles,
+                results.json,
+                testVariables
+            )   
             return await run.format(results.json)
         } finally {
             await run.cleanup()

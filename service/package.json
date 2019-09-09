@@ -26,10 +26,12 @@
     "serverless": "1.34.1"
   },
   "dependencies": {
+    "@slack/web-api": "^5.1.0",
     "async-retry": "^1.2.3",
     "expect-puppeteer": "^3.2.0",
     "fs-extra": "^8.0.0",
     "jest": "23.6.0",
+    "jest-docblock": "^24.9.0",
     "jest-environment-node": "23.4.0",
     "jest-junit": "^6.3.0",
     "node-pre-gyp": "^0.12.0",
