@@ -65,13 +65,16 @@ const sendSlackMessage = async function(
         })
 
         const descriptionMessage = testMetaData.Description
+        // jest-docblock does not support multiline strings and seperates them with spaces.
+        // We enforce a standard of "-" surronded by spaces as the standard practice for making
+        // a new line in the description of a test.  
         await slack.chat.postMessage({
             channel: slackChannel,
             thread_ts: resParent.ts,
             attachments: [
                 {
                     title: 'Manual Steps for Sanity',
-                    text: descriptionMessage.replace(/-/gi, '\n- '),
+                    text: descriptionMessage.replace(/ - /gi, '\n- '),
                 },
             ],
         })
