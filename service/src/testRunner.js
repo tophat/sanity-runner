@@ -32,7 +32,7 @@ const runJest = async function(chromePath, ...args) {
     return result
 }
 
-const logResults = function(testFiles, results, testVariables, retryCount) {
+const logResults = function(results, testVariables, retryCount) {
     const newResult = {}
     const duration =
         (results.testResults[0].endTime - results.testResults[0].startTime) /
@@ -87,7 +87,7 @@ module.exports = class {
                     },
                 },
             )
-            logResults(testFiles, results.json, testVariables, retryCount)
+            logResults(results.json, testVariables, retryCount)
             await alertOnResult(testFiles, results.json, testVariables)
             return await run.format(results.json)
         } finally {
