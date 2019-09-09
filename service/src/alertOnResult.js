@@ -22,9 +22,9 @@ const sendSlackMessage = async function(
         const testResults = results.testResults[0]
 
         //obtain all screen shots
-        const screenShotAttachment = []
+        const screenShotAttachments = []
         for (const screenshotTitle of Object.keys(results.screenshots)) {
-            screenShotAttachment.push({
+            screenShotAttachments.push({
                 title: screenshotTitle,
                 image_url: results.screenshots[screenshotTitle],
                 color: '#D40E0D',
@@ -36,7 +36,7 @@ const sendSlackMessage = async function(
         const resParent = await slack.chat.postMessage({
             channel: slackChannel,
             text: parentMessage,
-            attachments: screenShotAttachment,
+            attachments: screenShotAttachments,
         })
 
         const errorMessage = `\`\`\`${testResults.message}\`\`\``
