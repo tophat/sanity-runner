@@ -72,9 +72,7 @@ const sendSlackMessage = async function(results, test, testMetaData, testVariabl
 
 module.exports = async function(testFiles, results, testVariables) {
     if(testVariables.hasOwnProperty('ALERT')){
-        console.log(testVariables.ALERT)
-        console.log(results)
-        if(testVariables.ALERT && testVariables.numFailedTests > 0){
+        if(testVariables.ALERT && results.numFailedTests > 0 ){
             for (test of Object.keys(testFiles)){
                 const testContents = testFiles[test]
                 const testMetaData = parse(testContents)
