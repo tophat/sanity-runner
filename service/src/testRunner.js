@@ -2,6 +2,7 @@ const paths = require('./paths')
 const execa = require('execa')
 const Run = require('./run')
 const retry = require('async-retry')
+const alertOnResult = require('./alertOnResult')
 
 const runJest = async function(chromePath, ...args) {
     const env = Object.assign({}, process.env, {
@@ -87,6 +88,7 @@ module.exports = class {
                 },
             )
             logResults(results.json, testVariables, retryCount)
+            await alertOnResult(testFiles, results.json, testVariables)
             return await run.format(results.json)
         } finally {
             await run.cleanup()
