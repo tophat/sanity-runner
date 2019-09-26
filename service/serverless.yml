@@ -2,7 +2,7 @@
 
 frameworkVersion: 1.34.1
 
-service: ${env:SERVERLESS_FUNC, self:custom.functon_name}
+service: ${env:SERVERLESS_CF, self:custom.cf_name}
 
 provider:
   name: aws
@@ -45,6 +45,7 @@ custom:
   accountId: ${env:SERVERLESS_ACCOUNTID, self:provider.tag}
   s3_bucket: sr-${self:custom.stage}-${self:custom.tag}
   functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}
+  cf_name: sanity-dev
 
 package:
   exclude:
