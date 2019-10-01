@@ -32,7 +32,7 @@ const sendSlackMessage = async function(
         }
 
         // Send Slack message and format into thread
-        const parentMessage = `Sanity... \`${test}\` has Failed!`
+        const parentMessage = `<!here> Sanity... \`${test}\` has Failed!`
         const resParent = await slack.chat.postMessage({
             channel: slackChannel,
             text: parentMessage,
