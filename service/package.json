@@ -20,7 +20,7 @@
     "aws-sdk": "^2.259.1",
     "eslint": "^5.9.0",
     "eslint-config-prettier": "^5.0.0",
-    "eslint-plugin-jest": "^22.1.2",
+    "eslint-plugin-jest": "^23.0.0",
     "eslint-plugin-prettier": "^3.0.0",
     "prettier": "^1.15.3",
     "serverless": "1.34.1"
