@@ -1,6 +1,6 @@
 ---
 
-frameworkVersion: 1.34.1
+frameworkVersion: 1.57.0
 
 service: ${env:SERVERLESS_CF, self:custom.cf_name}
 
@@ -45,7 +45,7 @@ custom:
   accountId: ${env:SERVERLESS_ACCOUNTID, self:provider.tag}
   s3_bucket: sr-${self:custom.stage}-${self:custom.tag}
   functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}
-  cf_name: sanity
+  cf_name: sanity-matt
 
 package:
   exclude:
@@ -56,7 +56,7 @@ package:
 
 functions:
   sanityLauncher:
-    runtime: nodejs8.10
+    runtime: nodejs10.x
     memorySize: 2048
     timeout: 600
     handler: src/lambdaHandler.handler

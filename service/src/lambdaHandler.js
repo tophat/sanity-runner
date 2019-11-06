@@ -1,10 +1,11 @@
 const TestRunner = require('./testRunner')
 const ChromeInstaller = require('./chromeInstaller')
-const execa = require('execa')
 const paths = require('./paths')
-const waitpid2 = require('waitpid2')
 const posix = require('posix')
 
+
+
+console.log("here")
 if (process.pid === 1) {
     // install a signal handler to collect child processes we may end up with unknowingly.
     // chrome currently leaks child processes and if we're pid1, we need to
@@ -40,7 +41,7 @@ if (process.pid === 1) {
 }
 
 module.exports.handler = async function(event, context, callback) {
-    console.log((await execa('/usr/bin/find', ['/tmp'])).stdout)
+    console.log(paths.chrome())
     const chrome = new ChromeInstaller({
         executablePath: paths.chrome(),
         s3Bucket: process.env.CHROME_BUCKET,

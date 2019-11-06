@@ -5,6 +5,7 @@ const retry = require('async-retry')
 const alertOnResult = require('./alertOnResult')
 
 const runJest = async function(chromePath, ...args) {
+    console.log(chromePath)
     const env = Object.assign({}, process.env, {
         CHROME_PATH: chromePath,
     })
@@ -17,6 +18,7 @@ const runJest = async function(chromePath, ...args) {
             reject: false,
         },
     )
+    console.log(result)
     try {
         result.json = JSON.parse((result.stdout || '').toString())
     } catch (e) {
@@ -56,6 +58,7 @@ const logResults = function(results, testVariables, retryCount) {
 
 module.exports = class {
     constructor(chromePath) {
+        console.log(chromePath)
         this.chromePath = chromePath
     }
 
