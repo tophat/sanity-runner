@@ -1,7 +1,8 @@
-const TestRunner = require('./testRunner')
 const ChromeInstaller = require('./chromeInstaller')
+const execa = require('execa')
 const paths = require('./paths')
 const posix = require('posix')
+const TestRunner = require('./testRunner')
 
 
 
@@ -41,7 +42,8 @@ if (process.pid === 1) {
 }
 
 module.exports.handler = async function(event, context, callback) {
-    console.log(paths.chrome())
+
+    console.log((await execa('find', ['/tmp'])).stdout)
     const chrome = new ChromeInstaller({
         executablePath: paths.chrome(),
         s3Bucket: process.env.CHROME_BUCKET,

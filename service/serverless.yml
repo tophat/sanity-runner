@@ -54,6 +54,14 @@ package:
     - Makefile
     - yarn.lock
 
+layers:
+  find:
+    package:
+      artifact: find.zip
+    compatibleRuntimes:
+      - nodejs10.x
+      - nodejs8.10
+
 functions:
   sanityLauncher:
     runtime: nodejs10.x
@@ -61,6 +69,8 @@ functions:
     timeout: 600
     handler: src/lambdaHandler.handler
     name: ${env:SERVERLESS_FUNC, self:custom.functon_name}
+    layers:
+      - { Ref: FindLambdaLayer }
 
 resources:
   Resources:
