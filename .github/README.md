@@ -1,6 +1,6 @@
 <div align="center"> <img src="./runner.png" width="400px;"/>
 
-[![Builds](https://img.shields.io/circleci/project/github/tophat/sanity-runner/master.svg)](https://circleci.com/gh/tophat/sanity-runner)
+[![Builds](https://img.shields.io/circleci/project/github/tophat/sanity-runner/master.svg)](https://circleci.com/gh/tophat/sanity-runner/tree/master)
 [![Greenkeeper badge](https://badges.greenkeeper.io/tophat/sanity-runner.svg)](https://greenkeeper.io/) <br />
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat)](#Contributing)
 [![Maturity badge - level 2](https://img.shields.io/badge/Maturity-Level%202%20--%20First%20Release-yellowgreen.svg)](https://github.com/tophat/getting-started/blob/master/scorecard.md)
@@ -50,7 +50,7 @@ make -C service deploy
 make -C client install
 make -C client package
 ```
-## Usage
+## [Usage](../client/README.md)
 
 Ensure AWS Creds are setup
 ```
@@ -61,6 +61,22 @@ export AWS_REGION=<AWS region>
 Run Client against folder with written sanity tests
 ```
 sanity-runner --test-dir example/repo/sanities --output-dir output
+```
+
+## Docker 
+
+```
+docker pull tophat/sanity-runner:latest
+```
+
+To run your tests...
+```
+docker run -it -v <path to dir with your tests>:/tests -v ~/.aws/credentials -e AWS_PROFILE -e AWS_REGION sanity-runner
+```
+
+You can also pass in your own custom config.json file
+```
+docker run -it -v <path to your config.son>:/config.json -v <path to dir with your tests>:/tests sanity-runner
 ```
 
 ## References

@@ -7,11 +7,21 @@ const AWS = require('aws-sdk')
 
 const { formatTestResults } = require('./utils')
 
-async function testResultPromise(functionName, testFiles, testVariables) {
-    const lambda = new AWS.Lambda()
+async function testResultPromise(
+    functionName,
+    testFiles,
+    testVariables,
+    retryCount,
+) {
+    const lambda = new AWS.Lambda({
+        apiVersion: '2015-03-31',
+        httpOptions: {
+            timeout: 360000,
+        },
+    })
     const params = {
         FunctionName: functionName,
-        Payload: JSON.stringify({ testFiles, testVariables }),
+        Payload: JSON.stringify({ testFiles, testVariables, retryCount }),
     }
     const retryOptions = {
         minTimeout: 3000,
@@ -67,12 +77,19 @@ function reduceTestResults(accumulated, current) {
  * @param {string} outputDir
  * @param {Object.<string, string>} testVariables
  */
-async function runTests(functionName, testFiles, outputDir, testVariables) {
+async function runTests(
+    functionName,
+    testFiles,
+    outputDir,
+    testVariables,
+    retryCount,
+) {
     const promises = Object.entries(testFiles).map(entry =>
         testResultPromise(
             functionName,
             { [entry[0]]: entry[1] },
             testVariables,
+            retryCount,
         ),
     )
     return Promise.all(promises).then(

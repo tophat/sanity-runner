@@ -45,25 +45,38 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - setup_remote_docker
       - run: make -C client install
       - run: make -C service install
       - run: make -C client package
       - run: make -C service package
+      - run: make -C client build-docker
       - run: make install
       - run: make create-release-package
       - run: make deploy-release-dry
+      - run:
+          name: "Cache Docker Image"
+          command: |
+            mkdir -p docker-cache
+            docker save -o docker-cache/sanity-docker.tar tophat/sanity-runner:latest
       - persist_to_workspace:
           root: ./
           paths:
             - release-archive/
+            - docker-cache/
   deploy:
     <<: *docker_defaults
     working_directory: ~/repo
     steps:
       - checkout
+      - setup_remote_docker
       - attach_workspace:
-          at: ~/release-archive
+          at: ~/repo
       - run: make install
+      - run: 
+          name: "Get Docker Image"
+          command: |
+            docker load < ~/repo/docker-cache/sanity-docker.tar
       - run: make deploy-release
   website:
     <<: *website_docker_defaults
@@ -99,7 +112,7 @@ workflows:
   build_and_test:
     jobs:
       - lint
-      - build
+      - build  
       - deploy:
           requires:
             - build

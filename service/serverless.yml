@@ -2,7 +2,7 @@
 
 frameworkVersion: 1.34.1
 
-service: sanity
+service: ${env:SERVERLESS_CF, self:custom.cf_name}
 
 provider:
   name: aws
@@ -16,6 +16,21 @@ provider:
         - s3:PutObject
       Resource:
         - "arn:aws:s3:::${self:custom.s3_bucket}/*"
+    - Effect: Allow
+      Action:
+        - secretsmanager:GetResourcePolicy
+        - secretsmanager:GetSecretValue
+        - secretsmanager:DescribeSecret
+        - secretsmanager:ListSecretVersionIds
+      Resource:
+        - "arn:aws:secretsmanager:${self:custom.region}:${self:custom.accountId}:secret:sanity_runner/*"
+    - Effect: Allow
+      Action:
+        - mobiletargeting:GetApps
+        - mobiletargeting:SendMessages
+      Resource:
+        - "arn:aws:mobiletargeting:${self:custom.region}:${self:custom.accountId}:apps/*"
+
   environment:
     SLS_STAGE: ${self:custom.stage}
     S3_BUCKET: ${self:custom.s3_bucket}
@@ -27,8 +42,10 @@ custom:
   region: ${env:SERVERLESS_REGION, self:provider.region}
   stage: ${env:SERVERLESS_STAGE, self:provider.stage}
   tag: ${env:SERVERLESS_TAG, self:provider.tag}
+  accountId: ${env:SERVERLESS_ACCOUNTID, self:provider.tag}
   s3_bucket: sr-${self:custom.stage}-${self:custom.tag}
   functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}
+  cf_name: sanity
 
 package:
   exclude:
@@ -41,7 +58,7 @@ functions:
   sanityLauncher:
     runtime: nodejs8.10
     memorySize: 2048
-    timeout: 90
+    timeout: 600
     handler: src/lambdaHandler.handler
     name: ${env:SERVERLESS_FUNC, self:custom.functon_name}
 
