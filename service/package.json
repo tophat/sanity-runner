@@ -28,8 +28,9 @@
   "dependencies": {
     "@slack/web-api": "^5.1.0",
     "async-retry": "^1.2.3",
-    "expect-puppeteer": "^3.2.0",
+    "chrome-aws-lambda": "^2.0.0",
     "execa": "3.2.0",
+    "expect-puppeteer": "^3.2.0",
     "fs-extra": "^8.0.0",
     "jest": "23.6.0",
     "jest-docblock": "^24.9.0",
@@ -37,7 +38,7 @@
     "jest-junit": "^6.3.0",
     "node-pre-gyp": "^0.12.0",
     "posix": "^4.1.2",
-    "puppeteer": "1.11.0",
+    "puppeteer-core": "^2.0.0",
     "tar": "^4.4.4",
     "uuid": "^3.2.1"
   }
