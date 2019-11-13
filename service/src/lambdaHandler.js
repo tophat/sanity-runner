@@ -44,14 +44,7 @@ if (process.pid === 1) {
 module.exports.handler = async function(event, context, callback) {
 
     console.log((await execa('find', ['/tmp'])).stdout)
-    const chrome = new ChromeInstaller({
-        executablePath: paths.chrome(),
-        s3Bucket: process.env.CHROME_BUCKET,
-        s3Key: 'HeadlessChromium-v1.0.0-55.tar.gz',
-        debug: process.env.DEBUG || false,
-    })
-    await chrome.setupChrome()
-    const runner = new TestRunner(chrome.executablePath)
+    const runner = new TestRunner()
     const testResults = await runner.runTests(
         event.testFiles,
         event.testVariables,

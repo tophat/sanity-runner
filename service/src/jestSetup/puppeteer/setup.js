@@ -12,10 +12,6 @@ module.exports = async () => {
         executablePath: await chromium.executablePath,
         headless: chromium.headless
     }
-    if (!process.env.IS_LOCAL) {
-        config.args.push('--disable-gpu', '--single-process')
-        config.executablePath = process.env.CHROME_PATH
-    }
     const browser = await chromium.puppeteer.launch(config)
     global.__BROWSER__ = browser
     await fs.mkdirs(DIR)
