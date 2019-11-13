@@ -5,7 +5,6 @@ const retry = require('async-retry')
 const alertOnResult = require('./alertOnResult')
 
 const runJest = async function(chromePath, ...args) {
-    console.log(chromePath)
     const env = Object.assign({}, process.env, {
         CHROME_PATH: chromePath,
     })
