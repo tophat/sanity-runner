@@ -4,7 +4,10 @@ module.exports = {
         '@semantic-release/release-notes-generator',
         ["@semantic-release/github", {
             "assets": [
-                {"path": "release-archive/*"}
+                { "path": "./release-archive/*"},
+                { "path": "./release-archive/sanity-runner-linux" },
+                { "path": "./release-archive/sanity-runner-macos" },
+                { "path": "./release-archive/sanity-runner-win.exe" }
             ]
         }],
         ['semantic-release-docker', {
