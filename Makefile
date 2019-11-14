@@ -26,4 +26,3 @@ create-release-package:
 check-versions:
 	@./infrastructure/scripts/check-versions.sh
 
-
