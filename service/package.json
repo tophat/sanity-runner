@@ -40,6 +40,8 @@
     "posix": "^4.1.2",
     "puppeteer-core": "^2.0.0",
     "tar": "^4.4.4",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "waitpid2": "git://github.com/unbounce/node-waitpid2"
+
   }
 }

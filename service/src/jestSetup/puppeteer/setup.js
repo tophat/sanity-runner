@@ -1,7 +1,7 @@
 const fs = require('fs-extra')
 const os = require('os')
 const path = require('path')
-const chromium = require('chrome-aws-lambda');
+const chromium = require('chrome-aws-lambda')
 
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
 
@@ -10,7 +10,7 @@ module.exports = async () => {
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath,
-        headless: chromium.headless
+        headless: chromium.headless,
     }
     const browser = await chromium.puppeteer.launch(config)
     global.__BROWSER__ = browser

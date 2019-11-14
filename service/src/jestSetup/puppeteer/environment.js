@@ -1,9 +1,8 @@
-const chromium = require('chrome-aws-lambda');
+const chromium = require('chrome-aws-lambda')
 const NodeEnvironment = require('jest-environment-node')
 const fs = require('fs-extra')
 const os = require('os')
 const path = require('path')
-
 
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
 const wsEndpointDir = path.join(DIR, 'wsEndpoint')

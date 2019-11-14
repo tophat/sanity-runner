@@ -56,7 +56,6 @@ const logResults = function(results, testVariables, retryCount) {
 }
 
 module.exports = class {
-
     async runTests(testFiles, testVariables, maxRetryCount) {
         let retryCount = 0
         const run = new Run(testVariables)

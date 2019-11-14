@@ -34,7 +34,6 @@ provider:
   environment:
     SLS_STAGE: ${self:custom.stage}
     S3_BUCKET: ${self:custom.s3_bucket}
-    CHROME_BUCKET: ${self:custom.s3_bucket}/chrome
     SCREENSHOT_BUCKET: ${self:custom.s3_bucket}/screenshots
 
 

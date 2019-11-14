@@ -51,7 +51,7 @@ package: check-versions
 deploy: check-versions 
 	serverless deploy --package "${BUILD_DIR}"
 	echo Function: "sanity-runner-${SERVERLESS_STAGE}-${SERVERLESS_TAG}"
-s
+
 # ----- Helpers -----
 .PHONY: check-versions
 check-versions:
