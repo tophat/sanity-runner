@@ -17,7 +17,12 @@ module.exports = {
                   "path": "semantic-release-docker",
                   "name": "tophat/sanity-runner"
                 }
-              }
+              },
+            "assets": [ 
+                { "path": "./release-archive/sanity-runner-linux" },
+                { "path": "./release-archive/sanity-runner-macos" },
+                { "path": "./release-archive/sanity-runner-win.exe" }
+            ]
         }]
     ]
 }
