@@ -17,7 +17,6 @@ const runJest = async function(chromePath, ...args) {
             reject: false,
         },
     )
-    console.log(result)
     try {
         result.json = JSON.parse((result.stdout || '').toString())
     } catch (e) {
