@@ -44,7 +44,7 @@ custom:
   accountId: ${env:SERVERLESS_ACCOUNTID, self:provider.tag}
   s3_bucket: sr-${self:custom.stage}-${self:custom.tag}
   functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}
-  cf_name: sanity-matt
+  cf_name: sanity
 
 package:
   exclude:
