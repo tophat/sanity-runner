@@ -1,7 +1,8 @@
-const paths = require('./paths')
 const execa = require('execa')
-const Run = require('./run')
 const retry = require('async-retry')
+
+const paths = require('./paths')
+const Run = require('./run')
 const alertOnResult = require('./alertOnResult')
 
 const runJest = async function(chromePath, ...args) {

@@ -1,7 +1,9 @@
-const fs = require('fs-extra')
 const path = require('path')
-const { SCREENSHOT_FILENAME } = require('../constants')
+
+const fs = require('fs-extra')
 const getState = require('expect/build/jest_matchers_object').getState
+
+const { SCREENSHOT_FILENAME } = require('../constants')
 
 require('expect-puppeteer') // modifies globals!
 

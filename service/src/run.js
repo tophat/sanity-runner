@@ -1,5 +1,6 @@
 const uuidv4 = require('uuid/v4')
 const fs = require('fs-extra')
+
 const paths = require('./paths')
 
 module.exports = class {

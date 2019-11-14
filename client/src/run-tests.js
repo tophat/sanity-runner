@@ -1,8 +1,8 @@
-const fs = require('fs-extra')
 const https = require('https')
 const path = require('path')
-const promiseRetry = require('promise-retry')
 
+const fs = require('fs-extra')
+const promiseRetry = require('promise-retry')
 const AWS = require('aws-sdk')
 
 const { formatTestResults } = require('./utils')

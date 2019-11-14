@@ -1,5 +1,6 @@
 const { parse } = require('jest-docblock')
 const { WebClient } = require('@slack/web-api')
+
 const secretmanager = require('./secrets')
 
 const sendSlackMessage = async function(
@@ -12,7 +13,9 @@ const sendSlackMessage = async function(
         const slackToken = await secretmanager.getSecretValue(
             'sanity_runner/slack_api_token',
         )
-        if (!slackToken.hasOwnProperty('slack_api_token')) {
+        if (
+            !Object.prototype.hasOwnProperty.call(slackToken, 'slack_api_token')
+        ) {
             console.log('Slack Token was not retrieved')
             return 1
         }
@@ -84,7 +87,7 @@ const sendSlackMessage = async function(
 }
 
 module.exports = async function(testFiles, results, testVariables) {
-    if (testVariables.hasOwnProperty('ALERT')) {
+    if (Object.prototype.hasOwnProperty.call(testVariables, 'ALERT')) {
         if (testVariables.ALERT && results.numFailedTests > 0) {
             for (const testFile of Object.keys(testFiles)) {
                 const testContents = testFiles[testFile]

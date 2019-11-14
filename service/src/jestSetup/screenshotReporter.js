@@ -1,5 +1,6 @@
-const fs = require('fs-extra')
 const path = require('path')
+
+const fs = require('fs-extra')
 const AWS = require('aws-sdk')
 const uuidv4 = require('uuid/v4')
 

@@ -1,5 +1,4 @@
 const fs = require('fs-extra')
-
 const _ = require('lodash')
 const chalk = require('chalk')
 const xml2js = require('xml2js')

@@ -1,6 +1,7 @@
+const path = require('path')
+
 const AWS = require('aws-sdk')
 const fs = require('fs-extra')
-const path = require('path')
 const tar = require('tar')
 
 class ChromeInstaller {
