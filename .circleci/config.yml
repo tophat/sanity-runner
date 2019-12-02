@@ -6,7 +6,7 @@ website_docker_defaults: &website_docker_defaults
 
 docker_defaults: &docker_defaults
   docker:
-    - image: circleci/node:8.10.0
+    - image: circleci/node:10.16.3
 
 commands:
   prep_website_env:

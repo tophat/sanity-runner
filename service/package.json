@@ -23,11 +23,13 @@
     "eslint-plugin-jest": "^22.1.2",
     "eslint-plugin-prettier": "^3.0.0",
     "prettier": "^1.15.3",
-    "serverless": "1.34.1"
+    "serverless": "1.57.0"
   },
   "dependencies": {
     "@slack/web-api": "^5.1.0",
     "async-retry": "^1.2.3",
+    "chrome-aws-lambda": "^2.0.0",
+    "execa": "3.2.0",
     "expect-puppeteer": "^3.2.0",
     "fs-extra": "^8.0.0",
     "jest": "23.6.0",
@@ -36,9 +38,10 @@
     "jest-junit": "^6.3.0",
     "node-pre-gyp": "^0.12.0",
     "posix": "^4.1.2",
-    "puppeteer": "1.11.0",
+    "puppeteer-core": "^2.0.0",
     "tar": "^4.4.4",
     "uuid": "^3.2.1",
-    "waitpid2": "git://github.com/joshiggins/node-waitpid2.git#2270e88"
+    "waitpid2": "git://github.com/unbounce/node-waitpid2"
+
   }
 }

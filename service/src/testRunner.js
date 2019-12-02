@@ -6,7 +6,7 @@ const alertOnResult = require('./alertOnResult')
 
 const runJest = async function(chromePath, ...args) {
     const env = Object.assign({}, process.env, {
-        CHROME_PATH: chromePath,
+        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true,
     })
     const result = await execa(
         paths.jest(),
@@ -55,10 +55,6 @@ const logResults = function(results, testVariables, retryCount) {
 }
 
 module.exports = class {
-    constructor(chromePath) {
-        this.chromePath = chromePath
-    }
-
     async runTests(testFiles, testVariables, maxRetryCount) {
         let retryCount = 0
         const run = new Run(testVariables)

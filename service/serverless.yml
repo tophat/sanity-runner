@@ -1,6 +1,6 @@
 ---
 
-frameworkVersion: 1.34.1
+frameworkVersion: 1.57.0
 
 service: ${env:SERVERLESS_CF, self:custom.cf_name}
 
@@ -34,7 +34,6 @@ provider:
   environment:
     SLS_STAGE: ${self:custom.stage}
     S3_BUCKET: ${self:custom.s3_bucket}
-    CHROME_BUCKET: ${self:custom.s3_bucket}/chrome
     SCREENSHOT_BUCKET: ${self:custom.s3_bucket}/screenshots
 
 
@@ -54,17 +53,27 @@ package:
     - Makefile
     - yarn.lock
 
+layers:
+  find:
+    package:
+      artifact: find.zip
+    compatibleRuntimes:
+      - nodejs10.x
+      - nodejs8.10
+
 functions:
   sanityLauncher:
-    runtime: nodejs8.10
+    runtime: nodejs10.x
     memorySize: 2048
     timeout: 600
     handler: src/lambdaHandler.handler
     name: ${env:SERVERLESS_FUNC, self:custom.functon_name}
+    layers:
+      - { Ref: FindLambdaLayer }
 
 resources:
   Resources:
-    THMChromeImages:
+    SanityBucket:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.s3_bucket}

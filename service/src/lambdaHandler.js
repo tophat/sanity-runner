@@ -1,9 +1,7 @@
-const TestRunner = require('./testRunner')
-const ChromeInstaller = require('./chromeInstaller')
 const execa = require('execa')
-const paths = require('./paths')
-const waitpid2 = require('waitpid2')
 const posix = require('posix')
+const waitpid2 = require('waitpid2')
+const TestRunner = require('./testRunner')
 
 if (process.pid === 1) {
     // install a signal handler to collect child processes we may end up with unknowingly.
@@ -40,15 +38,8 @@ if (process.pid === 1) {
 }
 
 module.exports.handler = async function(event, context, callback) {
-    console.log((await execa('/usr/bin/find', ['/tmp'])).stdout)
-    const chrome = new ChromeInstaller({
-        executablePath: paths.chrome(),
-        s3Bucket: process.env.CHROME_BUCKET,
-        s3Key: 'HeadlessChromium-v1.0.0-55.tar.gz',
-        debug: process.env.DEBUG || false,
-    })
-    await chrome.setupChrome()
-    const runner = new TestRunner(chrome.executablePath)
+    console.log((await execa('find', ['/tmp'])).stdout)
+    const runner = new TestRunner()
     const testResults = await runner.runTests(
         event.testFiles,
         event.testVariables,
