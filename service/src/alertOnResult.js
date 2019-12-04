@@ -31,11 +31,9 @@ const sendSlackMessage = async function(
             })
         }
 
-        const app_env = testVariables.APP_ENV || '!APP_ENV not supplied!'
+        const appEnv = testVariables.APP_ENV || '!APP_ENV not supplied!'
         // Send Slack message and format into thread
-        const parentMessage = `Sanity... \`${test}\` has failed in \`${
-            app_env
-        }\`!`
+        const parentMessage = `Sanity... \`${test}\` has failed in \`${appEnv}\`!`
         const resParent = await slack.chat.postMessage({
             channel: slackChannel,
             text: parentMessage,
