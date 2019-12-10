@@ -76,4 +76,4 @@ resources:
     SanityBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.s3_bucket}
+        BucketName: ${env:SERVERLESS_S3_BUCKET_NAME, self:custom.s3_bucket}
