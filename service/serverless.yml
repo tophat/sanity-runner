@@ -42,7 +42,8 @@ custom:
   stage: ${env:SERVERLESS_STAGE, self:provider.stage}
   tag: ${env:SERVERLESS_TAG, self:provider.tag}
   accountId: ${env:SERVERLESS_ACCOUNTID, self:provider.tag}
-  s3_bucket: sr-${self:custom.stage}-${self:custom.tag}
+  s3_bucket_default: sr-${self:custom.stage}-${self:custom.tag}
+  s3_bucket: ${env:SERVERLESS_S3_BUCKET_NAME, self:custom.s3_bucket_default}
   functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}
   cf_name: sanity
 
@@ -76,4 +77,4 @@ resources:
     SanityBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${env:SERVERLESS_S3_BUCKET_NAME, self:custom.s3_bucket}
+        BucketName: ${self:custom.s3_bucket}
