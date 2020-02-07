@@ -29,7 +29,7 @@ module.exports = class {
                     '<rootDir>/src/jestSetup/screenshotReporter',
                     {
                         output: paths.results(this.id),
-                        urlExpirySeconds: 3600,
+                        urlExpirySeconds: 7200,
                         bucket: process.env.SCREENSHOT_BUCKET,
                     },
                 ],
