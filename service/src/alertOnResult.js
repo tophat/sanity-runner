@@ -30,7 +30,9 @@ const sendSlackMessage = async function(
                 image_url: results.screenshots[screenshotTitle],
                 color: '#D40E0D',
             })
-            screenShotUrls.push(results.screenshots[screenshotTitle].split("AWSAccessKeyId")[0])
+            screenShotUrls.push(
+                results.screenshots[screenshotTitle].split('AWSAccessKeyId')[0],
+            )
         }
 
         const appEnv = testVariables.APP_ENV || '!APP_ENV not supplied!'
@@ -41,8 +43,10 @@ const sendSlackMessage = async function(
             text: parentMessage,
         })
 
-        const screenshotMessage = `Attached Screenshot at time of error. Screenshot s3 URL(s): ${screenShotUrls.join(", ")}`
-        
+        const screenshotMessage = `Attached Screenshot at time of error. Screenshot s3 URL(s): ${screenShotUrls.join(
+            ', ',
+        )}`
+
         await slack.chat.postMessage({
             channel: slackChannel,
             thread_ts: resParent.ts,
