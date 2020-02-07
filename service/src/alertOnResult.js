@@ -42,6 +42,7 @@ const sendSlackMessage = async function(
         })
 
         const screenshotMessage = `Attached Screenshot at time of error. Screenshot s3 URL(s): ${screenShotUrls.join(", ")}`
+        
         await slack.chat.postMessage({
             channel: slackChannel,
             thread_ts: resParent.ts,
