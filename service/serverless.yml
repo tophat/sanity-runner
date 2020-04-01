@@ -9,6 +9,7 @@ provider:
   region: us-east-1
   stage: dev
   tag: default
+  vpc: ${self:custom.vpc.${env:SERVERLESS_VPC_ENABLED, 'false'}}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -46,6 +47,12 @@ custom:
   s3_bucket: ${env:SERVERLESS_S3_BUCKET_NAME, self:custom.s3_bucket_default}
   functon_name: sanity-runner-${self:custom.stage}-${self:custom.tag}
   cf_name: sanity
+  vpc:
+    true:
+      securityGroupIds:
+        - ${env:SERVERLESS_SG_ID, "not_set"}
+      subnetIds:
+        - ${env:SERVERLESS_SUBNET_ID, "not_set"}
 
 package:
   exclude:
