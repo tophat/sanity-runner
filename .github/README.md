@@ -36,7 +36,8 @@ sh sanity-runner-bootstrap.sh -v X.X.X
 
 ### Build From Source
 
-#### Serverless // Lambda
+#### [Serverless // Lambda](../service/README.md) 
+
 ```
 export AWS_PROFILE=<AWS account>
 export AWS_REGION=<AWS region>
