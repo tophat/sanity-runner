@@ -7,8 +7,7 @@ const sendPagerDutyAlert = async function(message, testMetaData) {
     try {
         const pd = new pdClient()
         if (!testMetaData.pgIntegrationId) {
-            console.log('No Pagerduty Integration Id supplied in test Metadata')
-            return 1
+            throw new Error('No Pagerduty Integration Id supplied in test Metadata')
         }
         const pagerDutySecret = await secretmanager.getSecretValue(
             `sanity_runner/${testMetaData.pgIntegrationId}`,
@@ -34,7 +33,6 @@ const sendPagerDutyAlert = async function(message, testMetaData) {
                 message.attachments.screenShots[screenshotTitle],
             )
         }
-        console.log(screenShotAttachments)
 
         const pl = {
             routing_key: pgIntegrationId.toString(),
@@ -71,7 +69,6 @@ const sendSlackMessage = async function(message, testMetaData) {
         const slack = new WebClient(slackToken.slack_api_token)
         const slackChannel = testMetaData.Slack
 
-        console.log(message.message)
         // Send Slack message and format into thread
         const resParent = await slack.chat.postMessage({
             channel: slackChannel,
@@ -141,7 +138,7 @@ const sendSlackMessage = async function(message, testMetaData) {
             ],
         })
     } catch (err) {
-        console.log(err)
+        console.error(err)
     }
 }
 
