@@ -4,7 +4,7 @@ The sanity-runner service is a lambda function that sits in AWS. It takes a [jes
 
 # Configuration
 
-We currently use [serverless](https://serverless.com/framework/docs/) to deploy to AWS lambda. We use Environment variables to help define resource names allowing for easy deployment of multiple sanity-runners across the same envrionment.
+We currently use [serverless](https://serverless.com/framework/docs/) to deploy to AWS lambda. We use environment variables to help define resource names allowing for easy deployment of multiple sanity-runners across the same environment.
 
 ## Environment Variables
 
