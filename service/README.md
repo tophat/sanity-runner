@@ -34,7 +34,7 @@ If wanting to just quickly deploy the lambda without conflicting with anything, 
 make install
 ```
 
-If Running on a non-linux system, we recommend using `make install-mac` instead of make install. This will compile the dependencies in a linux docker container, ensuring they are compiled for the correct OS. (other wise they will compile for Mac OS and break when published to AWS Lambda)
+If running on a non-linux system, we recommend using `make install-mac` instead of make install. This will compile the dependencies in a linux docker container, ensuring they are compiled for the correct OS. (other wise they will compile for Mac OS and break when published to AWS Lambda)
 ```
 make install-mac
 ```
