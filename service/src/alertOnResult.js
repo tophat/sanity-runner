@@ -7,7 +7,9 @@ const sendPagerDutyAlert = async function(message, testMetaData) {
     try {
         const pd = new pdClient()
         if (!testMetaData.pgIntegrationId) {
-            throw new Error('No Pagerduty Integration Id supplied in test Metadata')
+            throw new Error(
+                'No Pagerduty Integration Id supplied in test Metadata',
+            )
         }
         const pagerDutySecret = await secretmanager.getSecretValue(
             `sanity_runner/${testMetaData.pgIntegrationId}`,
@@ -160,12 +162,16 @@ const constructMessage = async function(
     for (const screenshotTitle of Object.keys(results.screenshots)) {
         screenShots.push(results.screenshots[screenshotTitle])
     }
+    console.log(testMetaData)
+    const manualSteps = testMetaData.Description
+        ? testMetaData.Description.replace(/ - /gi, '\n- ')
+        : ''
 
     const message = {
         message: mainMessage,
         errorMessage: errorMessage,
         variables: testVariables,
-        manualSteps: testMetaData.Description.replace(/ - /gi, '\n- '),
+        manualSteps: manualSteps,
         attachments: {
             screenShots: screenShots,
         },
