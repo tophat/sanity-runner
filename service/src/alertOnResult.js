@@ -194,6 +194,11 @@ module.exports = async function(testFiles, results, testVariables) {
                 if (testVariables.SLACK_ALERT) {
                     await sendSlackMessage(message, testMetaData)
                 }
+            } else if (testVariables.hasOwnProperty('ALERT')) {
+                // Will delete eventually, but ensures no one using previous ENV will have their alerts break
+                if (testVariables.ALERT) {
+                    await sendSlackMessage(message, testMetaData)
+                }
             }
             if (testVariables.hasOwnProperty('PAGERDUTY_ALERT')) {
                 if (testVariables.PAGERDUTY_ALERT) {
