@@ -21,6 +21,30 @@ We currently use [serverless](https://serverless.com/framework/docs/) to deploy 
 | `SERVERLESS_SG_ID`          | "not_set"                                             | Security Group to associate with the lambda function. Requires `VPC_ENABLED="true"` |
 | `SERVERLESS_SUBNET_ID`      | "not_set                                              | Subnet to associate with the lambda function. Requires `VPC_ENABLED="true"` |
 
+## Alerting 
+
+Sanity Runner supports two backends currently for alerting. (Pagerduty alerts and Slack messages)
+
+## Slack
+
+Requires a slack api key to be in AWS Secret Manager with the formatted name `sanity_runner/slack_api_token`. This secret should be set up with the secret/value pair of `secret:`slack_api_token and `value:` <insert slack_api_token>
+
+
+## Pagerduty
+
+Requires a Pagerduty integration key. The key should be stored in AWS Secret Manager with the formatted name `sanity_runner/pagerduty_<name of pagerduty service>`. This secret should be set up with the secret.value pair of `secret:` integration_key `value:` <integration key for intended service>. This key is optional and setup via each test by using the `@pgIntegrationId` Metadata Field.
+
+ex)
+
+```
+/**
+ * @Owner Some Team
+ * @Slack #someslack-id
+ * @pgIntegrationId pagerduty-tophat
+ * @Description 
+ *  - It does this
+ */
+```
 
 ## Quick Start
 

@@ -48,3 +48,21 @@ Variables within the config.json must be set via camel case
   "lambdaFunction": "sanity-runner-dev-default"
 }
 ```
+
+## Supported Variables
+
+### SLACK_ALERT
+```
+sanity-runner --var SLACK_ALERT=true
+``` 
+Enables 
+
+### PAGERDUTY_ALERT
+```
+sanity-runner --var SLACK_ALERT=true
+``` 
+
+### APP_ENV
+```
+sanity-runner --var APP_ENV=true
+``` 
