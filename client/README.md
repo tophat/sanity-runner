@@ -55,14 +55,16 @@ Variables within the config.json must be set via camel case
 ```
 sanity-runner --var SLACK_ALERT=true
 ``` 
-Enables 
+Enables Slack alerts to trigger if configured
 
 ### PAGERDUTY_ALERT
 ```
 sanity-runner --var SLACK_ALERT=true
 ``` 
+Enables Slack alerts to trigger if configured
 
 ### APP_ENV
 ```
 sanity-runner --var APP_ENV=true
 ``` 
+Used in alerting to help signify which Environment the tests are running in. 
