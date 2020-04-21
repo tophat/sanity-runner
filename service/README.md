@@ -40,7 +40,7 @@ ex)
 /**
  * @Owner Some Team
  * @Slack #someslack-id
- * @pgIntegrationId pagerduty-tophat
+ * @Pagerduty pagerduty-tophat
  * @Description 
  *  - It does this
  */

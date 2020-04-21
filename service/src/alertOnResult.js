@@ -6,18 +6,18 @@ const pdClient = require('node-pagerduty')
 const sendPagerDutyAlert = async function(message, testMetaData) {
     try {
         const pd = new pdClient()
-        if (!testMetaData.pgIntegrationId) {
+        if (!testMetaData.Pagerduty) {
             throw new Error(
                 'No Pagerduty Integration Id supplied in test Metadata',
             )
         }
         const pagerDutySecret = await secretmanager.getSecretValue(
-            `sanity_runner/${testMetaData.pgIntegrationId}`,
+            `sanity_runner/${testMetaData.Pagerduty}`,
         )
         if (!pagerDutySecret.hasOwnProperty('integration_key')) {
             throw new Error(
                 `Secret sanity_runner/${
-                    testMetaData.pgIntegrationId
+                    testMetaData.Pagerduty
                 } not found in AWS Secret Manager!`,
             )
         }
