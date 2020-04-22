@@ -1,52 +1,101 @@
 const { parse } = require('jest-docblock')
 const { WebClient } = require('@slack/web-api')
 const secretmanager = require('./secrets')
+const pdClient = require('node-pagerduty')
 
-const sendSlackMessage = async function(
-    results,
-    test,
-    testMetaData,
-    testVariables,
-) {
+const sendPagerDutyAlert = async function(message, testMetaData) {
+    try {
+        const pd = new pdClient()
+        if (!testMetaData.Pagerduty) {
+            throw new Error(
+                'No Pagerduty Integration Id supplied in test Metadata',
+            )
+        }
+        const pagerDutySecret = await secretmanager.getSecretValue(
+            `sanity_runner/${testMetaData.Pagerduty}`,
+        )
+        if (!pagerDutySecret.hasOwnProperty('integration_key')) {
+            throw new Error(
+                `Secret sanity_runner/${
+                    testMetaData.Pagerduty
+                } not found in AWS Secret Manager!`,
+            )
+        }
+        const pgIntegrationId = pagerDutySecret.integration_key
+
+        const screenShotAttachments = []
+        const screenShotUrls = []
+        for (const screenshotTitle of Object.keys(
+            message.attachments.screenShots,
+        )) {
+            screenShotAttachments.push({
+                src: message.attachments.screenShots[screenshotTitle],
+            })
+            screenShotUrls.push(
+                message.attachments.screenShots[screenshotTitle],
+            )
+        }
+
+        const pl = {
+            routing_key: pgIntegrationId.toString(),
+            event_action: 'trigger',
+            images: screenShotAttachments,
+            payload: {
+                summary: message.message,
+                source: 'Sanity Runner',
+                severity: 'critical',
+                custom_details: {
+                    errorMessage: message.errorMessage,
+                    manualSteps: message.manualSteps,
+                    s3ImageLinks: screenShotUrls.join(', '),
+                },
+            },
+        }
+
+        await pd.events.sendEvent(pl)
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+const sendSlackMessage = async function(message, testMetaData) {
     try {
         const slackToken = await secretmanager.getSecretValue(
             'sanity_runner/slack_api_token',
         )
         if (!slackToken.hasOwnProperty('slack_api_token')) {
-            console.log('Slack Token was not retrieved')
-            return 1
+            throw new Error(
+                `Secret sanity_runner/slack_api_token not found in AWS Secret Manager!`,
+            )
         }
         const slack = new WebClient(slackToken.slack_api_token)
         const slackChannel = testMetaData.Slack
 
-        const testResults = results.testResults[0]
+        // Send Slack message and format into thread
+        const resParent = await slack.chat.postMessage({
+            channel: slackChannel,
+            text: message.message,
+        })
 
-        //obtain all screen shots
         const screenShotAttachments = []
         const screenShotUrls = []
-        for (const screenshotTitle of Object.keys(results.screenshots)) {
+        for (const screenshotTitle of Object.keys(
+            message.attachments.screenShots,
+        )) {
             screenShotAttachments.push({
                 title: screenshotTitle,
-                image_url: results.screenshots[screenshotTitle],
+                image_url: message.attachments.screenShots[screenshotTitle],
                 color: '#D40E0D',
             })
             screenShotUrls.push(
-                results.screenshots[screenshotTitle].split('AWSAccessKeyId')[0],
+                message.attachments.screenShots[screenshotTitle].split(
+                    'AWSAccessKeyId',
+                )[0],
             )
         }
-
-        const appEnv = testVariables.APP_ENV || '!APP_ENV not supplied!'
-        // Send Slack message and format into thread
-        const parentMessage = `Sanity... \`${test}\` has failed in \`${appEnv}\`!`
-        const resParent = await slack.chat.postMessage({
-            channel: slackChannel,
-            text: parentMessage,
-        })
-
         const screenshotMessage = `Attached Screenshot at time of error. Screenshot s3 URL(s): ${screenShotUrls.join(
             ', ',
         )}`
-
         await slack.chat.postMessage({
             channel: slackChannel,
             thread_ts: resParent.ts,
@@ -54,32 +103,29 @@ const sendSlackMessage = async function(
             attachments: screenShotAttachments,
         })
 
-        const errorMessage = `\`\`\`${testResults.message}\`\`\``
         await slack.chat.postMessage({
             channel: slackChannel,
             thread_ts: resParent.ts,
             attachments: [
                 {
                     title: 'Error Message',
-                    text: errorMessage,
+                    text: message.errorMessage,
                     color: '#D40E0D',
                 },
             ],
         })
 
-        const variablesMessage = JSON.stringify(testVariables)
         await slack.chat.postMessage({
             channel: slackChannel,
             thread_ts: resParent.ts,
             attachments: [
                 {
                     title: 'Variables used by given test',
-                    text: variablesMessage,
+                    text: JSON.stringify(message.variables),
                 },
             ],
         })
 
-        const descriptionMessage = testMetaData.Description
         // jest-docblock does not support multiline strings and seperates them with spaces.
         // We enforce a standard of "-" surronded by spaces as the standard practice for making
         // a new line in the description of a test.
@@ -89,27 +135,75 @@ const sendSlackMessage = async function(
             attachments: [
                 {
                     title: 'Manual Steps for Sanity',
-                    text: descriptionMessage.replace(/ - /gi, '\n- '),
+                    text: message.manualSteps.replace(/ - /gi, '\n- '),
                 },
             ],
         })
     } catch (err) {
-        console.log(err)
+        console.error(err)
     }
 }
 
+const constructMessage = async function(
+    results,
+    test,
+    testMetaData,
+    testVariables,
+) {
+    const appEnv = testVariables.APP_ENV || '!APP_ENV not supplied!'
+    const testResults = results.testResults[0]
+
+    // Messages
+    const mainMessage = `Sanity... \`${test}\` has failed in \`${appEnv}\`!`
+    const errorMessage = testResults.message
+
+    //Attachments
+    const screenShots = []
+    for (const screenshotTitle of Object.keys(results.screenshots)) {
+        screenShots.push(results.screenshots[screenshotTitle])
+    }
+    console.log(testMetaData)
+    const manualSteps = testMetaData.Description
+        ? testMetaData.Description.replace(/ - /gi, '\n- ')
+        : ''
+
+    const message = {
+        message: mainMessage,
+        errorMessage: errorMessage,
+        variables: testVariables,
+        manualSteps: manualSteps,
+        attachments: {
+            screenShots: screenShots,
+        },
+    }
+
+    return message
+}
 module.exports = async function(testFiles, results, testVariables) {
-    if (testVariables.hasOwnProperty('ALERT')) {
-        if (testVariables.ALERT && results.numFailedTests > 0) {
-            for (const testFile of Object.keys(testFiles)) {
-                const testContents = testFiles[testFile]
-                const testMetaData = parse(testContents)
-                await sendSlackMessage(
-                    results,
-                    testFile,
-                    testMetaData,
-                    testVariables,
-                )
+    if (results.numFailedTests > 0) {
+        for (const testFile of Object.keys(testFiles)) {
+            const testContents = testFiles[testFile]
+            const testMetaData = parse(testContents)
+            const message = await constructMessage(
+                results,
+                testFile,
+                testMetaData,
+                testVariables,
+            )
+            if (testVariables.hasOwnProperty('SLACK_ALERT')) {
+                if (testVariables.SLACK_ALERT) {
+                    await sendSlackMessage(message, testMetaData)
+                }
+            } else if (testVariables.hasOwnProperty('ALERT')) {
+                // Will delete eventually, but ensures no one using previous ENV will have their alerts break
+                if (testVariables.ALERT) {
+                    await sendSlackMessage(message, testMetaData)
+                }
+            }
+            if (testVariables.hasOwnProperty('PAGERDUTY_ALERT')) {
+                if (testVariables.PAGERDUTY_ALERT) {
+                    await sendPagerDutyAlert(message, testMetaData)
+                }
             }
         }
     }
