@@ -1,6 +1,7 @@
 SHELL := /bin/bash
 export PATH := $(shell yarn bin):$(PATH)
 
+
 ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
 TEST_REPORTS_DIR ?= $(ARTIFACTS_DIR)/reports

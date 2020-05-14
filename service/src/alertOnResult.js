@@ -38,6 +38,7 @@ const sendPagerDutyAlert = async function(message, testMetaData) {
 
         const pl = {
             routing_key: pgIntegrationId.toString(),
+            dedup_key: message.testName,
             event_action: 'trigger',
             images: screenShotAttachments,
             payload: {
@@ -168,6 +169,7 @@ const constructMessage = async function(
         : ''
 
     const message = {
+        testName: test,
         message: mainMessage,
         errorMessage: errorMessage,
         variables: testVariables,
