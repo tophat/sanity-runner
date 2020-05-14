@@ -18,6 +18,7 @@ module.exports = class {
             globalSetup: '<rootDir>/src/jestSetup/puppeteer/setup.js',
             globalTeardown: '<rootDir>/src/jestSetup/puppeteer/teardown.js',
             globals: {
+                globalContext: globalContext
                 SANITY_VARIABLES: this.variables || {},
                 SCREENSHOT_OUTPUT: paths.results(this.id),
             },
