@@ -38,8 +38,15 @@ if (process.pid === 1) {
 }
 
 module.exports.handler = async function(event, context, callback) {
-    global.globalContext = context
-    global.globalContext.testNames = event.testFiles
+    try {
+        global.lambdaContext = {
+            version: context.version,
+            awsRequestId: context.awsRequestId,
+        }
+    } catch(e) {
+        console.log(e)
+    }
+
     console.log((await execa('find', ['/tmp'])).stdout)
     const runner = new TestRunner()
     const testResults = await runner.runTests(
