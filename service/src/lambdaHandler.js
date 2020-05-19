@@ -39,13 +39,14 @@ if (process.pid === 1) {
 
 module.exports.handler = async function(event, context, callback) {
     global.globalContext = context
+    global.globalContext.testNames = event.testFiles
     console.log((await execa('find', ['/tmp'])).stdout)
     const runner = new TestRunner()
     const testResults = await runner.runTests(
         event.testFiles,
         event.testVariables,
         event.retryCount,
-        context
+        context,
     )
     callback(null, testResults)
 }
