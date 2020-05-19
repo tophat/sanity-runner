@@ -43,7 +43,7 @@ module.exports.handler = async function(event, context, callback) {
             version: context.version,
             awsRequestId: context.awsRequestId,
         }
-    } catch(e) {
+    } catch (e) {
         console.log(e)
     }
 
