@@ -9,8 +9,19 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000 //eslint-disable-line
 
 beforeEach(async () => {
     global.page = await global.browser.newPage()
-    await global.page.setUserAgent(`TophatSanityRunner/${global.globalContext.version}`)
-    await global.page.setExtraHTTPHeaders({ 'x-sanity-runner-request-id': global.globalContext.awsRequestId })
+    try {
+        const testNames = Object.keys(global.globalContext.testNames).join(', ')
+        await global.page.setUserAgent(
+            `TophatSanityRunner/${global.globalContext.version}`,
+        )
+        await global.page.setExtraHTTPHeaders({
+            'x-sanity-runner-request-id': global.globalContext.awsRequestId,
+            'x-sanity-runner-test-name': testNames,
+        })
+        await global.page.setExtraHTTPHeaders()
+    } catch (err) {
+        console.error(err)
+    }
 })
 
 afterEach(async () => {
