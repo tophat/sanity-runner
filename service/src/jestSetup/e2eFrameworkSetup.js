@@ -11,11 +11,9 @@ beforeEach(async () => {
     global.page = await global.browser.newPage()
     try {
         const testName = getState().currentTestName
-        await global.page.setUserAgent(
-            `TophatSanityRunner/${global.lambdaContext.version}`,
-        )
+        await global.page.setUserAgent(`TophatSanityRunner`)
         await global.page.setExtraHTTPHeaders({
-            'x-sanity-runner-request-id': global.lambdaContext.awsRequestId,
+            'x-sanity-runner-request-id': global.lambdaContext.sanityRequestId,
             'x-sanity-runner-test-name': testName,
         })
     } catch (err) {
