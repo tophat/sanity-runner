@@ -158,6 +158,9 @@ const constructMessage = async function(
     const mainMessage = `Sanity... \`${test}\` has failed in \`${appEnv}\`!`
     const errorMessage = testResults.message
 
+    //log to lambda for debugging
+    console.log(errorMessage)
+
     //Attachments
     const screenShots = []
     for (const screenshotTitle of Object.keys(results.screenshots)) {
