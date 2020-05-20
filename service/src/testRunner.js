@@ -71,6 +71,7 @@ module.exports = class {
                     // force retry if test was unsuccesfull
                     // if last retry, return as normal
                     if (!res.json.success) {
+                        console.log(res.json)
                         if (retryCount !== parseInt(maxRetryCount)) { // eslint-disable-line
                             throw new Error('Test Failed!')
                         }
