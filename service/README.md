@@ -29,6 +29,9 @@ Sanity Runner supports two backends currently for alerting. (Pagerduty alerts an
 
 Requires a slack api key to be in AWS Secret Manager with the formatted name `sanity_runner/slack_api_token`. This secret should be set up with the secret/value pair of `secret:`slack_api_token and `value:` <insert slack_api_token>
 
+#### SlackHandler
+
+Requires slack integration to be enabled. Optional configuration that allows a handler to be prepended to from of slack messages. 
 
 ### Pagerduty
 
@@ -40,6 +43,7 @@ ex)
 /**
  * @Owner Some Team
  * @Slack #someslack-id
+ * @SlackHandler @some-group-name
  * @Pagerduty pagerduty-tophat
  * @Description 
  *  - It does this

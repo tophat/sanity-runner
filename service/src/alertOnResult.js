@@ -71,11 +71,15 @@ const sendSlackMessage = async function(message, testMetaData) {
         }
         const slack = new WebClient(slackToken.slack_api_token)
         const slackChannel = testMetaData.Slack
+        const slackMessage = testMetaData.SlackHandler
+            ? `${testMetaData.SlackHandler} ${message.message}`
+            : message.message
 
         // Send Slack message and format into thread
         const resParent = await slack.chat.postMessage({
             channel: slackChannel,
-            text: message.message,
+            text: slackMessage,
+            link_names: true,
         })
 
         const screenShotAttachments = []
