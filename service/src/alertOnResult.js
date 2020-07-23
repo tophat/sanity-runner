@@ -246,15 +246,14 @@ module.exports = async function(testFiles, results, testVariables) {
                 }
             }
         }
-    }
-    else if (results.numFailedTests == 0) {
+    } else if (results.numFailedTests === 0) {
         if (testVariables.hasOwnProperty('PAGERDUTY_ALERT')) {
             for (const testFile of Object.keys(testFiles)) {
                 const testContents = testFiles[testFile]
                 const testMetaData = parse(testContents)
                 if (testVariables.PAGERDUTY_ALERT) {
                     await resolvePagerDutyAlert(testFile, testMetaData)
-                } 
+                }
             }
         }
     }
