@@ -3,6 +3,37 @@ const { WebClient } = require('@slack/web-api')
 const secretmanager = require('./secrets')
 const pdClient = require('node-pagerduty')
 
+const resolvePagerDutyAlert = async function(testFile, testMetaData) {
+    try {
+        const pd = new pdClient()
+        if (!testMetaData.Pagerduty) {
+            throw new Error(
+                'No Pagerduty Integration Id supplied in test Metadata',
+            )
+        }
+        const pagerDutySecret = await secretmanager.getSecretValue(
+            `sanity_runner/${testMetaData.Pagerduty}`,
+        )
+        if (!pagerDutySecret.hasOwnProperty('integration_key')) {
+            throw new Error(
+                `Secret sanity_runner/${
+                    testMetaData.Pagerduty
+                } not found in AWS Secret Manager!`,
+            )
+        }
+        const pgIntegrationId = pagerDutySecret.integration_key
+
+        const pl = {
+            routing_key: pgIntegrationId.toString(),
+            dedup_key: testFile,
+            event_action: 'resolve',
+        }
+        await pd.events.sendEvent(pl)
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 const sendPagerDutyAlert = async function(message, testMetaData) {
     try {
         const pd = new pdClient()
@@ -212,6 +243,16 @@ module.exports = async function(testFiles, results, testVariables) {
             if (testVariables.hasOwnProperty('PAGERDUTY_ALERT')) {
                 if (testVariables.PAGERDUTY_ALERT) {
                     await sendPagerDutyAlert(message, testMetaData)
+                }
+            }
+        }
+    } else if (results.numFailedTests === 0) {
+        if (testVariables.hasOwnProperty('PAGERDUTY_ALERT')) {
+            for (const testFile of Object.keys(testFiles)) {
+                const testContents = testFiles[testFile]
+                const testMetaData = parse(testContents)
+                if (testVariables.PAGERDUTY_ALERT) {
+                    await resolvePagerDutyAlert(testFile, testMetaData)
                 }
             }
         }
