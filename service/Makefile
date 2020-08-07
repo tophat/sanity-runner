@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 export PATH := $(shell yarn bin):$(PATH)
+LAMBDA_FUNCTION := sanity-runner-${SERVERLESS_STAGE}-${SERVERLESS_TAG}
+S3_BUCKET := $(shell aws lambda get-function-configuration --function-name ${LAMBDA_FUNCTION} | jq -r .Environment.Variables.S3_BUCKET)
 
 
 ARTIFACTS_DIR = artifacts
@@ -52,6 +54,11 @@ package: check-versions
 deploy: check-versions 
 	serverless deploy --package "${BUILD_DIR}" --force
 	echo Function: "sanity-runner-${SERVERLESS_STAGE}-${SERVERLESS_TAG}"
+
+.PHONY: cleanup
+cleanup:
+	aws s3 rm s3://"${S3_BUCKET}" --recursive
+	serverless remove
 
 # ----- Helpers -----
 .PHONY: check-versions
