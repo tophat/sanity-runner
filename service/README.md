@@ -79,3 +79,9 @@ make package
 ```
 make deploy
 ``` 
+
+## Cleanup
+Deletes the current cloudformation stack
+```
+make cleanup
+```
