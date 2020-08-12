@@ -35,5 +35,9 @@ afterEach(async () => {
         fullPage: true,
         path: screenshotPath,
     })
+    await global.page.close()
+})
+
+afterAll(async () => {
     await global.browser.close()
 })
