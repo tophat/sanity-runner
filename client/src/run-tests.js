@@ -1,7 +1,6 @@
 const fs = require('fs-extra')
 const https = require('https')
 const path = require('path')
-const promiseRetry = require('promise-retry')
 
 const AWS = require('aws-sdk')
 
@@ -16,29 +15,15 @@ async function testResultPromise(
     const lambda = new AWS.Lambda({
         apiVersion: '2015-03-31',
         httpOptions: {
-            timeout: 360000,
+            timeout: 660000,
         },
+        maxRetries: 1,
     })
     const params = {
         FunctionName: functionName,
         Payload: JSON.stringify({ testFiles, testVariables, retryCount }),
     }
-    const retryOptions = {
-        minTimeout: 3000,
-        maxTimeout: 15000,
-        randomize: true,
-    }
-    const response = await promiseRetry(function(retry) {
-        return lambda
-            .invoke(params)
-            .promise()
-            .catch(function(err) {
-                if (err.statusCode === 429) {
-                    retry(err)
-                }
-                throw err
-            })
-    }, retryOptions)
+    const response = await lambda.invoke(params)
     const results = JSON.parse(response.Payload)
     if (results && results.errorMessage) {
         throw new Error(`Fatal lambda error: ${results.errorMessage}`)
