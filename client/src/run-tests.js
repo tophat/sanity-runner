@@ -3,7 +3,6 @@ const https = require('https')
 const path = require('path')
 const uniqueString = require('unique-string')
 
-
 const AWS = require('aws-sdk')
 
 const { formatTestResults } = require('./utils')
