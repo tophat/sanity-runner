@@ -26,6 +26,7 @@ curl -o sanity-runner-bootstrap.sh -L https://raw.githubusercontent.com/tophat/s
 sh sanity-runner-bootstrap.sh
 ```
 
+
 specific git release 
 ```
 npm install -g serverless@1.27.3

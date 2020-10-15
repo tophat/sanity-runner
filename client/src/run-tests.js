@@ -23,7 +23,7 @@ async function testResultPromise(
         FunctionName: functionName,
         Payload: JSON.stringify({ testFiles, testVariables, retryCount }),
     }
-    const response = await lambda.invoke(params)
+    const response = await lambda.invoke(params).promise()
     const results = JSON.parse(response.Payload)
     if (results && results.errorMessage) {
         throw new Error(`Fatal lambda error: ${results.errorMessage}`)
