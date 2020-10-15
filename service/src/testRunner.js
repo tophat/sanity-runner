@@ -32,7 +32,13 @@ const runJest = async function(chromePath, ...args) {
     return result
 }
 
-const logResults = function(results, testVariables, retryCount, runId) {
+const logResults = function(
+    results,
+    testVariables,
+    retryCount,
+    runId,
+    executionId,
+) {
     const newResult = {}
     const duration =
         (results.testResults[0].endTime - results.testResults[0].startTime) /
@@ -51,12 +57,13 @@ const logResults = function(results, testVariables, retryCount, runId) {
     newResult.startTime = results.testResults[0].startTime
     newResult.testName = splitName[splitName.length - 1]
     newResult.runId = runId
+    newResult.executionId = executionId
 
     console.log(JSON.stringify(newResult))
 }
 
 module.exports = class {
-    async runTests(testFiles, testVariables, maxRetryCount) {
+    async runTests(testFiles, testVariables, maxRetryCount, executionId) {
         let retryCount = 0
         const run = new Run(testVariables)
         try {
@@ -85,7 +92,13 @@ module.exports = class {
                     },
                 },
             )
-            logResults(results.json, testVariables, retryCount, run.id)
+            logResults(
+                results.json,
+                testVariables,
+                retryCount,
+                run.id,
+                executionId,
+            )
             await alertOnResult(testFiles, results.json, testVariables)
             return await run.format(results.json)
         } finally {

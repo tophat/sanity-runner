@@ -44,6 +44,7 @@ module.exports.handler = async function(event, context, callback) {
         event.testFiles,
         event.testVariables,
         event.retryCount,
+        event.executionId,
     )
     callback(null, testResults)
 }

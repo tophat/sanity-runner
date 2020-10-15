@@ -1,6 +1,7 @@
 const fs = require('fs-extra')
 const https = require('https')
 const path = require('path')
+const uniqueString = require('unique-string')
 
 const AWS = require('aws-sdk')
 
@@ -8,6 +9,7 @@ const { formatTestResults } = require('./utils')
 
 async function testResultPromise(
     functionName,
+    executionId,
     testFiles,
     testVariables,
     retryCount,
@@ -21,7 +23,12 @@ async function testResultPromise(
     })
     const params = {
         FunctionName: functionName,
-        Payload: JSON.stringify({ testFiles, testVariables, retryCount }),
+        Payload: JSON.stringify({
+            testFiles,
+            testVariables,
+            retryCount,
+            executionId,
+        }),
     }
     const response = await lambda.invoke(params).promise()
     const results = JSON.parse(response.Payload)
@@ -69,9 +76,12 @@ async function runTests(
     testVariables,
     retryCount,
 ) {
+    const executionId = uniqueString()
+
     const promises = Object.entries(testFiles).map(entry =>
         testResultPromise(
             functionName,
+            executionId,
             { [entry[0]]: entry[1] },
             testVariables,
             retryCount,
