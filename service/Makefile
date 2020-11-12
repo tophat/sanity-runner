@@ -16,11 +16,11 @@ ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
 NODE_MODULES_BIN := node_modules/.bin
 ESLINT := $(NODE_MODULES_BIN)/eslint $(ESLINT_ARGS)
 
-.PHONE: docker
+.PHONY: docker
 docker:
 	docker build ../. -t "sanity"
 
-.PHONE: install-mac
+.PHONY: install-mac
 install-mac: docker
 	docker run \
 	-v $(shell pwd)/..:/sanities \
