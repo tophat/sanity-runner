@@ -30,8 +30,19 @@ async function testResultPromise(
             executionId,
         }),
     }
-    const response = await lambda.invoke(params).promise()
-    const results = JSON.parse(response.Payload)
+    let response = null
+    let results = {}
+    try {
+        response = await lambda.invoke(params).promise()
+        results = JSON.parse(response.Payload)
+    } catch (e) {
+        results.testResults = {}
+        results.testResults.responseError = formatFailedTestResult(
+            getTestName(testFiles),
+            e.toString(),
+        )
+    }
+
     if (results && results.errorMessage) {
         throw new Error(`Fatal lambda error: ${results.errorMessage}`)
     }
@@ -131,6 +142,43 @@ async function _archiveTestScreenshots(outputDir, screenshots) {
         })
     })
     await Promise.all(promises)
+}
+
+const formatFailedTestResult = (file, error) => {
+    return {
+        testsuites: {
+            $: {
+                name: 'jest tests',
+                tests: 1,
+                failures: 1,
+                time: 0,
+            },
+            testsuite: [
+                {
+                    $: {
+                        name: file,
+                        failures: 1,
+                        tests: 1,
+                        time: 0,
+                    },
+                    testcase: [
+                        {
+                            $: {
+                                classname: file,
+                                name: file,
+                                time: 0,
+                            },
+                            failure: [error],
+                        },
+                    ],
+                },
+            ],
+        },
+    }
+}
+
+const getTestName = testFile => {
+    return Object.keys(testFile)[0]
 }
 
 module.exports = runTests

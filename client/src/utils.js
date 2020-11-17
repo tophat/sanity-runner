@@ -173,11 +173,15 @@ const formatTestResults = async results => {
 
     const parsedResults = []
     for (const key in results) {
-        const result = await _parseResultString(results[key])
-        _printTestResult(result)
-        parsedResults.push(result.testsuites)
+        if (key === 'responseError') {
+            parsedResults.push(results[key].testsuites)
+            _printTestResult(results[key])
+        } else {
+            const result = await _parseResultString(results[key])
+            _printTestResult(result)
+            parsedResults.push(result.testsuites)
+        }
     }
-
     _printTestSummary(parsedResults)
 }
 
