@@ -4,6 +4,9 @@ const path = require('path')
 const uniqueString = require('unique-string')
 
 const AWS = require('aws-sdk')
+const agent = new https.Agent({
+    keepAlive: true,
+})
 
 const { formatTestResults } = require('./utils')
 
@@ -18,6 +21,7 @@ async function testResultPromise(
         apiVersion: '2015-03-31',
         httpOptions: {
             timeout: 660000,
+            agent: agent,
         },
         maxRetries: 1,
     })
