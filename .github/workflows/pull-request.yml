@@ -57,11 +57,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
-        name: service-artifacts
-        path: service/artifacts/build
+        with:
+          name: service-artifacts
+          path: service/artifacts/build
       - uses: actions/download-artifact@v2
-        name: client-artifacts
-        path: client/bin
+        with:
+          name: client-artifacts
+          path: client/bin
       - name: Load Docker Container
         run: docker load < client/bin/docker-cache/sanity-docker.tar
       - name: install dependencies
