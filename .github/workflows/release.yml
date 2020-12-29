@@ -1,0 +1,12 @@
+name: sanity runner release 
+on: [push]
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Dependency
+        run: make install
+      - name: release 
+        run: make deploy-release

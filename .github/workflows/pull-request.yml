@@ -22,15 +22,17 @@ jobs:
           project: client
       - name: build docker for client
         run: make -C client build-docker
+      - name: cache docker
+        run: |
+          mkdir -p docker-cache
+          docker save -o docker-cache/sanity-docker.tar tophat/sanity-runner:latest
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with: 
           name: client-artifacts
-          path: client/bin
-      - name: artifact container
-        uses: ishworkh/docker-image-artifact-upload@v1
-        with:
-          image: "tophat/sanity-runner:latest"
+          path: |
+            client/bin
+            docker-cache
   service:
     runs-on: ubuntu-18.04
     steps:
@@ -54,7 +56,5 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/download-artifact@v2
-      - name: Download image
-        uses: ishworkh/docker-image-artifact-download@v1
-        with:
-          image: "tophat/sanity-runner:latest"
+      - name: Load Docker Container
+        run: docker load < docker-cache/sanity-docker.tar
