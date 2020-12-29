@@ -1,0 +1,11 @@
+name: lint
+description: lints a sub directory (client or service)
+inputs:
+  project: 
+    description: slient of service
+    required: true
+runs:
+  steps:
+    run: |
+      make -C $INPUT_PROJECT install
+      make -C $INPUT_PROJECT lint 

@@ -14,11 +14,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Client lint
-        run: |
-          make -C client install
-          make -C client lint
+        uses: ./.github/actions/lint
+        with:
+          project: client
       - name: Service lint
-        run: |
-          make -C service install
-          make -C service lint
-          echo "debug2"
+        uses: ./.github/actions/lint
+        with:
+          project: service
