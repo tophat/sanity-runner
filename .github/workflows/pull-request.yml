@@ -13,11 +13,19 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Client lint
+      - name: lint client
         uses: ./.github/actions/lint
         with:
           project: client
-      - name: Service lint
+      - name: lint service
         uses: ./.github/actions/lint
+        with:
+          project: service
+      - name: build client 
+        uses: ./.github/actions/build
+        with:
+          project: client
+      - name: build service
+        uses: ./.github/actions/build
         with:
           project: service

@@ -1,0 +1,19 @@
+name: build
+description: build a sub directory (client or service)
+inputs:
+  project: 
+    description: slient of service
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: install dependencies 
+      run: make -C ${{ inputs.project }} package
+      shell: bash
+    - name: package 
+      run: make -C ${{ inputs.project }} package 
+      shell: bash
+    - name: build docker container
+      run: make -C ${{ inputs.project }} build-docker
+      shell: bash
+      if: ${{ inputs.project == "client" }}
