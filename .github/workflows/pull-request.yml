@@ -47,5 +47,14 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with: 
-          name: client-artifacts
+          name: service-artifacts
           path: service/artifacts/build
+  release-dry-run: 
+    needs: [service, client]
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/download-artifact@v2
+      - name: Download image
+        uses: ishworkh/docker-image-artifact-download@v1
+        with:
+          image: "tophat/sanity-runner:latest"
