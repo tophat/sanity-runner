@@ -4,6 +4,7 @@ inputs:
   project: 
     description: slient of service
     required: true
+    default: 'client'
 runs:
   using: "composite"
   steps:
