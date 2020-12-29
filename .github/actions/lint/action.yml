@@ -9,11 +9,11 @@ runs:
   using: "composite"
   steps:
     - name: debug
-      run: "echo input $INPUT_PROJECT ${{github.event.inputs.project}}"
+      run: echo input ${{ inputs.project }}
       shell: bash
     - name: install dependencies 
-      run: make -C $INPUT_PROJECT install
+      run: make -C ${{ inputs.project }} install
       shell: bash
     - name: lint 
-      run: make -C $INPUT_PROJECT lint 
+      run: make -C ${{ inputs.project }} lint 
       shell: bash
