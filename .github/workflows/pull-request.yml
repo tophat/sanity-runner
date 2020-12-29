@@ -22,10 +22,6 @@ jobs:
           project: client
       - name: build docker for client
         run: make -C client build-docker
-      - name: lint service
-        uses: ./.github/actions/lint
-        with:
-          project: service
   service:
     runs-on: ubuntu-18.04
     steps:

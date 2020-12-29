@@ -8,7 +8,7 @@ runs:
   using: "composite"
   steps:
     - name: install dependencies 
-      run: make -C ${{ inputs.project }} package
+      run: make -C ${{ inputs.project }} install
       shell: bash
     - name: package 
       run: make -C ${{ inputs.project }} package 
