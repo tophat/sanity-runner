@@ -27,6 +27,10 @@ jobs:
         with: 
           name: client-artifacts
           path: client/bin
+      - name: artifact container
+        uses: ishworkh/docker-image-artifact-upload@v1
+        with:
+          image: "tophat/sanity-runner:latest"
   service:
     runs-on: ubuntu-18.04
     steps:
