@@ -5,6 +5,7 @@ inputs:
     description: slient of service
     required: true
 runs:
+  using: "composite"
   steps:
     - name: install dependencies 
       run: make -C $INPUT_PROJECT install
