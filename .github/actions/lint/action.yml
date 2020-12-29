@@ -6,6 +6,7 @@ inputs:
     required: true
 runs:
   steps:
-    run: |
-      make -C $INPUT_PROJECT install
-      make -C $INPUT_PROJECT lint 
+    - name: install dependencies 
+      run: make -C $INPUT_PROJECT install
+    - name: lint 
+      run: make -C $INPUT_PROJECT lint 
