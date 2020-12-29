@@ -8,5 +8,7 @@ runs:
   steps:
     - name: install dependencies 
       run: make -C $INPUT_PROJECT install
+      shell: bash
     - name: lint 
       run: make -C $INPUT_PROJECT lint 
+      shell: bash
