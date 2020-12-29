@@ -1,6 +1,6 @@
 name: CI
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   client:
@@ -22,6 +22,11 @@ jobs:
           project: client
       - name: build docker for client
         run: make -C client build-docker
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with: 
+          name: client-artifacts
+          path: client/bin
   service:
     runs-on: ubuntu-18.04
     steps:
@@ -35,15 +40,8 @@ jobs:
         uses: ./.github/actions/build
         with:
           project: service
-  semantic-release:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/detect-node
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - run: make install
-      - run: make create-release-package
-      - run: make deploy-release-dry
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with: 
+          name: client-artifacts
+          path: service/artifacts/build
