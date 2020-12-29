@@ -21,4 +21,3 @@ jobs:
         run: |
           make -c client install
           make -C client lint
-        
