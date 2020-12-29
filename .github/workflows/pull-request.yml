@@ -22,3 +22,4 @@ jobs:
         run: |
           make -C service install
           make -C service lint
+          echo "debug"
