@@ -23,6 +23,8 @@ jobs:
   build-client:
     runs-on: ubuntu-18.04
     steps:
+      - name: setup env
+        uses: ./.github/actions/setup
       - name: build client 
         uses: ./.github/actions/build
         with:
@@ -41,4 +43,4 @@ jobs:
     steps:
       - run: make install
       - run: make create-release-package
-      - run: make deploy-release-dry
+        - run: make deploy-release-dry

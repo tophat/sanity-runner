@@ -1,0 +1,11 @@
+name: setup
+description: Sets up env
+runs:
+  using: "composite"
+  steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/detect-node
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
