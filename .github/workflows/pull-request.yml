@@ -19,3 +19,7 @@ jobs:
         run: |
           make -c client install
           make -C client lint
+      - name: Service lint
+        run: |
+          make -c service install
+          make -C service lint
