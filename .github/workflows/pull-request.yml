@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
       - uses: ./.github/actions/detect-node
       - name: Setup Node.js
         uses: actions/setup-node@v1
