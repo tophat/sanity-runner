@@ -17,3 +17,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Client lint
+        run: |
+          make -c client install
+          make -C client lint
+        
