@@ -20,13 +20,25 @@ jobs:
         uses: ./.github/actions/lint
         with:
           project: service
+  build-client:
+    runs-on: ubuntu-18.04
+    steps:
       - name: build client 
         uses: ./.github/actions/build
         with:
           project: client
       - name: build docker for client
         run: make -C client build-docker
+  build-service:
+    runs-on: ubuntu-18.04
+    steps:
       - name: build service
         uses: ./.github/actions/build
         with:
           project: service
+  semantic-release:
+    runs-on: ubuntu-18.04
+    steps:
+      - run: make install
+      - run: make create-release-package
+      - run: make deploy-release-dry
