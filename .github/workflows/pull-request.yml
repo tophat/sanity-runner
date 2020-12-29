@@ -43,4 +43,4 @@ jobs:
     steps:
       - run: make install
       - run: make create-release-package
-        - run: make deploy-release-dry
+      - run: make deploy-release-dry
