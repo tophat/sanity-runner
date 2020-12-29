@@ -7,6 +7,8 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: debug
+      run: "echo input $INPUT_PROJECT ${{github.event.inputs.project}}"
     - name: install dependencies 
       run: make -C $INPUT_PROJECT install
       shell: bash
