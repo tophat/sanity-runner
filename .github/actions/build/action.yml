@@ -13,7 +13,3 @@ runs:
     - name: package 
       run: make -C ${{ inputs.project }} package 
       shell: bash
-    - name: build docker container
-      if: true
-      run: make -C ${{ inputs.project }} build-docker
-      shell: bash

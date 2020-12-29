@@ -24,6 +24,8 @@ jobs:
         uses: ./.github/actions/build
         with:
           project: client
+      - name: build docker for client
+        run: make -C client build-docker
       - name: build service
         uses: ./.github/actions/build
         with:
