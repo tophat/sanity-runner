@@ -9,6 +9,7 @@ runs:
   steps:
     - name: debug
       run: "echo input $INPUT_PROJECT ${{github.event.inputs.project}}"
+      shell: bash
     - name: install dependencies 
       run: make -C $INPUT_PROJECT install
       shell: bash
