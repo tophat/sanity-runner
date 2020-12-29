@@ -6,7 +6,6 @@ jobs:
   lint:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2
       - uses: ./.github/actions/detect-node
       - name: Setup Node.js
         uses: actions/setup-node@v1
@@ -23,8 +22,8 @@ jobs:
   build-client:
     runs-on: ubuntu-18.04
     steps:
-      - name: setup env
-        uses: ./.github/actions/setup
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/setup-env
       - name: build client 
         uses: ./.github/actions/build
         with:
