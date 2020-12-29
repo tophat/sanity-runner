@@ -55,6 +55,7 @@ jobs:
     needs: [service, client]
     runs-on: ubuntu-18.04
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
       - name: debug
         run: ls -la client-artifacts/
@@ -62,5 +63,7 @@ jobs:
         run: docker load < client-artifacts/docker-cache/sanity-docker.tar
       - name: install dependencies
         run: make install
+      - name: package artifacts
+        run: make create-release-package
       - name: run release dry run
         run: make deploy-release-dry
