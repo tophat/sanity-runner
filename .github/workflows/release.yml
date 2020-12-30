@@ -1,12 +1,68 @@
 name: sanity runner release 
-on: [push]
+on: [release]
 jobs:
-  release:
-    name: Release
+  client:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
-      - name: Install Dependency
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/detect-node
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: build client 
+        uses: ./.github/actions/build
+        with:
+          project: client
+      - name: build docker for client
+        run: make -C client build-docker
+      - name: cache docker
+        run: |
+          mkdir -p docker-cache
+          docker save -o docker-cache/sanity-docker.tar tophat/sanity-runner:latest
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with: 
+          name: client-artifacts
+          path: |
+            client/bin
+            docker-cache
+  service:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/detect-node
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: build service
+        uses: ./.github/actions/build
+        with:
+          project: service
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with: 
+          name: service-artifacts
+          path: service/artifacts/build
+  release-dry-run: 
+    needs: [service, client]
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: service-artifacts
+          path: service/artifacts/build
+      - uses: actions/download-artifact@v2
+        with:
+          name: client-artifacts
+          path: client/bin
+      - name: Load Docker Container
+        run: docker load < client/bin/docker-cache/sanity-docker.tar
+      - name: install dependencies
         run: make install
-      - name: release 
+      - name: package artifacts
+        run: make create-release-package
+      - name: run release dry run
         run: make deploy-release
