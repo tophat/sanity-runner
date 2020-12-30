@@ -16,6 +16,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Restore node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: ./client/node_modules
+          key: ${{ env.NODE_VERSION }}-${{ env.YARN_VERSION }}-${{ hashFiles('./client/yarn.lock') }}
       - name: lint client
         uses: ./.github/actions/lint
         with:
@@ -46,6 +52,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Restore node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: ./service/node_modules
+          key: ${{ env.NODE_VERSION }}-${{ env.YARN_VERSION }}-${{ hashFiles('./service/yarn.lock') }}
+      - name: lint service
+        uses: ./.github/actions/lint
+        with:
+          project: service
       - name: build service
         uses: ./.github/actions/build
         with:
@@ -56,6 +72,7 @@ jobs:
           name: service-artifacts
           path: service/artifacts/build
   release-dry-run: 
+    if: github.ref != 'refs/heads/master'
     needs: [service, client]
     runs-on: ubuntu-latest
     steps:
@@ -70,6 +87,48 @@ jobs:
           path: client/bin
       - name: Load Docker Container
         run: docker load < client/bin/docker-cache/sanity-docker.tar
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Restore node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: ${{ env.NODE_VERSION }}-${{ env.YARN_VERSION }}-${{ hashFiles('yarn.lock') }}
+      - name: install dependencies
+        run: make install
+      - name: package artifacts
+        run: make create-release-package
+      - name: run release dry run
+        run: make deploy-release-dry
+  release: 
+    if: github.ref == 'refs/heads/master'
+    needs: [service, client]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: service-artifacts
+          path: service/artifacts/build
+      - uses: actions/download-artifact@v2
+        with:
+          name: client-artifacts
+          path: client/bin
+      - name: Load Docker Container
+        run: docker load < client/bin/docker-cache/sanity-docker.tar
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Restore node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: ${{ env.NODE_VERSION }}-${{ env.YARN_VERSION }}-${{ hashFiles('yarn.lock') }}
       - name: install dependencies
         run: make install
       - name: package artifacts
