@@ -1,8 +1,8 @@
 name: build
-description: build a sub directory (client or service)
+description: build sanity runner sub project
 inputs:
   project: 
-    description: slient of service
+    description: name of sub project (client or service)
     required: true
 runs:
   using: "composite"

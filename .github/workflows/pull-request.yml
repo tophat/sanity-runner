@@ -1,13 +1,17 @@
 name: CI
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   client:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/detect-node
+      - uses: ./.github/actions/detect-env
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
@@ -34,10 +38,10 @@ jobs:
             client/bin
             docker-cache
   service:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/detect-node
+      - uses: ./.github/actions/detect-env
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
@@ -53,7 +57,7 @@ jobs:
           path: service/artifacts/build
   release-dry-run: 
     needs: [service, client]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
