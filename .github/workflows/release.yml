@@ -1,5 +1,5 @@
 name: sanity runner release 
-on: [release]
+on: [push]
 jobs:
   client:
     runs-on: ubuntu-18.04
