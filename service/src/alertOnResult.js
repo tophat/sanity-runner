@@ -7,9 +7,10 @@ const resolvePagerDutyAlert = async function(testFile, testMetaData) {
     try {
         const pd = new pdClient()
         if (!testMetaData.Pagerduty) {
-            throw new Error(
-                'No Pagerduty Integration Id supplied in test Metadata',
+            console.log(
+                'Unable to send Pagerduty alert: no Pagerduty Integration Id supplied in test Metadata',
             )
+            return
         }
         const pagerDutySecret = await secretmanager.getSecretValue(
             `sanity_runner/${testMetaData.Pagerduty}`,
@@ -38,9 +39,10 @@ const sendPagerDutyAlert = async function(message, testMetaData) {
     try {
         const pd = new pdClient()
         if (!testMetaData.Pagerduty) {
-            throw new Error(
-                'No Pagerduty Integration Id supplied in test Metadata',
+            console.log(
+                'Unable to send Pagerduty alert: no Pagerduty Integration Id supplied in test Metadata',
             )
+            return
         }
         const pagerDutySecret = await secretmanager.getSecretValue(
             `sanity_runner/${testMetaData.Pagerduty}`,
