@@ -1,0 +1,174 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  client:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/detect-env
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Restore node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: ./client/node_modules
+          key: ${{ env.NODE_VERSION }}-${{ env.YARN_VERSION }}-${{ hashFiles('./client/yarn.lock') }}
+      - name: lint client
+        uses: ./.github/actions/lint
+        with:
+          project: client
+      - name: build client 
+        uses: ./.github/actions/build
+        with:
+          project: client
+      - name: build docker for client
+        run: make -C client build-docker
+      - name: cache docker
+        run: |
+          mkdir -p docker-cache
+          docker save -o docker-cache/sanity-docker.tar tophat/sanity-runner:latest
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with: 
+          name: client-artifacts
+          path: |
+            client/bin
+            docker-cache
+  service:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/detect-env
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Restore node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: ./service/node_modules
+          key: ${{ env.NODE_VERSION }}-${{ env.YARN_VERSION }}-${{ hashFiles('./service/yarn.lock') }}
+      - name: lint service
+        uses: ./.github/actions/lint
+        with:
+          project: service
+      - name: build service
+        uses: ./.github/actions/build
+        with:
+          project: service
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with: 
+          name: service-artifacts
+          path: service/artifacts/build
+  release-dry-run: 
+    if: (github.ref != 'refs/heads/master') && (!contains(github.event.head_commit.message, 'skip ci'))
+    needs: [service, client]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: service-artifacts
+          path: service/artifacts/build
+      - uses: actions/download-artifact@v2
+        with:
+          name: client-artifacts
+          path: client/bin
+      - name: Load Docker Container
+        run: docker load < client/bin/docker-cache/sanity-docker.tar
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Restore node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: ${{ env.NODE_VERSION }}-${{ env.YARN_VERSION }}-${{ hashFiles('yarn.lock') }}
+      - name: install dependencies
+        run: make install
+      - name: package artifacts
+        run: make create-release-package
+      - name: run release dry run
+        run: make deploy-release-dry
+  release: 
+    if: (github.ref == 'refs/heads/master') && (!contains(github.event.head_commit.message, 'skip ci'))
+    needs: [service, client]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: service-artifacts
+          path: service/artifacts/build
+      - uses: actions/download-artifact@v2
+        with:
+          name: client-artifacts
+          path: client/bin
+      - name: Load Docker Container
+        run: docker load < client/bin/docker-cache/sanity-docker.tar
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Restore node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: ${{ env.NODE_VERSION }}-${{ env.YARN_VERSION }}-${{ hashFiles('yarn.lock') }}
+      - name: install dependencies
+        run: make install
+      - name: package artifacts
+        run: make create-release-package
+      - name: run release dry run
+        run: make deploy-release-dry
+  website:
+    name: Deploy website
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/detect-env
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Restore node modules cache
+        id: node-modules-cache
+        uses: actions/cache@v2
+        with:
+          path: ./website/node_modules
+          key: ${{ env.NODE_VERSION }}-${{ env.YARN_VERSION }}-${{ hashFiles('./website/yarn.lock') }}
+      - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+        working-directory: ./website
+      - name: Build
+        run: yarn build
+        working-directory: ./website
+      - name: Deploy
+        if: github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: ./website/build/yvm
+          CLEAN: true
+          COMMIT_MESSAGE: 'docs: deploying website [skip ci]'

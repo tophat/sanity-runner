@@ -1,0 +1,15 @@
+name: lint
+description: lints a sub directory (client or service)
+inputs:
+  project: 
+    description: slient of service
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: install dependencies 
+      run: make -C ${{ inputs.project }} install
+      shell: bash
+    - name: package 
+      run: make -C ${{ inputs.project }} lint 
+      shell: bash
