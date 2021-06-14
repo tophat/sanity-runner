@@ -1,4 +1,4 @@
-<div align="center"> <img src="./runner.png" width="400px;"/>
+ <div align="center"> <img src="./runner.png" width="400px;"/>
 
 [![Builds](https://img.shields.io/circleci/project/github/tophat/sanity-runner/master.svg)](https://github.com/tophat/sanity-runner/workflows/CI/badge.svg)
 [![Greenkeeper badge](https://badges.greenkeeper.io/tophat/sanity-runner.svg)](https://greenkeeper.io/) <br />
