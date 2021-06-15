@@ -182,7 +182,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
           BRANCH: gh-pages
           FOLDER: ./website/build/sanity-runner
           CLEAN: true
