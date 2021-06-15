@@ -143,7 +143,7 @@ jobs:
           echo $DOCKER_USERNAME
           echo ${{ secrets.DOCKER_USERNAME }}
           echo ${{ env.DOCKER_USERNAME }}
-          echo $${{ env.GITHUB_TOKEN }}
+          echo $${{ env.TOPHAT_BOT_GH_TOKEN }}
           make deploy-release-dry
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
