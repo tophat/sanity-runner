@@ -168,8 +168,6 @@ jobs:
         with:
           path: ./website/node_modules
           key: ${{ env.NODE_VERSION }}-${{ env.YARN_VERSION }}-${{ hashFiles('./website/yarn.lock') }}
-      - name: Install yvm
-        run: node ./scripts/install.js
       - name: Install dependencies
         if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
@@ -186,6 +184,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: ./website/build/yvm
+          FOLDER: ./website/build/sanity-runner
           CLEAN: true
           COMMIT_MESSAGE: 'docs: deploying website [skip ci]'
