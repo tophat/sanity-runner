@@ -137,7 +137,11 @@ jobs:
       - name: package artifacts
         run: make create-release-package
       - name: run release dry run
-        run: make deploy-release-dry
+        run: |
+          echo $DOCKER_USERNAME
+          echo ${{ secrets.DOCKER_USERNAME }}
+          echo ${{ env.DOCKER_USERNAME }}
+          make deploy-release-dry
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
