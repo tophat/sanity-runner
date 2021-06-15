@@ -175,7 +175,10 @@ jobs:
         run: yarn install --frozen-lockfile
         working-directory: ./website
       - name: Build
-        run: yarn build
+        run: | 
+          yarn build
+          ls -la .
+          ls -la build/
         working-directory: ./website
       - name: Deploy
         if: github.ref == 'refs/heads/master'
