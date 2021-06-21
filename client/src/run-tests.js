@@ -58,7 +58,9 @@ async function testResultPromise(
         results.errors.forEach(error => {
             console.error(error.message)
         })
-        throw new Error(`[${testName}] There have been problems executing your test suite`)
+        throw new Error(
+            `[${testName}] There have been problems executing your test suite`,
+        )
     }
     return results
 }
