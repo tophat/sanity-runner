@@ -1,4 +1,4 @@
-FROM node:10.16.3-slim
+FROM node:10.20.1-slim
 
 RUN sed '/jessie-updates/d' -i /etc/apt/sources.list
 RUN apt-get update && \
