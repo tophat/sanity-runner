@@ -17,6 +17,7 @@ async function testResultPromise(
     testVariables,
     retryCount,
 ) {
+    const testName = getTestName(testFiles)
     const lambda = new AWS.Lambda({
         apiVersion: '2015-03-31',
         httpOptions: {
@@ -42,22 +43,22 @@ async function testResultPromise(
     } catch (e) {
         results.testResults = {}
         results.testResults.responseError = formatFailedTestResult(
-            getTestName(testFiles),
+            testName,
             e.toString(),
         )
     }
 
     if (results && results.errorMessage) {
-        throw new Error(`Fatal lambda error: ${results.errorMessage}`)
+        throw new Error(`[${testName}] [Lambda Error]: ${results.errorMessage}`)
     }
     if (!results || !results.testResults) {
-        throw new Error(`Inconsistent service response`)
+        throw new Error(`[${testName}] Inconsistent service response`)
     }
     if (results.errors && results.errors.length > 0) {
         results.errors.forEach(error => {
             console.error(error.message)
         })
-        throw new Error('There have been problems executing your test suite')
+        throw new Error(`[${testName}] There have been problems executing your test suite`)
     }
     return results
 }
