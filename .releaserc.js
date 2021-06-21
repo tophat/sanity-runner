@@ -1,26 +1,25 @@
 module.exports = {
+    'verifyConditions': {
+        'path': 'semantic-release-docker',
+        'registryUrl': 'docker.io'
+    },
+    'publish': {
+        'path': 'semantic-release-docker',
+        'name': 'tophat/sanity-runner'
+    },
     'plugins': [
         '@semantic-release/commit-analyzer',
         '@semantic-release/release-notes-generator',
-        ["@semantic-release/github", {
-            "assets": [
-                { "path": "./release-archive/*"},
-                { "path": "./release-archive/sanity-runner-linux" },
-                { "path": "./release-archive/sanity-runner-macos" },
-                { "path": "./release-archive/sanity-runner-win.exe" }
+        ['@semantic-release/github', {
+            'assets': [
+                { 'path': './release-archive/*'},
+                { 'path': './release-archive/sanity-runner-linux' },
+                { 'path': './release-archive/sanity-runner-macos' },
+                { 'path': './release-archive/sanity-runner-win.exe' }
             ]
         }],
         ['semantic-release-docker', {
-            "release": {
-                "verifyConditions": {
-                  "path": "semantic-release-docker",
-                  "registryUrl": "docker.io"
-                },
-                "publish": {
-                  "path": "semantic-release-docker",
-                  "name": "tophat/sanity-runner"
-                }
-              }
+            'name': 'tophat/sanity-runner'
         }]
     ]
 }
