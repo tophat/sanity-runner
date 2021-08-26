@@ -49,7 +49,7 @@ package: check-versions
 	serverless package --package "${BUILD_DIR}"
 
 .PHONY: deploy
-deploy: check-versions 
+deploy: check-versions
 	serverless deploy --package "${BUILD_DIR}" --force
 	echo Function: "sanity-runner-${SERVERLESS_STAGE}-${SERVERLESS_TAG}"
 
@@ -71,3 +71,8 @@ lint:
 .PHONY: lint-fix
 lint-fix:
 	$(ESLINT) --fix .
+
+.PHONY: build-docker
+build-docker:
+	@echo "Building Docker Container"
+	docker build . -t tophat/sanity-runner-service
