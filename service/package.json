@@ -1,6 +1,6 @@
 {
-  "name": "sanity",
-  "version": "0.0.1",
+  "name": "sanity-runner-service",
+  "version": "2.0.0",
   "description": "Distributed Sanity Test Suite Runner",
   "main": "service/handler.js",
   "scripts": {

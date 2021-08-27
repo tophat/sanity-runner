@@ -74,7 +74,7 @@ jobs:
       - name: cache docker
         run: |
           mkdir -p docker-cache
-          docker save -o docker-cache/sanity-docker-service.tar tophat/sanity-runner-service:latest
+          docker save -o docker-cache/sanity-service-docker.tar tophat/sanity-runner-service:latest
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -158,6 +158,13 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
+      - name: Publish service image
+        uses: ./github/actions/docker-push
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          project: service
+          archivePath: service/bin/docker-cache/sanity-docker.tar
   website:
     name: Deploy website
     runs-on: ubuntu-latest
