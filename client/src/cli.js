@@ -25,6 +25,7 @@ const DEFAULT_RETRY_COUNT = 0
 
 program
     .version(require('../package.json').version)
+    .name('sanity-runner')
     .arguments('[options] [testPathPattern]')
     .option(
         '--config <path>',
