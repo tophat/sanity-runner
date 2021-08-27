@@ -1,6 +1,6 @@
 ---
 
-frameworkVersion: 1.57.0
+frameworkVersion: 2.56.0
 
 service: ${env:SERVERLESS_CF, self:custom.cf_name}
 
@@ -10,6 +10,10 @@ provider:
   stage: dev
   tag: default
   vpc: ${self:custom.vpc.${env:SERVERLESS_VPC_ENABLED, 'false'}}
+  ecr:
+    images:
+      sanity-runner-service:
+        path: ./
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -71,14 +75,8 @@ layers:
 
 functions:
   sanityLauncher:
-    runtime: nodejs10.x
-    memorySize: 2048
-    timeout: 600
-    handler: src/lambdaHandler.handler
-    name: ${env:SERVERLESS_FUNC, self:custom.functon_name}
-    layers:
-      - { Ref: FindLambdaLayer }
-
+    image: 
+      name: sanity-runner-service
 resources:
   Resources:
     SanityBucket:
