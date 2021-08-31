@@ -41,8 +41,9 @@ module.exports = class {
             resetModules: false,
             roots: [paths.suite(this.id)],
             rootDir: process.cwd(),
-            setupTestFrameworkScriptFile:
+            setupFilesAfterEnv: [
                 '<rootDir>/src/jestSetup/e2eFrameworkSetup.js',
+            ],
             testEnvironment: '<rootDir>/src/jestSetup/puppeteer/environment.js',
             timers: 'real',
             verbose: false,
