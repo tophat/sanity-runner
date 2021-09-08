@@ -115,6 +115,8 @@ jobs:
       - name: run release dry run
         run: make deploy-release-dry
         env:
+          DOCKER_USERNAME: ${{ github.actor }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
   release:
     if: (github.ref == 'refs/heads/master') && (!contains(github.event.head_commit.message, 'skip ci'))
@@ -159,11 +161,15 @@ jobs:
         run: |
           make deploy-release-dry
         env:
+          DOCKER_USERNAME: ${{ github.actor }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
       - name: run release
         run: |
           make deploy-release
         env:
+          DOCKER_USERNAME: ${{ github.actor }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
       - name: Publish service image
         uses: ./github/actions/docker-push
