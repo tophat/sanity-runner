@@ -37,7 +37,7 @@ jobs:
       - name: cache docker
         run: |
           mkdir -p docker-cache
-          docker save -o docker-cache/sanity-docker.tar tophat/sanity-runner:latest
+          docker save -o docker-cache/sanity-docker.tar ghcr.io/sanity-runner-client:latest
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -69,11 +69,19 @@ jobs:
         uses: ./.github/actions/build
         with:
           project: service
+      - name: build docker for service
+        run: make -C service build-docker
+      - name: cache docker
+        run: |
+          mkdir -p docker-cache
+          docker save -o docker-cache/sanity-service-docker.tar ghcr.io/sanity-runner-service:latest
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: service-artifacts
-          path: service/artifacts/build
+          path: |
+            service/artifacts/build
+            docker-cache
   release-dry-run:
     if: (github.ref != 'refs/heads/master') && (!contains(github.event.head_commit.message, 'skip ci'))
     needs: [service, client]
@@ -138,20 +146,24 @@ jobs:
         run: make install
       - name: package artifacts
         run: make create-release-package
+      -
+        name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: run release dry run
         run: |
           make deploy-release-dry
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
       - name: run release
         run: |
           make deploy-release
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
+      - name: Publish service image
+        uses: ./github/actions/docker-push
+        with:
+          project: service
+          archivePath: service/bin/docker-cache/sanity-docker.tar
   website:
     name: Deploy website
     runs-on: ubuntu-latest

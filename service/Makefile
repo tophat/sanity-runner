@@ -49,7 +49,7 @@ package: check-versions
 	serverless package --package "${BUILD_DIR}"
 
 .PHONY: deploy
-deploy: check-versions 
+deploy: check-versions
 	serverless deploy --package "${BUILD_DIR}" --force
 	echo Function: "sanity-runner-${SERVERLESS_STAGE}-${SERVERLESS_TAG}"
 
@@ -71,3 +71,16 @@ lint:
 .PHONY: lint-fix
 lint-fix:
 	$(ESLINT) --fix .
+
+.PHONY: build-docker
+build-docker:
+	@echo "Building Docker Container"
+	docker build . -t ghcr.io/sanity-runner-service
+
+.PHONY: publish-docker
+publish-docker:
+	@echo "Publishing Docker Image"
+	VERSION=$(cat package.json | jq -r '.version')
+	docker tag ghcr.io/sanity-runner-service:latest ghcr.io/sanity-runner-service:${VERSION}
+	docker push ghcr.io/sanity-runner-service@latest
+	docker push ghcr.io/sanity-runner-service@${VERSION}

@@ -10,6 +10,9 @@ example/repo/yarn.lock
 example/repo/node_modules/
 example/repo/output/
 
+# client
+client/bin
+
 serverless_chromium.zip
 headless-chromium
 release-archive
