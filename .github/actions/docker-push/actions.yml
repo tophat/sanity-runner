@@ -7,19 +7,16 @@ inputs:
   project:
     description: name of sub project (client or service)
     required: true
-  username:
-    description: Username for docker registry
-    required: true
-  password:
-    description: Password for docker registry
-    required: true
+
 steps:
   - name: Load docker archive
     run: docker load < ${{ inputs.archivePath }}
-  - name: Log in to Docker Hub
+  -
+    name: Login to GHCR
     uses: docker/login-action@v1
     with:
-      username: ${{ inputs.username }}
-      password: ${{ inputs.password }}
+      registry: ghcr.io
+      username: ${{ github.actor }}
+      password: ${{ secrets.GITHUB_TOKEN }}
   - name: Publish the image to Docker Hub
     run: make -C ${{ inputs.project }} publish-docker

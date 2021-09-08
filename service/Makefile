@@ -75,12 +75,12 @@ lint-fix:
 .PHONY: build-docker
 build-docker:
 	@echo "Building Docker Container"
-	docker build . -t tophat/sanity-runner-service
+	docker build . -t ghcr.io/sanity-runner-service
 
 .PHONY: publish-docker
 publish-docker:
 	@echo "Publishing Docker Image"
 	VERSION=$(cat package.json | jq -r '.version')
-	docker tag tophat/sanity-runner-service:latest tophat/sanity-runner-service:${VERSION}
-	docker push tophat/sanity-runner-service@latest
-	docker push tophat/sanity-runner-service@${VERSION}
+	docker tag ghcr.io/sanity-runner-service:latest ghcr.io/sanity-runner-service:${VERSION}
+	docker push ghcr.io/sanity-runner-service@latest
+	docker push ghcr.io/sanity-runner-service@${VERSION}
