@@ -98,6 +98,8 @@ jobs:
           path: client/bin
       - name: Load Docker Container
         run: docker load < client/bin/docker-cache/sanity-docker.tar
+      - name: Load Docker Container
+        run: docker load < service/artifacts/build/docker-cache/sanity-docker.tar
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
@@ -136,6 +138,8 @@ jobs:
           path: client/bin
       - name: Load Docker Container
         run: docker load < client/bin/docker-cache/sanity-docker.tar
+      - name: Load Docker Container
+        run: docker load < service/artifacts/build/docker-cache/sanity-docker.tar
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
@@ -171,11 +175,8 @@ jobs:
           DOCKER_USERNAME: ${{ github.actor }}
           DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
-      - name: Publish service image
-        uses: ./.github/actions/docker-push
-        with:
-          project: service
-          archivePath: service/bin/docker-cache/sanity-docker.tar
+      - name: Publish the service image to GHCR
+        run: make -C service publish-docker
   website:
     name: Deploy website
     runs-on: ubuntu-latest
