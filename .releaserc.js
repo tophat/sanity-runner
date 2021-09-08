@@ -5,7 +5,7 @@ module.exports = {
     },
     'publish': {
         'path': 'semantic-release-docker',
-        'name': 'ghcr.io/sanity-runner-client'
+        'name': 'ghcr.io/tophat/sanity-runner-client'
     },
     'plugins': [
         '@semantic-release/commit-analyzer',
@@ -19,7 +19,7 @@ module.exports = {
             ]
         }],
         ['semantic-release-docker', {
-            'name': 'ghcr.io/sanity-runner-client'
+            'name': 'ghcr.io/tophat/sanity-runner-client'
         }]
     ]
 }
