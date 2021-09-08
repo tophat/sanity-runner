@@ -17,8 +17,7 @@ deploy-release:
 create-release-package:
 	rm -rf release-archive
 	mkdir release-archive
-	tar cvf sanity-runner-serverless.tar service/artifacts/build/
-	mv sanity-runner-serverless.tar release-archive/
+	mv service/bin/* release-archive/
 	mv client/bin/* release-archive/
 
 # ----- Helpers -----

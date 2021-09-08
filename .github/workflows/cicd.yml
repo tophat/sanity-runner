@@ -37,7 +37,7 @@ jobs:
       - name: cache docker
         run: |
           mkdir -p docker-cache
-          docker save -o docker-cache/sanity-docker.tar tophat/sanity-runner:latest
+          docker save -o docker-cache/sanity-docker.tar ghcr.io/sanity-runner-client:${{ github.sha }}
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -74,7 +74,7 @@ jobs:
       - name: cache docker
         run: |
           mkdir -p docker-cache
-          docker save -o docker-cache/sanity-service-docker.tar tophat/sanity-runner-service:latest
+          docker save -o docker-cache/sanity-service-docker.tar ghcr.io/sanity-runner-service:${{ github.sha }}
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -91,13 +91,15 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: service-artifacts
-          path: service/artifacts/build
+          path: service/bin
       - uses: actions/download-artifact@v2
         with:
           name: client-artifacts
           path: client/bin
       - name: Load Docker Container
         run: docker load < client/bin/docker-cache/sanity-docker.tar
+      - name: Load Docker Container
+        run: docker load < service/bin/docker-cache/sanity-docker.tar
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
@@ -146,13 +148,20 @@ jobs:
         run: make install
       - name: package artifacts
         run: make create-release-package
-      - name: run release dry run
-        run: |
-          make deploy-release-dry
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
+      -
+        name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./service/.
+          push: true
+          tags: ghcr.io/mattthaber/san-test:latest
       - name: run release
         run: |
           make deploy-release

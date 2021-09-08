@@ -19,7 +19,7 @@ module.exports = {
             ]
         }],
         ['semantic-release-docker', {
-            'name': 'tophat/sanity-runner'
+            'name': 'ghcr.io/sanity-runner'
         }]
     ]
 }

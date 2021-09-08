@@ -30,29 +30,6 @@ install-mac: docker
 install: check-versions clean
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
 
-.PHONY: invoke
-invoke: check-versions
-	serverless invoke local --function sanityLauncher --path test/sampleData.json
-
-.PHONY: invoke-remote
-invoke-remote: check-versions
-	serverless invoke --function sanityLauncher --path test/sampleData.json
-
-.PHONY: tail
-tail: check-versions
-	serverless logs --function sanityLauncher --tail
-
-
-.PHONY: package
-package: check-versions
-	@rm -rf "${BUILD_DIR}"
-	serverless package --package "${BUILD_DIR}"
-
-.PHONY: deploy
-deploy: check-versions
-	serverless deploy --package "${BUILD_DIR}" --force
-	echo Function: "sanity-runner-${SERVERLESS_STAGE}-${SERVERLESS_TAG}"
-
 # ----- Helpers -----
 .PHONY: check-versions
 check-versions:
@@ -60,7 +37,6 @@ check-versions:
 
 .PHONY: clean
 clean:
-	@rm -rf .serverless
 	@rm -rf node_modules
 	@rm -rf "${ARTIFACTS_DIR}"
 
