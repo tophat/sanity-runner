@@ -5,6 +5,7 @@ export PATH := $(shell yarn bin):$(PATH)
 ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
 TEST_REPORTS_DIR ?= $(ARTIFACTS_DIR)/reports
+VERSION := $(shell cat package.json | jq -r '.version')
 
 ifdef CI
 	ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml
@@ -80,7 +81,6 @@ build-docker:
 .PHONY: publish-docker
 publish-docker:
 	@echo "Publishing Docker Image"
-	VERSION=$(cat package.json | jq -r '.version')
 	docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:${VERSION}
 	docker push ghcr.io/tophat/sanity-runner-service@latest
 	docker push ghcr.io/tophat/sanity-runner-service@${VERSION}
