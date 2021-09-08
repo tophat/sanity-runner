@@ -172,7 +172,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
       - name: Publish service image
-        uses: ./github/actions/docker-push
+        uses: ./.github/actions/docker-push
         with:
           project: service
           archivePath: service/bin/docker-cache/sanity-docker.tar
