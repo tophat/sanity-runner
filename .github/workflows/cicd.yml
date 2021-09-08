@@ -37,7 +37,7 @@ jobs:
       - name: cache docker
         run: |
           mkdir -p docker-cache
-          docker save -o docker-cache/sanity-docker.tar tophat/sanity-runner:latest
+          docker save -o docker-cache/sanity-docker.tar gh.cr.io/sanity-runner-client:latest
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:

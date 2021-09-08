@@ -1,11 +1,11 @@
 module.exports = {
     'verifyConditions': {
         'path': 'semantic-release-docker',
-        'registryUrl': 'docker.io'
+        'registryUrl': 'ghcr.io'
     },
     'publish': {
         'path': 'semantic-release-docker',
-        'name': 'tophat/sanity-runner'
+        'name': 'ghcr.io/sanity-runner-client'
     },
     'plugins': [
         '@semantic-release/commit-analyzer',
@@ -19,7 +19,7 @@ module.exports = {
             ]
         }],
         ['semantic-release-docker', {
-            'name': 'tophat/sanity-runner'
+            'name': 'ghcr.io/sanity-runner-client'
         }]
     ]
 }
