@@ -7,7 +7,7 @@ data "aws_caller_identity" "current" {}
 ###
 
 locals {
-    public_url = "ghcr.io/sanity-runner-service"
+    public_url = "ghcr.io/tophat/sanity-runner-service"
 }
 
 ###
@@ -21,6 +21,7 @@ resource "aws_ecr_repository" "this" {
 resource "null_resource" "push_image_to_ecr" {
   triggers = {
     container_version = var.container_version
+    function_name = var.function_name
   }
   provisioner "local-exec" {
     command     = "${path.module}/publish.sh ${aws_ecr_repository.this.repository_url} ${var.container_version} ${local.public_url}"
