@@ -66,6 +66,9 @@ lint:
 lint-fix:
 	$(ESLINT) --fix .
 
+.PHONY: package
+package: build-docker
+
 .PHONY: build-docker
 build-docker:
 	@echo "Building Docker Container"
