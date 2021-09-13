@@ -37,7 +37,7 @@ jobs:
       - name: cache docker
         run: |
           mkdir -p docker-cache
-          docker save -o docker-cache/sanity-docker.tar tophat/sanity-runner:latest
+          docker save -o docker-cache/sanity-docker.tar ghcr.io/tophat/sanity-runner-client:latest
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -69,12 +69,10 @@ jobs:
         uses: ./.github/actions/build
         with:
           project: service
-      - name: build docker for service
-        run: make -C service build-docker
       - name: cache docker
         run: |
           mkdir -p docker-cache
-          docker save -o docker-cache/sanity-service-docker.tar tophat/sanity-runner-service:latest
+          docker save -o docker-cache/sanity-service-docker.tar ghcr.io/tophat/sanity-runner-service:latest
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -98,6 +96,8 @@ jobs:
           path: client/bin
       - name: Load Docker Container
         run: docker load < client/bin/docker-cache/sanity-docker.tar
+      - name: Load Docker Container
+        run: docker load < service/artifacts/build/docker-cache/sanity-service-docker.tar
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
@@ -114,6 +114,10 @@ jobs:
         run: make create-release-package
       - name: run release dry run
         run: make deploy-release-dry
+        env:
+          DOCKER_USERNAME: ${{ github.actor }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
   release:
     if: (github.ref == 'refs/heads/master') && (!contains(github.event.head_commit.message, 'skip ci'))
     needs: [service, client]
@@ -132,6 +136,8 @@ jobs:
           path: client/bin
       - name: Load Docker Container
         run: docker load < client/bin/docker-cache/sanity-docker.tar
+      - name: Load Docker Container
+        run: docker load < service/artifacts/build/docker-cache/sanity-service-docker.tar
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
@@ -146,27 +152,29 @@ jobs:
         run: make install
       - name: package artifacts
         run: make create-release-package
+      -
+        name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: run release dry run
         run: |
           make deploy-release-dry
         env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ github.actor }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
       - name: run release
         run: |
           make deploy-release
         env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ github.actor }}
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
-      - name: Publish service image
-        uses: ./github/actions/docker-push
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          project: service
-          archivePath: service/bin/docker-cache/sanity-docker.tar
+      - name: Publish the service image to GHCR
+        run: make -C service publish-docker
   website:
     name: Deploy website
     runs-on: ubuntu-latest

@@ -20,6 +20,7 @@ const runJest = async function(chromePath, ...args) {
     try {
         result.json = JSON.parse((result.stdout || '').toString())
     } catch (e) {
+        console.warn(result)
         throw new Error(
             `
               Cannot parse JSON jest output.

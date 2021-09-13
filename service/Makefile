@@ -5,6 +5,20 @@ export PATH := $(shell yarn bin):$(PATH)
 ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
 TEST_REPORTS_DIR ?= $(ARTIFACTS_DIR)/reports
+VERSION := $(shell cat package.json | jq -r '.version')
+
+TERRAFORM_VERSION=1.0.2
+
+OS = $(shell uname|tr A-Z a-z)
+ifeq ($(shell uname -m),x86_64)
+  ARCH ?= amd64
+endif
+ifeq ($(shell uname -m),i686)
+  ARCH ?= 386
+endif
+ifeq ($(shell uname -m),aarch64)
+  ARCH ?= arm
+endif
 
 ifdef CI
 	ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml
@@ -29,29 +43,10 @@ install-mac: docker
 .PHONY: install
 install: check-versions clean
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
-
-.PHONY: invoke
-invoke: check-versions
-	serverless invoke local --function sanityLauncher --path test/sampleData.json
-
-.PHONY: invoke-remote
-invoke-remote: check-versions
-	serverless invoke --function sanityLauncher --path test/sampleData.json
-
-.PHONY: tail
-tail: check-versions
-	serverless logs --function sanityLauncher --tail
-
-
-.PHONY: package
-package: check-versions
-	@rm -rf "${BUILD_DIR}"
-	serverless package --package "${BUILD_DIR}"
-
-.PHONY: deploy
-deploy: check-versions
-	serverless deploy --package "${BUILD_DIR}" --force
-	echo Function: "sanity-runner-${SERVERLESS_STAGE}-${SERVERLESS_TAG}"
+	echo $(TERRAFORM_VERSION)
+	curl -L -o terraform.zip "https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(OS)_${ARCH}.zip"
+	unzip terraform.zip -d ${NODE_MODULES_BIN}
+	rm terraform.zip
 
 # ----- Helpers -----
 .PHONY: check-versions
@@ -60,7 +55,6 @@ check-versions:
 
 .PHONY: clean
 clean:
-	@rm -rf .serverless
 	@rm -rf node_modules
 	@rm -rf "${ARTIFACTS_DIR}"
 
@@ -72,15 +66,17 @@ lint:
 lint-fix:
 	$(ESLINT) --fix .
 
+.PHONY: package
+package: build-docker
+
 .PHONY: build-docker
 build-docker:
 	@echo "Building Docker Container"
-	docker build . -t tophat/sanity-runner-service
+	docker build . -t ghcr.io/tophat/sanity-runner-service
 
 .PHONY: publish-docker
 publish-docker:
 	@echo "Publishing Docker Image"
-	VERSION=$(cat package.json | jq -r '.version')
-	docker tag tophat/sanity-runner-service:latest tophat/sanity-runner-service:${VERSION}
-	docker push tophat/sanity-runner-service@latest
-	docker push tophat/sanity-runner-service@${VERSION}
+	docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:${VERSION}
+	docker push ghcr.io/tophat/sanity-runner-service:latest
+	docker push ghcr.io/tophat/sanity-runner-service:${VERSION}
