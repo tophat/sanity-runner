@@ -21,7 +21,7 @@ install: check-versions
 .PHONY: build-docker
 build-docker:
 	@echo "Building Docker Container"
-	docker build . -t tophat/sanity-runner
+	docker build . -t ghcr.io/tophat/sanity-runner-client
 
 .PHONY: package
 package:
