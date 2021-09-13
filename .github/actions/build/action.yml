@@ -15,6 +15,6 @@ runs:
       run: make -C ${{ inputs.project }} install
       shell: bash
     - name: package 
-      if: (inputs.package != "false") 
+      if: ${{ inputs.package != "false" }}
       run: make -C ${{ inputs.project }} package 
       shell: bash
