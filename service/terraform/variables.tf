@@ -4,7 +4,7 @@ variable "function_name" {
 }
 
 variable "container_version" {
-    default = "0.0.1"
+    default = "2.0.0"
     type = string
 }
 

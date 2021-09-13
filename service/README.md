@@ -2,24 +2,75 @@
 
 The sanity-runner service is a lambda function that sits in AWS. It takes a [jest-puppeteer](https://github.com/smooth-code/jest-puppeteer) test file as input and returns the result of the test.
 
-# Configuration
+# Deployment 
 
-We currently use [serverless](https://serverless.com/framework/docs/) to deploy to AWS lambda. We use environment variables to help define resource names allowing for easy deployment of multiple sanity-runners across the same environment.
+##  Terraform
 
-## Environment Variables
+We currently use [terraform](https://www.terraform.io/docs/index.html) to deploy to AWS lambda. We use [input variables](https://www.terraform.io/docs/language/values/variables.html) to help define resource names allowing for easy deployment of multiple sanity-runners across the same environment.
 
-| ENV                         | Default Value                                         | Description   |
-| --------------------------- |-----------------------------------------------------  |:----------------|
-| `SERVERLESS_CF`             | "sanity"                                              | Name for the cloudformation stack |
-| `SERVERLESS_REGION`         | self:provider.region                                  | Region to deploy the stack in|
-| `SERVERLESS_TAG`            | self:provider.tag                                     | Can be used to make bucket/function name unique  |
-| `SERVERLESS_ACCOUNTID`      | self:provider.tag                                     | Can be used to make bucket/function name unique |
-| `SERVERLESS_S3_BUCKET_NAME` | sr-${self:custom.stage}-${self:custom.tag}            | Name of the s3 bucket associated with the sanity-runner |
-| `SERVERLESS_FUNC`           | sanity-runner-${self:custom.stage}-${self:custom.tag} | Name of the Lambda function created |
-| `SERVERLESS_STAGE`          | self:provider.stage                                   | Defines serverless stage |
-| `SERVERLESS_VPC_ENABLED`    | "false"                                               | If "true" will deploy the lambda to a VPC. Requires `SG_ID` and `SUBNET_ID` to work |
-| `SERVERLESS_SG_ID`          | "not_set"                                             | Security Group to associate with the lambda function. Requires `VPC_ENABLED="true"` |
-| `SERVERLESS_SUBNET_ID`      | "not_set                                              | Subnet to associate with the lambda function. Requires `VPC_ENABLED="true"` |
+The prefered way to deploy the sanity runner would be reference the module in a `main.tf` file like the below example. This lets you pin to a specific version of the terraform code. 
+
+EX)
+```
+locals {
+    function_name = (terraform.workspace == "prod" || terraform.workspace == "sandbox") ? "sanity-runner" : "sanity-runner-${terraform.workspace}"
+    version = "2.0.0"
+}
+
+module "sanity-runner" {
+  source                      = "git@github.com:tophat/sanity-runner.git//service/terraform?ref=${local.version}"
+  function_name		          = local.function_name
+  container_version           = local.version
+  vpc_subnet_ids              = var.vpc_subnet_ids
+  vpc_sg_ids                  = var.vpc_sg_ids
+}
+
+```
+
+
+variable "function_name" {
+    default = "sanity-runner"
+    type = string
+}
+
+variable "container_version" {
+    default = "2.0.0"
+    type = string
+}
+
+variable "vpc_sg_ids" {
+    type = list(string)
+    default = []
+}
+
+variable "vpc_subnet_ids" {
+    type = list(string)
+    default = []
+}
+
+variable "memory_size" {
+    type = number
+    default = 2048
+}
+
+variable "timeout" {
+    type = number
+    default = 600
+}
+# Input Variables
+
+| Variable                      | Default Value                                         | Description   |
+| ----------------------------- |-----------------------------------------------------  |:----------------|
+| `function_name`               | "sanity-runner"                                       | Name for the lambda function deploys |
+| `container_version`           | "2.0.0"                                               | Version of Service Container to deploy to the lambda (ghcr.io/tophat/sanity-runner-service) |
+| `vpc_sg_ids`                  | []                                                    | Security Group IDs to associate with lambda. Enables VPC mode. If used, requites vpc_subnet_ids to also be set  |
+| `vpc_subnet_ids`              | []                                                    | Subnet Ids to associate with the lambda. Enables VPC mode. If used, requites vpc_sg_ids to also be set |
+| `memory_size`                 | 2048                                                  | Memory_size for lambda  |
+| `timeout`                     | 600                                                   | Sets Default timeout for lambda invocation |
+
+
+
+# Configuration 
 
 ## Alerting 
 
@@ -50,33 +101,18 @@ ex)
  */
 ```
 
-## Quick Start
+# Quick Start
 
-If wanting to just quickly deploy the lambda without conflicting with anything, just source [serverless.env](./serverless.env). This will set `SERVERLESS_TAG` and `SERVERLESS_STAGE` based on AWS account + git branch name.
-
-# Deployment
-
-## Install Depdendancies
+## 1. Install Terraform
 
 ```
 make install
 ```
 
-If running on a non-linux system, we recommend using `make install-mac` instead of make install. This will compile the dependencies in a linux docker container, ensuring they are compiled for the correct OS. (other wise they will compile for Mac OS and break when published to AWS Lambda)
-```
-make install-mac
-```
-
-## Package
-
-Will package up the lambda into a zip file. Artifacts created while packaging can be found under the `artifacts` directory
-```
-make package
-```
-
-## Deploy
+## 2. Deploy Terraform 
 
 ```
-make deploy
-``` 
- 
+cd terraform
+../node_modules/.bin/terraform plan
+../node_modules/.bin/terraform apply
+```

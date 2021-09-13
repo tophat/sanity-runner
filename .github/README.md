@@ -17,36 +17,25 @@ A distributed sanity test runner.
 * requires aws-cli
 * requires jq
 
-
-### Bootstrap Scripts
-latest release 
 ```
-npm install -g serverless@1.27.3
-curl -o sanity-runner-bootstrap.sh -L https://raw.githubusercontent.com/tophat/sanity-runner/master/bootstrap.sh
-sh sanity-runner-bootstrap.sh
+make install 
+make -C service install
+make -C client install
 ```
-
-
-specific git release 
-```
-npm install -g serverless@1.27.3
-curl -o sanity-runner-bootstrap.sh -L https://raw.githubusercontent.com/tophat/sanity-runner/master/bootstrap.sh
-sh sanity-runner-bootstrap.sh -v X.X.X
-```
-
 
 ### Build From Source
 
-#### [Serverless // Lambda](../service/README.md) 
+#### [Terraform // Lambda](../service/README.md) 
 
 ```
 export AWS_PROFILE=<AWS account>
 export AWS_REGION=<AWS region>
-source service/serverless.env
 make -C service install
 make -C service package
-make -C service deploy
+
 ```
+
+
 
 #### Client
 ```

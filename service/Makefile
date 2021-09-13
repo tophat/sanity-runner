@@ -6,6 +6,19 @@ ARTIFACTS_DIR = artifacts
 BUILD_DIR = ${ARTIFACTS_DIR}/build
 TEST_REPORTS_DIR ?= $(ARTIFACTS_DIR)/reports
 
+TERRAFORM_VERSION=1.0.2
+
+OS = $(shell uname|tr A-Z a-z)
+ifeq ($(shell uname -m),x86_64)
+  ARCH ?= amd64
+endif
+ifeq ($(shell uname -m),i686)
+  ARCH ?= 386
+endif
+ifeq ($(shell uname -m),aarch64)
+  ARCH ?= arm
+endif
+
 ifdef CI
 	ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml
 else
@@ -29,6 +42,10 @@ install-mac: docker
 .PHONY: install
 install: check-versions clean
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
+	echo $(TERRAFORM_VERSION)
+	curl -L -o terraform.zip "https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(OS)_${ARCH}.zip"
+	unzip terraform.zip -d ${NODE_MODULES_BIN}
+	rm terraform.zip
 
 # ----- Helpers -----
 .PHONY: check-versions
