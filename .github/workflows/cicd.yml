@@ -69,6 +69,7 @@ jobs:
         uses: ./.github/actions/build
         with:
           project: service
+          package: "false"
       - name: build docker for service
         run: make -C service build-docker
       - name: cache docker
