@@ -17,7 +17,6 @@ deploy-release:
 create-release-package:
 	rm -rf release-archive
 	mkdir release-archive
-	mv service/bin/* release-archive/
 	mv client/bin/* release-archive/
 
 # ----- Helpers -----
