@@ -20,5 +20,6 @@
     "git-cz": "^3.0.0",
     "semantic-release": "^15.13.3",
     "semantic-release-docker": "^2.2.0"
-  }
+  },
+  "private": true
 }
