@@ -16,3 +16,6 @@ client/bin
 serverless_chromium.zip
 headless-chromium
 release-archive
+
+.terraform/
+.terraform.lock.hcl
