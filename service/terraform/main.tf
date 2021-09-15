@@ -66,6 +66,7 @@ resource "random_string" "suffix" {
 
 resource "aws_iam_role" "sanity_runner_role" {
   assume_role_policy = data.aws_iam_policy_document.sanity_runner_policy_document.json
+  name_prefix = "sanity-runner-role-"
   
   inline_policy {
     name = "sanity-runner-role-${resource.random_string.suffix.result}"
@@ -90,6 +91,12 @@ resource "aws_iam_role" "sanity_runner_role" {
       ]
     })
   }  
+}
+
+resource "aws_iam_role_policy_attachment" "vpc-policy" {
+  count = (length(var.vpc_sg_ids) == 0 && length(var.vpc_subnet_ids) == 0  ) ? 0 : 1
+  role       = aws_iam_role.sanity_runner_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 ###
