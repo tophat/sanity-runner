@@ -66,7 +66,6 @@ resource "random_string" "suffix" {
 
 resource "aws_iam_role" "sanity_runner_role" {
   assume_role_policy = data.aws_iam_policy_document.sanity_runner_policy_document.json
-
   name_prefix = "sanity-runner-role-"
   
   inline_policy {
