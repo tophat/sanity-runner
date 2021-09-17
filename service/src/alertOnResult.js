@@ -17,7 +17,9 @@ const resolvePagerDutyAlert = async function(testFile, testMetaData) {
         )
         if (!pagerDutySecret.hasOwnProperty('integration_key')) {
             throw new Error(
-                `Secret sanity_runner/${testMetaData.Pagerduty} not found in AWS Secret Manager!`,
+                `Secret sanity_runner/${
+                    testMetaData.Pagerduty
+                } not found in AWS Secret Manager!`,
             )
         }
         const pgIntegrationId = pagerDutySecret.integration_key
@@ -47,7 +49,9 @@ const sendPagerDutyAlert = async function(message, testMetaData) {
         )
         if (!pagerDutySecret.hasOwnProperty('integration_key')) {
             throw new Error(
-                `Secret sanity_runner/${testMetaData.Pagerduty} not found in AWS Secret Manager!`,
+                `Secret sanity_runner/${
+                    testMetaData.Pagerduty
+                } not found in AWS Secret Manager!`,
             )
         }
         const pgIntegrationId = pagerDutySecret.integration_key
