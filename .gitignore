@@ -19,3 +19,5 @@ release-archive
 
 .terraform/
 .terraform.lock.hcl
+
+.yarn/
