@@ -1,11 +1,11 @@
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid')
 const fs = require('fs-extra')
 const paths = require('./paths')
 
 module.exports = class {
     constructor(variables) {
         this.id = uuidv4()
-        this.variables = variables        
+        this.variables = variables
     }
 
     async cleanup() {
