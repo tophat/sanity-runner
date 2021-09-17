@@ -13,6 +13,7 @@ endif
 ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
 NODE_MODULES_BIN := ./node_modules/.bin
 ESLINT := $(NODE_MODULES_BIN)/eslint $(ESLINT_ARGS)
+PKG := $(NODE_MODULES_BIN)/pkg
 
 .PHONY: install
 install: check-versions
@@ -25,7 +26,7 @@ build-docker:
 
 .PHONY: package
 package:
-	pkg . --out-path bin/
+	$(PKG) . --out-path bin/
 
 # ----- Helpers -----
 .PHONY: check-versions
