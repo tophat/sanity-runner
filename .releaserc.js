@@ -13,9 +13,9 @@ module.exports = {
         ['@semantic-release/github', {
             'assets': [
                 { 'path': './release-archive/*'},
-                { 'path': './release-archive/sanity-runner-linux' },
-                { 'path': './release-archive/sanity-runner-macos' },
-                { 'path': './release-archive/sanity-runner-win.exe' }
+                { 'path': './release-archive/sanity-runner-client-linux' },
+                { 'path': './release-archive/sanity-runner-client-macos' },
+                { 'path': './release-archive/sanity-runner-client-win.exe' }
             ]
         }],
         ['semantic-release-docker', {

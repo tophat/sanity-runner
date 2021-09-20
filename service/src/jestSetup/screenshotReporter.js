@@ -1,7 +1,7 @@
 const fs = require('fs-extra')
 const path = require('path')
 const AWS = require('aws-sdk')
-const uuidv4 = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
 

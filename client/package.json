@@ -1,6 +1,6 @@
 {
-    "name": "sanity-runner",
-    "version": "0.0.0",
+    "name": "sanity-runner-client",
+    "version": "2.0.0",
     "description": "Sanity cli client",
     "author": "Top Hat Monocle Inc.",
     "license": "UNLICENSED",
@@ -14,7 +14,7 @@
         "fs-extra": "^8.0.0",
         "glob": "^7.1.2",
         "lodash": "^4.17.19",
-        "pkg": "^4.3.3",
+        "pkg": "^5.3.2",
         "promise-retry": "^1.1.1",
         "unique-string": "^2.0.0",
         "xml2js": "^0.4.19"

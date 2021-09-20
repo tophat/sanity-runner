@@ -1,5 +1,5 @@
 # Use aws lambda base image
-FROM public.ecr.aws/lambda/nodejs:10
+FROM public.ecr.aws/lambda/nodejs:14
 
 # Install system dependencies
 RUN yum install -y git make gcc gcc-c++

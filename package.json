@@ -9,6 +9,10 @@
   "scripts": {
     "commit": "npx git-cz"
   },
+  "workspaces": [
+    "client",
+    "service"
+  ],
   "author": "",
   "license": "Apache-2.0",
   "bugs": {

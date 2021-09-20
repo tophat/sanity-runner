@@ -1,4 +1,4 @@
-const uuidv4 = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 const fs = require('fs-extra')
 const paths = require('./paths')
 
@@ -46,7 +46,7 @@ module.exports = class {
             ],
             testEnvironment: '<rootDir>/src/jestSetup/puppeteer/environment.js',
             timers: 'real',
-            verbose: false,
+            verbose: true,
         }
     }
 
