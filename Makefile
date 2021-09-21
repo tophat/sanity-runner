@@ -7,11 +7,16 @@ install: check-versions
 
 .PHONY: deploy-release-dry
 deploy-release-dry:
-	yarn run semantic-release --dry-run
+	yarn monodeploy \
+	 --config-file monodeploy.config.js \
+	 --log-level 0 \
+	 --dry-run
 
 .PHONY: deploy-release
 deploy-release:
-	yarn run semantic-release
+	yarn monodeploy \
+	 --config-file monodeploy.config.js \
+	 --log-level 0 
 
 .PHONY: create-release-package
 create-release-package:
