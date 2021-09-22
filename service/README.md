@@ -104,17 +104,27 @@ ex)
 
 # Quick Start
 
-## 1. Install Terraform
+## Installation
+* requires aws-cli
+* requires jq
 
 ```
-make install
+make  install
 ```
 
-## 2. Deploy Terraform 
+## Package
 
 ```
-cd terraform
-../node_modules/.bin/terraform plan
-../node_modules/.bin/terraform apply
+# Build and package in docker container (currently only option)
+make build-docker
 ```
+`make -C client build-docker`: Packages the code in a docker container for usage. Container name is: **ghcr.io/tophat/sanity-runner-service**
 
+
+## Deploy 
+* requires terraform
+
+```
+cd service/example-module
+terraform apply
+```

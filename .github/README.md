@@ -37,23 +37,46 @@ make -C client install
 # Binaries
 make -C client package
 
-# Package in docker container
+# Package Binaries in docker container (optional)
 make -C client build-docker 
+
+# Link binary (optional)
+ln -s ./client/bin/sanity-runner-client-<OS> /usr/local/bin/sanity-runner-client
 ```
 
 `make -C client package`: Creates 3 binaries under **./client/bin/**  
-`make -C client build-docker`: Packages the linux binary in a docker container for usage. Container name is: **ghcr.io/tophat/sanity-runner-client **
+`make -C client build-docker`: Packages the linux binary in a docker container for usage. Container name is: **ghcr.io/tophat/sanity-runner-client**
 
 
 ## [Service](../service/README.md) 
 ### Installation
+* requires aws-cli
+* requires jq
 
+```
+make -C service install
+```
 
 ### Package
 
+```
+# Build and package in docker container (currently only option)
+make -C service build-docker 
+```
+`make -C client build-docker`: Packages the code in a docker container for usage. Container name is: **ghcr.io/tophat/sanity-runner-service**
+
+
+### Deploy 
+* requires terraform
+
+```
+cd service/example-module
+terraform apply
+```
 
 ## [Usage](../client/README.md)
 
+### Invoke Lambda
 Ensure AWS Creds are setup
 ```
 export AWS_PROFILE=<AWS account>
@@ -62,38 +85,16 @@ export AWS_REGION=<AWS region>
 
 Run Client against folder with written sanity tests
 ```
-sanity-runner --test-dir example/repo/sanities --output-dir output
+./client/bin/sanity-runner-client-<OS> --test-dir example/repo/sanities --lambda-function <FUNCTION_NAME> --output-dir output
 ```
 
+### Local
 
-### Service [Terraform // Lambda](../service/README.md) 
+TBD
 
-```
-export AWS_PROFILE=<AWS account>
-export AWS_REGION=<AWS region>
-make -C service install
-make -C service package
+## Reccomend Project Setups 
 
-```
-
-
-
-
-## Docker 
-
-```
-docker pull tophat/sanity-runner:latest
-```
-
-To run your tests...
-```
-docker run -it -v <path to dir with your tests>:/tests -v ~/.aws/credentials -e AWS_PROFILE -e AWS_REGION sanity-runner
-```
-
-You can also pass in your own custom config.json file
-```
-docker run -it -v <path to your config.son>:/config.json -v <path to dir with your tests>:/tests sanity-runner
-```
+TBD
 
 ## References
 
