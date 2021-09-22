@@ -1,6 +1,8 @@
 SHELL := /bin/bash
 export PATH := $(shell yarn bin):$(PATH)
 
+VERSION := $(shell cat package.json | jq -r '.version')
+
 ARTIFACT_DIR?=artifacts
 TEST_REPORTS_DIR?=$(ARTIFACT_DIR)/reports
 
@@ -45,3 +47,10 @@ lint:
 .PHONY: lint-fix
 lint-fix:
 	$(ESLINT) --fix .
+
+PHONY: publish-docker
+publish-docker:
+	@echo "Publishing Docker Image"
+	docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:${VERSION}
+	docker push ghcr.io/tophat/sanity-runner-client:latest
+	docker push ghcr.io/tophat/sanity-runner-client:${VERSION}

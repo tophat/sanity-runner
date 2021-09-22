@@ -37,7 +37,7 @@ jobs:
       - name: cache docker
         run: |
           mkdir -p docker-cache
-          docker save -o docker-cache/sanity-docker.tar ghcr.io/tophat/sanity-runner-client:latest
+          docker save -o docker-cache/sanity-docker-client.tar ghcr.io/tophat/sanity-runner-client:latest
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -95,7 +95,7 @@ jobs:
           name: client-artifacts
           path: client/bin
       - name: Load Docker Container
-        run: docker load < client/bin/docker-cache/sanity-docker.tar
+        run: docker load < client/bin/docker-cache/sanity-docker-client.tar
       - name: Load Docker Container
         run: docker load < service/artifacts/build/docker-cache/sanity-service-docker.tar
       - name: Setup Node.js
@@ -135,7 +135,7 @@ jobs:
           name: client-artifacts
           path: client/bin
       - name: Load Docker Container
-        run: docker load < client/bin/docker-cache/sanity-docker.tar
+        run: docker load < client/bin/docker-cache/sanity-docker-client.tar
       - name: Load Docker Container
         run: docker load < service/artifacts/build/docker-cache/sanity-service-docker.tar
       - name: Setup Node.js
@@ -176,6 +176,8 @@ jobs:
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
       - name: Publish the service image to GHCR
         run: make -C service publish-docker
+      - name: Publish the client image to GHCR
+        run: make -C client publish-docker
   website:
     name: Deploy website
     runs-on: ubuntu-latest
