@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.4.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.3.0...sanity-runner-service@2.4.0) "sanity-runner-service" (2021-09-22)<a name="2.4.0"></a>
+
+### Features
+
+* update more readme ([e592868](https://github.com/tophat/sanity-runner/commits/e592868))
+
+
+
+
 ## [2.3.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.2.0...sanity-runner-service@2.3.0) "sanity-runner-service" (2021-09-22)<a name="2.3.0"></a>
 
 ### Features
