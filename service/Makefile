@@ -34,12 +34,6 @@ ESLINT := $(NODE_MODULES_BIN)/eslint $(ESLINT_ARGS)
 docker:
 	docker build ../. -t "sanity"
 
-.PHONY: install-mac
-install-mac: docker
-	docker run \
-	-v $(shell pwd)/..:/sanities \
-	sanity make -C /sanities/service install
-
 .PHONY: install
 install: check-versions clean
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install

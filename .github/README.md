@@ -12,36 +12,46 @@
 
 A distributed sanity test runner.
 
+<div align="center"> <img src="./sanity-runner-description.png"/> </div>
 
-## Installation
+The Sanity Runner consists of two packages. **sanity-runner-client** and **sanity-runner-service**.
+
+#### sanity-runner-client
+The client takes a test suite of jest-puppeteer tests, splits them up, and sends each one to their own unique invocation of the lambda service. It waits on all responses and reports back the status of each test.
+
+#### sanity-runner-service 
+Takes a single jest-puppeteer test as input, runs it and returns the response. The service also has extra configuration for alerting based on results.
+
+
+## [Client](../client/README.md)
+### Installation
 * requires aws-cli
 * requires jq
 
 ```
-make install 
-make -C service install
 make -C client install
 ```
 
-### Build From Source
-
-#### [Terraform // Lambda](../service/README.md) 
-
+### Package
 ```
-export AWS_PROFILE=<AWS account>
-export AWS_REGION=<AWS region>
-make -C service install
-make -C service package
-
-```
-
-
-
-#### Client
-```
-make -C client install
+# Binaries
 make -C client package
+
+# Package in docker container
+make -C client build-docker 
 ```
+
+`make -C client package`: Creates 3 binaries under **./client/bin/**  
+`make -C client build-docker`: Packages the linux binary in a docker container for usage. Container name is: **ghcr.io/tophat/sanity-runner-client **
+
+
+## [Service](../service/README.md) 
+### Installation
+
+
+### Package
+
+
 ## [Usage](../client/README.md)
 
 Ensure AWS Creds are setup
@@ -54,6 +64,20 @@ Run Client against folder with written sanity tests
 ```
 sanity-runner --test-dir example/repo/sanities --output-dir output
 ```
+
+
+### Service [Terraform // Lambda](../service/README.md) 
+
+```
+export AWS_PROFILE=<AWS account>
+export AWS_REGION=<AWS region>
+make -C service install
+make -C service package
+
+```
+
+
+
 
 ## Docker 
 
