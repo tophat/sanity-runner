@@ -16,8 +16,8 @@ deploy-release-dry:
 deploy-release:
 	yarn monodeploy \
 	 --config-file monodeploy.config.js \
-	 --log-level 0 
-	 --push
+	 --log-level 0 \
+	 --push \
 	 --auto-commit
 
 .PHONY: create-release-package
