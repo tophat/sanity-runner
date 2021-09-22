@@ -125,7 +125,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          persist-credentials: false
+          token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
       - uses: actions/download-artifact@v2
         with:
           name: service-artifacts
@@ -163,17 +163,16 @@ jobs:
         run: |
           make deploy-release-dry
         env:
-          DOCKER_USERNAME: ${{ github.actor }}
-          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
+      - name: Configure Git
+        run: |
+          git config --global user.name tophat-opensource-bot
+          git config --global user.email opensource-leads+bot@tophatmonocle.com
+          git config --global init.defaultBranch main
       - name: run release
         run: |
-          git config --global user.email 'devops@tophat.com'
-          git config --global user.name 'monodeploy'
           make deploy-release
         env:
-          DOCKER_USERNAME: ${{ github.actor }}
-          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
       - name: Publish the service image to GHCR
         run: make -C service publish-docker

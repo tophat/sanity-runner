@@ -57,6 +57,7 @@ sanity-runner --var SLACK_ALERT=true
 ``` 
 Enables Slack alerts to trigger if configured
 
+
 ### PAGERDUTY_ALERT
 ```
 sanity-runner --var SLACK_ALERT=true
