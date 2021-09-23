@@ -20,10 +20,10 @@ const CONFIG_OPTIONS = [
     'exclude',
     'retryCount',
     'local',
-    'containerName',
+    'localPort',
 ]
 const DEFAULT_FUNCTION_NAME = 'sanity-runner-dev-default'
-const DEFAULT_CONTAINER_NAME = 'ghcr.io/tophat/sanity-runner-client:latest'
+const DEFAULT_LOCAL_PORT = '9000'
 const DEFAULT_TEST_DIR = '.'
 const DEFAULT_OUTPUT_DIR = './output'
 const DEFAULT_RETRY_COUNT = 0
@@ -53,7 +53,7 @@ program
     )
     .option(
         '--localPort [localPort]',
-        `Send tests to container instead of lambda. Used in conjuction with --local Default to ${DEFAULT_CONTAINER_NAME} if omitted.`,
+        `Send tests to container instead of lambda. Used in conjuction with --local Default to ${DEFAULT_LOCAL_PORT} if omitted.`,
     )
     .option(
         '--local',
@@ -130,7 +130,7 @@ const functionName = configuration.lambdaFunction || DEFAULT_FUNCTION_NAME
 const outputDir = path.resolve(configuration.outputDir || DEFAULT_OUTPUT_DIR)
 const testVariables = configuration.var
 const retryCount = configuration.retryCount || DEFAULT_RETRY_COUNT
-const containerName = configuration.containerName || DEFAULT_CONTAINER_NAME
+const localPort = configuration.localPort || DEFAULT_LOCAL_PORT
 const enableLocal = configuration.local || false
 
 runTests(
@@ -139,8 +139,8 @@ runTests(
     outputDir,
     testVariables,
     retryCount,
-    containerName,
     enableLocal,
+    localPort,
 )
     .then(function(testsPassed) {
         console.log('All test suites ran.')

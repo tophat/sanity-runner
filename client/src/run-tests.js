@@ -17,13 +17,19 @@ async function testResultPromise(
     testFiles,
     testVariables,
     retryCount,
-    containerName,
     enableLocal,
+    localPort,
 ) {
     let results = {}
     const testName = getTestName(testFiles)
     if (enableLocal) {
-        await localInvoke(testFiles, testVariables, retryCount, executionId)
+        await localInvoke(
+            testFiles,
+            testVariables,
+            retryCount,
+            executionId,
+            localPort,
+        )
             .then(response => {
                 console.log(response.data)
                 results = JSON.parse(response.data)
@@ -86,9 +92,15 @@ function reduceTestResults(accumulated, current) {
     }
 }
 
-async function localInvoke(testFiles, testVariables, retryCount, executionId) {
+async function localInvoke(
+    testFiles,
+    testVariables,
+    retryCount,
+    executionId,
+    localPort,
+) {
     return axios.post(
-        'http://localhost:9000/2015-03-31/functions/function/invocations',
+        `http://localhost:${localPort}/2015-03-31/functions/function/invocations`,
         JSON.stringify({
             testFiles,
             testVariables,
@@ -140,8 +152,8 @@ async function runTests(
     outputDir,
     testVariables,
     retryCount,
-    containerName,
     enableLocal,
+    localPort,
 ) {
     const executionId = uniqueString()
 
@@ -152,8 +164,8 @@ async function runTests(
             { [entry[0]]: entry[1] },
             testVariables,
             retryCount,
-            containerName,
             enableLocal,
+            localPort,
         ),
     )
     return Promise.all(promises).then(
