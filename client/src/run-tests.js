@@ -7,6 +7,7 @@ const AWS = require('aws-sdk')
 const agent = new https.Agent({
     keepAlive: true,
 })
+const axios = require('axios')
 
 const { formatTestResults } = require('./utils')
 
@@ -17,46 +18,42 @@ async function testResultPromise(
     testVariables,
     retryCount,
     containerName,
-    enableLocal
+    enableLocal,
 ) {
-    let response = null
     let results = {}
     const testName = getTestName(testFiles)
-    if(enableLocal) {
-
-    }else {
-        const lambda = new AWS.Lambda({
-            apiVersion: '2015-03-31',
-            httpOptions: {
-                timeout: 660000,
-                agent: agent,
-            },
-            maxRetries: 1,
-        })
-        const params = {
-            FunctionName: functionName,
-            Payload: JSON.stringify({
-                testFiles,
-                testVariables,
-                retryCount,
-                executionId,
-            }),
-        }
-    
-        try {
-            console.log("REQUESTING")
-    
-            response = await lambda.invoke(params).promise()
-            results = JSON.parse(response.Payload)
-        } catch (e) {
-            results.testResults = {}
-            results.testResults.responseError = formatFailedTestResult(
-                testName,
-                e.toString(),
-            )
-        }
+    if (enableLocal) {
+        await localInvoke(testFiles, testVariables, retryCount, executionId)
+            .then(response => {
+                console.log(response.data)
+                results = JSON.parse(response.data)
+            })
+            .catch(e => {
+                results.testResults = {}
+                results.testResults.responseError = formatFailedTestResult(
+                    testName,
+                    e.toString(),
+                )
+            })
+    } else {
+        await lambdaInvoke(
+            functionName,
+            testFiles,
+            testVariables,
+            retryCount,
+            executionId,
+        )
+            .then(response => {
+                results = JSON.parse(response.Payload)
+            })
+            .catch(e => {
+                results.testResults = {}
+                results.testResults.responseError = formatFailedTestResult(
+                    testName,
+                    e.toString(),
+                )
+            })
     }
-
 
     if (results && results.errorMessage) {
         throw new Error(`[${testName}] [Lambda Error]: ${results.errorMessage}`)
@@ -89,6 +86,46 @@ function reduceTestResults(accumulated, current) {
     }
 }
 
+async function localInvoke(testFiles, testVariables, retryCount, executionId) {
+    return axios.post(
+        'http://localhost:9000/2015-03-31/functions/function/invocations',
+        JSON.stringify({
+            testFiles,
+            testVariables,
+            retryCount,
+            executionId,
+        }),
+    )
+}
+
+async function lambdaInvoke(
+    functionName,
+    testFiles,
+    testVariables,
+    retryCount,
+    executionId,
+) {
+    const lambda = new AWS.Lambda({
+        apiVersion: '2015-03-31',
+        httpOptions: {
+            timeout: 660000,
+            agent: agent,
+        },
+        maxRetries: 1,
+    })
+    const params = {
+        FunctionName: functionName,
+        Payload: JSON.stringify({
+            testFiles,
+            testVariables,
+            retryCount,
+            executionId,
+        }),
+    }
+
+    return lambda.invoke(params).promise()
+}
+
 /**
  * Send all sanity tests to the launcher service. Output test results to
  * given directory.
@@ -104,11 +141,10 @@ async function runTests(
     testVariables,
     retryCount,
     containerName,
-    enableLocal
+    enableLocal,
 ) {
     const executionId = uniqueString()
 
-    console.log("HERERERE")
     const promises = Object.entries(testFiles).map(entry =>
         testResultPromise(
             functionName,
@@ -117,7 +153,7 @@ async function runTests(
             testVariables,
             retryCount,
             containerName,
-            enableLocal
+            enableLocal,
         ),
     )
     return Promise.all(promises).then(

@@ -21,3 +21,5 @@ release-archive
 .terraform.lock.hcl
 
 .yarn/
+
+output
