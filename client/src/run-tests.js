@@ -16,37 +16,47 @@ async function testResultPromise(
     testFiles,
     testVariables,
     retryCount,
+    containerName,
+    enableLocal
 ) {
-    const testName = getTestName(testFiles)
-    const lambda = new AWS.Lambda({
-        apiVersion: '2015-03-31',
-        httpOptions: {
-            timeout: 660000,
-            agent: agent,
-        },
-        maxRetries: 1,
-    })
-    const params = {
-        FunctionName: functionName,
-        Payload: JSON.stringify({
-            testFiles,
-            testVariables,
-            retryCount,
-            executionId,
-        }),
-    }
     let response = null
     let results = {}
-    try {
-        response = await lambda.invoke(params).promise()
-        results = JSON.parse(response.Payload)
-    } catch (e) {
-        results.testResults = {}
-        results.testResults.responseError = formatFailedTestResult(
-            testName,
-            e.toString(),
-        )
+    const testName = getTestName(testFiles)
+    if(enableLocal) {
+
+    }else {
+        const lambda = new AWS.Lambda({
+            apiVersion: '2015-03-31',
+            httpOptions: {
+                timeout: 660000,
+                agent: agent,
+            },
+            maxRetries: 1,
+        })
+        const params = {
+            FunctionName: functionName,
+            Payload: JSON.stringify({
+                testFiles,
+                testVariables,
+                retryCount,
+                executionId,
+            }),
+        }
+    
+        try {
+            console.log("REQUESTING")
+    
+            response = await lambda.invoke(params).promise()
+            results = JSON.parse(response.Payload)
+        } catch (e) {
+            results.testResults = {}
+            results.testResults.responseError = formatFailedTestResult(
+                testName,
+                e.toString(),
+            )
+        }
     }
+
 
     if (results && results.errorMessage) {
         throw new Error(`[${testName}] [Lambda Error]: ${results.errorMessage}`)
@@ -93,9 +103,12 @@ async function runTests(
     outputDir,
     testVariables,
     retryCount,
+    containerName,
+    enableLocal
 ) {
     const executionId = uniqueString()
 
+    console.log("HERERERE")
     const promises = Object.entries(testFiles).map(entry =>
         testResultPromise(
             functionName,
@@ -103,6 +116,8 @@ async function runTests(
             { [entry[0]]: entry[1] },
             testVariables,
             retryCount,
+            containerName,
+            enableLocal
         ),
     )
     return Promise.all(promises).then(
@@ -126,7 +141,7 @@ async function runTests(
 function _archiveTestResults(outputDir, testResults) {
     Object.entries(testResults).forEach(([key, value]) => {
         const outputPath = path.join(outputDir, key)
-        fs.outputFileSync(outputPath, value, 'utf8')
+        fs.outputFileSync(outputPath, JSON.stringify(value), 'utf8')
     })
 }
 

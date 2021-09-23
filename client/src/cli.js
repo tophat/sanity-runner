@@ -17,8 +17,11 @@ const CONFIG_OPTIONS = [
     'var',
     'exclude',
     'retryCount',
+    'local',
+    'containerName'
 ]
 const DEFAULT_FUNCTION_NAME = 'sanity-runner-dev-default'
+const DEFAULT_CONTAINER_NAME = 'ghcr.io/tophat/sanity-runner-client:latest'
 const DEFAULT_TEST_DIR = '.'
 const DEFAULT_OUTPUT_DIR = './output'
 const DEFAULT_RETRY_COUNT = 0
@@ -45,6 +48,14 @@ program
     .option(
         '--lambda-function [functionName]',
         `The AWS Lambda function name. Default to ${DEFAULT_FUNCTION_NAME} if omitted.`,
+    )
+    .option(
+        '--container-name [containerName]',
+        `Send tests to container instead of lambda. Used in conjuction with --local Default to ${DEFAULT_CONTAINER_NAME} if omitted.`,
+    )
+    .option(
+        '--local',
+        'Enables local mode for the sanity-runner-client. Will send tests to local container instead of lambda. Used in conjuction with --containerName' 
     )
     .option('--output-dir <directory>', 'Test results output directory.')
     .option(
@@ -109,8 +120,13 @@ const functionName = configuration.lambdaFunction || DEFAULT_FUNCTION_NAME
 const outputDir = path.resolve(configuration.outputDir || DEFAULT_OUTPUT_DIR)
 const testVariables = configuration.var
 const retryCount = configuration.retryCount || DEFAULT_RETRY_COUNT
+const containerName = configuration.containerName || DEFAULT_CONTAINER_NAME
+const enableLocal = configuration.local || false
+console.log(configuration.local)
+console.log(configuration.enableLocal)
 
-runTests(functionName, testFiles, outputDir, testVariables, retryCount)
+
+runTests(functionName, testFiles, outputDir, testVariables, retryCount, containerName, enableLocal)
     .then(function(testsPassed) {
         console.log('All test suites ran.')
         process.exit(testsPassed ? EXIT_CODES : EXIT_CODES.TEST_FAILED)
