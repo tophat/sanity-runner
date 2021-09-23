@@ -31,8 +31,7 @@ async function testResultPromise(
             localPort,
         )
             .then(response => {
-                console.log(response.data)
-                results = JSON.parse(response.data)
+                results = response.data
             })
             .catch(e => {
                 results.testResults = {}
