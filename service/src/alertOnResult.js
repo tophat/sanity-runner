@@ -213,11 +213,8 @@ const constructMessage = async function(
 
     //Attachments
     const screenShots = []
-    console.log("HERERERE")
-    console.log(results.screenshots)
-    if(results.screenshots){
+    if (results.screenshots) {
         for (const screenshotTitle of Object.keys(results.screenshots)) {
-            console.log("asdasd")
             screenShots.push(results.screenshots[screenshotTitle])
         }
     }
