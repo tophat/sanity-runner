@@ -188,7 +188,7 @@ async function runTests(
 function _archiveTestResults(outputDir, testResults) {
     Object.entries(testResults).forEach(([key, value]) => {
         const outputPath = path.join(outputDir, key)
-        fs.outputFileSync(outputPath, JSON.stringify(value), 'utf8')
+        fs.outputFileSync(outputPath, value, 'utf8')
     })
 }
 
