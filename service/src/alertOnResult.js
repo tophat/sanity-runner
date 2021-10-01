@@ -92,7 +92,11 @@ const sendPagerDutyAlert = async function(message, testMetaData) {
     }
 }
 
-const sendSlackMessage = async function(message, testMetaData) {
+const sendSlackMessage = async function(
+    message,
+    testMetaData,
+    additionalChannels,
+) {
     try {
         const slackToken = await secretmanager.getSecretValue(
             'sanity_runner/slack_api_token',
@@ -103,17 +107,12 @@ const sendSlackMessage = async function(message, testMetaData) {
             )
         }
         const slack = new WebClient(slackToken.slack_api_token)
-        const slackChannel = testMetaData.Slack
+        const slackChannels = testMetaData.Slack.split(/[ ,]+/).concat(
+            additionalChannels,
+        )
         const slackMessage = testMetaData.SlackHandler
             ? `${testMetaData.SlackHandler} ${message.message}`
             : message.message
-
-        // Send Slack message and format into thread
-        const resParent = await slack.chat.postMessage({
-            channel: slackChannel,
-            text: slackMessage,
-            link_names: true,
-        })
 
         const screenShotAttachments = []
         const screenShotUrls = []
@@ -134,61 +133,76 @@ const sendSlackMessage = async function(message, testMetaData) {
         const screenshotMessage = `Attached Screenshot at time of error. Screenshot s3 URL(s): ${screenShotUrls.join(
             ', ',
         )}`
-        await slack.chat.postMessage({
-            channel: slackChannel,
-            thread_ts: resParent.ts,
-            text: screenshotMessage,
-            attachments: screenShotAttachments,
-        })
 
-        await slack.chat.postMessage({
-            channel: slackChannel,
-            thread_ts: resParent.ts,
-            attachments: [
-                {
-                    title: 'Error Message',
-                    text: message.errorMessage,
-                    color: '#D40E0D',
-                },
-            ],
-        })
+        // Send Slack message and format into thread
+        slackChannels.forEach(async function(slackChannel) {
+            const slackThreadTs = slackChannel.split(':')
+            const channel = slackThreadTs[0]
+            let thread = slackThreadTs.length === 2 ? slackThreadTs[1] : null
 
-        await slack.chat.postMessage({
-            channel: slackChannel,
-            thread_ts: resParent.ts,
-            attachments: [
-                {
-                    title: 'Variables used by given test',
-                    text: JSON.stringify(message.variables),
-                },
-            ],
-        })
-
-        if (message.runBook) {
+            const resParent = await slack.chat.postMessage({
+                channel: channel,
+                thread_ts: thread,
+                text: slackMessage,
+                link_names: true,
+            })
+            thread = thread !== null ? thread : resParent.ts
             await slack.chat.postMessage({
-                channel: slackChannel,
-                thread_ts: resParent.ts,
+                channel: channel,
+                thread_ts: thread,
+                text: screenshotMessage,
+                attachments: screenShotAttachments,
+            })
+
+            await slack.chat.postMessage({
+                channel: channel,
+                thread_ts: thread,
                 attachments: [
                     {
-                        title: 'Runbook to follow',
-                        text: message.runBook,
+                        title: 'Error Message',
+                        text: message.errorMessage,
+                        color: '#D40E0D',
                     },
                 ],
             })
-        }
 
-        // jest-docblock does not support multiline strings and seperates them with spaces.
-        // We enforce a standard of "-" surronded by spaces as the standard practice for making
-        // a new line in the description of a test.
-        await slack.chat.postMessage({
-            channel: slackChannel,
-            thread_ts: resParent.ts,
-            attachments: [
-                {
-                    title: 'Manual Steps for Sanity',
-                    text: message.manualSteps.replace(/ - /gi, '\n- '),
-                },
-            ],
+            await slack.chat.postMessage({
+                channel: channel,
+                thread_ts: thread,
+                attachments: [
+                    {
+                        title: 'Variables used by given test',
+                        text: JSON.stringify(message.variables),
+                    },
+                ],
+            })
+
+            if (message.runBook) {
+                await slack.chat.postMessage({
+                    channel: channel,
+                    thread_ts: thread,
+                    attachments: [
+                        {
+                            title: 'Runbook to follow',
+                            text: message.runBook,
+                        },
+                    ],
+                })
+            }
+
+            // jest-docblock does not support multiline strings and seperates them with spaces.
+            // We enforce a standard of "-" surronded by spaces as the standard practice for making
+            // a new line in the description of a test.
+            await slack.chat.postMessage({
+                channel: channel,
+                thread_ts: thread,
+                attachments: [
+                    {
+                        title: 'Manual Steps for Sanity',
+                        text: message.manualSteps.replace(/ - /gi, '\n- '),
+                    },
+                ],
+            })
         })
     } catch (err) {
         console.error(err)
@@ -250,14 +264,30 @@ module.exports = async function(testFiles, results, testVariables) {
                 testMetaData,
                 testVariables,
             )
+            console.log('here')
+
+            const additionalChannels = testVariables.hasOwnProperty(
+                'SLACK_CHANNELS',
+            )
+                ? testVariables.SLACK_CHANNELS.split(/[ ,]+/)
+                : []
+
             if (testVariables.hasOwnProperty('SLACK_ALERT')) {
                 if (testVariables.SLACK_ALERT) {
-                    await sendSlackMessage(message, testMetaData)
+                    await sendSlackMessage(
+                        message,
+                        testMetaData,
+                        additionalChannels,
+                    )
                 }
             } else if (testVariables.hasOwnProperty('ALERT')) {
                 // Will delete eventually, but ensures no one using previous ENV will have their alerts break
                 if (testVariables.ALERT) {
-                    await sendSlackMessage(message, testMetaData)
+                    await sendSlackMessage(
+                        message,
+                        testMetaData,
+                        additionalChannels,
+                    )
                 }
             }
             if (testVariables.hasOwnProperty('PAGERDUTY_ALERT')) {
