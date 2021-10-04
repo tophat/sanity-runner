@@ -67,10 +67,10 @@ package: build-docker
 build-docker:
 	@echo "Building Docker Container"
 	docker build . -t ghcr.io/tophat/sanity-runner-service
+	docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:${VERSION}
 
 .PHONY: publish-docker
 publish-docker:
 	@echo "Publishing Docker Image"
-	docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:${VERSION}
 	docker push ghcr.io/tophat/sanity-runner-service:latest
 	docker push ghcr.io/tophat/sanity-runner-service:${VERSION}
