@@ -7,6 +7,7 @@ const AWS = require('aws-sdk')
 const agent = new https.Agent({
     keepAlive: true,
 })
+const axios = require('axios')
 
 const { formatTestResults } = require('./utils')
 
@@ -16,36 +17,56 @@ async function testResultPromise(
     testFiles,
     testVariables,
     retryCount,
+    enableLocal,
+    localPort,
 ) {
+    let results = {}
     const testName = getTestName(testFiles)
-    const lambda = new AWS.Lambda({
-        apiVersion: '2015-03-31',
-        httpOptions: {
-            timeout: 660000,
-            agent: agent,
-        },
-        maxRetries: 1,
-    })
-    const params = {
-        FunctionName: functionName,
-        Payload: JSON.stringify({
+    if (enableLocal) {
+        await localInvoke(
             testFiles,
             testVariables,
             retryCount,
             executionId,
-        }),
-    }
-    let response = null
-    let results = {}
-    try {
-        response = await lambda.invoke(params).promise()
-        results = JSON.parse(response.Payload)
-    } catch (e) {
-        results.testResults = {}
-        results.testResults.responseError = formatFailedTestResult(
-            testName,
-            e.toString(),
+            localPort,
         )
+            .then(response => {
+                results = response.data
+            })
+            .catch(e => {
+                results.testResults = {}
+                if (e.response) {
+                    results.testResults.responseError = formatFailedTestResult(
+                        testName,
+                        `Status Code: ${e.response.status}. Message: ${
+                            e.response.message
+                        }`,
+                    )
+                } else {
+                    results.testResults.responseError = formatFailedTestResult(
+                        testName,
+                        e.message,
+                    )
+                }
+            })
+    } else {
+        await lambdaInvoke(
+            functionName,
+            testFiles,
+            testVariables,
+            retryCount,
+            executionId,
+        )
+            .then(response => {
+                results = JSON.parse(response.Payload)
+            })
+            .catch(e => {
+                results.testResults = {}
+                results.testResults.responseError = formatFailedTestResult(
+                    testName,
+                    e.toString(),
+                )
+            })
     }
 
     if (results && results.errorMessage) {
@@ -79,6 +100,52 @@ function reduceTestResults(accumulated, current) {
     }
 }
 
+async function localInvoke(
+    testFiles,
+    testVariables,
+    retryCount,
+    executionId,
+    localPort,
+) {
+    return axios.post(
+        `http://localhost:${localPort}/2015-03-31/functions/function/invocations`,
+        JSON.stringify({
+            testFiles,
+            testVariables,
+            retryCount,
+            executionId,
+        }),
+    )
+}
+
+async function lambdaInvoke(
+    functionName,
+    testFiles,
+    testVariables,
+    retryCount,
+    executionId,
+) {
+    const lambda = new AWS.Lambda({
+        apiVersion: '2015-03-31',
+        httpOptions: {
+            timeout: 660000,
+            agent: agent,
+        },
+        maxRetries: 1,
+    })
+    const params = {
+        FunctionName: functionName,
+        Payload: JSON.stringify({
+            testFiles,
+            testVariables,
+            retryCount,
+            executionId,
+        }),
+    }
+
+    return lambda.invoke(params).promise()
+}
+
 /**
  * Send all sanity tests to the launcher service. Output test results to
  * given directory.
@@ -93,6 +160,8 @@ async function runTests(
     outputDir,
     testVariables,
     retryCount,
+    enableLocal,
+    localPort,
 ) {
     const executionId = uniqueString()
 
@@ -103,6 +172,8 @@ async function runTests(
             { [entry[0]]: entry[1] },
             testVariables,
             retryCount,
+            enableLocal,
+            localPort,
         ),
     )
     return Promise.all(promises).then(
@@ -126,7 +197,7 @@ async function runTests(
 function _archiveTestResults(outputDir, testResults) {
     Object.entries(testResults).forEach(([key, value]) => {
         const outputPath = path.join(outputDir, key)
-        fs.outputFileSync(outputPath, value, 'utf8')
+        fs.outputFileSync(outputPath, JSON.stringify(value), 'utf8')
     })
 }
 

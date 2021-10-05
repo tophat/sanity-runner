@@ -90,7 +90,15 @@ Run Client against folder with written sanity tests
 
 ### Local
 
-TBD
+You can use the --local and --localPort flags to point the sanity-runner-client to a local container running the service. This can make local debugging of the sanity-runner-service a lot easier.
+
+Launch service container
+
+docker run -p 9000:8080 ghcr.io/tophat/sanity-runner-service:latest
+In a seperate terminal...
+
+sanity-runner-client --test-dir example/repo/sanities/ --local --output-dir output --include google-fail-example
+NOTE: local usage of the sanity-runner-client requires only a SINGLE test being passed in. Either use a test suite with one test, or use the --include to regex match on a single test.
 
 ## Reccomend Project Setups 
 

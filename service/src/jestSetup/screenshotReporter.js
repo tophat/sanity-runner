@@ -34,7 +34,7 @@ class PuppeteerScreenshotReporter {
                 this._options.filename || 'screenshot.png',
             )
             const screenshot = path.join(this._options.output, relativePath)
-            if (result.status === 'failed') {
+            if (result.status === 'failed' && this._options.bucket) {
                 const downloadLink = await this.uploadScreenshotToS3(screenshot)
 
                 result.failureMessages.push(

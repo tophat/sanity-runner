@@ -213,8 +213,10 @@ const constructMessage = async function(
 
     //Attachments
     const screenShots = []
-    for (const screenshotTitle of Object.keys(results.screenshots)) {
-        screenShots.push(results.screenshots[screenshotTitle])
+    if (results.screenshots) {
+        for (const screenshotTitle of Object.keys(results.screenshots)) {
+            screenShots.push(results.screenshots[screenshotTitle])
+        }
     }
     console.log(testMetaData)
     const manualSteps = testMetaData.Description

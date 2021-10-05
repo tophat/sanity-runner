@@ -9,6 +9,8 @@ const EXIT_CODES = require('./exit-codes')
 const { collectVariables, retrieveConfigurations } = require('./utils')
 const runTests = require('./run-tests')
 
+const chalk = require('chalk')
+
 const CONFIG_OPTIONS = [
     'lambdaFunction',
     'outputDir',
@@ -17,8 +19,11 @@ const CONFIG_OPTIONS = [
     'var',
     'exclude',
     'retryCount',
+    'local',
+    'localPort',
 ]
 const DEFAULT_FUNCTION_NAME = 'sanity-runner-dev-default'
+const DEFAULT_LOCAL_PORT = '9000'
 const DEFAULT_TEST_DIR = '.'
 const DEFAULT_OUTPUT_DIR = './output'
 const DEFAULT_RETRY_COUNT = 0
@@ -45,6 +50,14 @@ program
     .option(
         '--lambda-function [functionName]',
         `The AWS Lambda function name. Default to ${DEFAULT_FUNCTION_NAME} if omitted.`,
+    )
+    .option(
+        '--localPort [localPort]',
+        `Send tests to container instead of lambda. Used in conjuction with --local Default to ${DEFAULT_LOCAL_PORT} if omitted.`,
+    )
+    .option(
+        '--local',
+        'Enables local mode for the sanity-runner-client. Will send tests to local container instead of lambda. Used in conjuction with --containerName',
     )
     .option('--output-dir <directory>', 'Test results output directory.')
     .option(
@@ -105,12 +118,30 @@ if (Object.keys(testFiles).length === 0) {
     process.exit(EXIT_CODES.INVALID_ARGUMENT)
 }
 
+if (configuration.local && Object.keys(testFiles).length > 1) {
+    console.warn(
+        `${chalk.bold.red(
+            'ERROR: Local Invoke mode only supports running 1 test. Re-run with test suite with only one test or add --include to regex match only one test.',
+        )}`,
+    )
+    process.exit(EXIT_CODES.TOO_MANY_TESTS)
+}
 const functionName = configuration.lambdaFunction || DEFAULT_FUNCTION_NAME
 const outputDir = path.resolve(configuration.outputDir || DEFAULT_OUTPUT_DIR)
 const testVariables = configuration.var
 const retryCount = configuration.retryCount || DEFAULT_RETRY_COUNT
+const localPort = configuration.localPort || DEFAULT_LOCAL_PORT
+const enableLocal = configuration.local || false
 
-runTests(functionName, testFiles, outputDir, testVariables, retryCount)
+runTests(
+    functionName,
+    testFiles,
+    outputDir,
+    testVariables,
+    retryCount,
+    enableLocal,
+    localPort,
+)
     .then(function(testsPassed) {
         console.log('All test suites ran.')
         process.exit(testsPassed ? EXIT_CODES : EXIT_CODES.TEST_FAILED)
