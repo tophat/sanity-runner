@@ -2,6 +2,30 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.5.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.4.0...sanity-runner-service@2.5.0) "sanity-runner-service" (2021-10-05)<a name="2.5.0"></a>
+
+### Bug Fixes
+
+* remove debug statements ([213f090](https://github.com/tophat/sanity-runner/commits/213f090))
+* remove unneeded casting ([213f090](https://github.com/tophat/sanity-runner/commits/213f090))
+* update yarn version
+
+* dont screenshot if bucket isnt defined
+
+* catch errors on local better
+
+* stringify for some responses
+
+* lint ([213f090](https://github.com/tophat/sanity-runner/commits/213f090))
+
+### Features
+
+* add localPort and update docs ([213f090](https://github.com/tophat/sanity-runner/commits/213f090))
+* fix json bug ([213f090](https://github.com/tophat/sanity-runner/commits/213f090))
+
+
+
+
 ## [2.4.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.3.0...sanity-runner-service@2.4.0) "sanity-runner-service" (2021-09-22)<a name="2.4.0"></a>
 
 ### Features
