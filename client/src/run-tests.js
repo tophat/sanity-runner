@@ -35,10 +35,19 @@ async function testResultPromise(
             })
             .catch(e => {
                 results.testResults = {}
-                results.testResults.responseError = formatFailedTestResult(
-                    testName,
-                    e.toString(),
-                )
+                if (e.response) {
+                    results.testResults.responseError = formatFailedTestResult(
+                        testName,
+                        `Status Code: ${e.response.status}. Message: ${
+                            e.response.message
+                        }`,
+                    )
+                } else {
+                    results.testResults.responseError = formatFailedTestResult(
+                        testName,
+                        e.message,
+                    )
+                }
             })
     } else {
         await lambdaInvoke(
@@ -188,7 +197,7 @@ async function runTests(
 function _archiveTestResults(outputDir, testResults) {
     Object.entries(testResults).forEach(([key, value]) => {
         const outputPath = path.join(outputDir, key)
-        fs.outputFileSync(outputPath, value, 'utf8')
+        fs.outputFileSync(outputPath, JSON.stringify(value), 'utf8')
     })
 }
 
