@@ -135,75 +135,78 @@ const sendSlackMessage = async function(
         )}`
 
         // Send Slack message and format into thread
-        slackChannels.forEach(async function(slackChannel) {
-            const slackThreadTs = slackChannel.split(':')
-            const channel = slackThreadTs[0]
-            let thread = slackThreadTs.length === 2 ? slackThreadTs[1] : null
+        await Promise.all(
+            slackChannels.map(async slackChannel => {
+                const slackThreadTs = slackChannel.split(':')
+                const channel = slackThreadTs[0]
+                let thread =
+                    slackThreadTs.length === 2 ? slackThreadTs[1] : null
 
-            const resParent = await slack.chat.postMessage({
-                channel: channel,
-                thread_ts: thread,
-                text: slackMessage,
-                link_names: true,
-            })
-            thread = thread !== null ? thread : resParent.ts
-            await slack.chat.postMessage({
-                channel: channel,
-                thread_ts: thread,
-                text: screenshotMessage,
-                attachments: screenShotAttachments,
-            })
+                const resParent = await slack.chat.postMessage({
+                    channel: channel,
+                    thread_ts: thread,
+                    text: slackMessage,
+                    link_names: true,
+                })
+                thread = thread ? thread : resParent.ts
+                await slack.chat.postMessage({
+                    channel: channel,
+                    thread_ts: thread,
+                    text: screenshotMessage,
+                    attachments: screenShotAttachments,
+                })
 
-            await slack.chat.postMessage({
-                channel: channel,
-                thread_ts: thread,
-                attachments: [
-                    {
-                        title: 'Error Message',
-                        text: message.errorMessage,
-                        color: '#D40E0D',
-                    },
-                ],
-            })
-
-            await slack.chat.postMessage({
-                channel: channel,
-                thread_ts: thread,
-                attachments: [
-                    {
-                        title: 'Variables used by given test',
-                        text: JSON.stringify(message.variables),
-                    },
-                ],
-            })
-
-            if (message.runBook) {
                 await slack.chat.postMessage({
                     channel: channel,
                     thread_ts: thread,
                     attachments: [
                         {
-                            title: 'Runbook to follow',
-                            text: message.runBook,
+                            title: 'Error Message',
+                            text: message.errorMessage,
+                            color: '#D40E0D',
                         },
                     ],
                 })
-            }
 
-            // jest-docblock does not support multiline strings and seperates them with spaces.
-            // We enforce a standard of "-" surronded by spaces as the standard practice for making
-            // a new line in the description of a test.
-            await slack.chat.postMessage({
-                channel: channel,
-                thread_ts: thread,
-                attachments: [
-                    {
-                        title: 'Manual Steps for Sanity',
-                        text: message.manualSteps.replace(/ - /gi, '\n- '),
-                    },
-                ],
-            })
-        })
+                await slack.chat.postMessage({
+                    channel: channel,
+                    thread_ts: thread,
+                    attachments: [
+                        {
+                            title: 'Variables used by given test',
+                            text: JSON.stringify(message.variables),
+                        },
+                    ],
+                })
+
+                if (message.runBook) {
+                    await slack.chat.postMessage({
+                        channel: channel,
+                        thread_ts: thread,
+                        attachments: [
+                            {
+                                title: 'Runbook to follow',
+                                text: message.runBook,
+                            },
+                        ],
+                    })
+                }
+
+                // jest-docblock does not support multiline strings and seperates them with spaces.
+                // We enforce a standard of "-" surronded by spaces as the standard practice for making
+                // a new line in the description of a test.
+                await slack.chat.postMessage({
+                    channel: channel,
+                    thread_ts: thread,
+                    attachments: [
+                        {
+                            title: 'Manual Steps for Sanity',
+                            text: message.manualSteps.replace(/ - /gi, '\n- '),
+                        },
+                    ],
+                })
+            }),
+        )
     } catch (err) {
         console.error(err)
     }
