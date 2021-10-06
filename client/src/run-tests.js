@@ -36,14 +36,14 @@ async function testResultPromise(
             .catch(e => {
                 results.testResults = {}
                 if (e.response) {
-                    results.testResults.responseError = formatFailedTestResult(
+                    results.testResults[testName] = formatFailedTestResult(
                         testName,
                         `Status Code: ${e.response.status}. Message: ${
                             e.response.message
                         }`,
                     )
                 } else {
-                    results.testResults.responseError = formatFailedTestResult(
+                    results.testResults[testName] = formatFailedTestResult(
                         testName,
                         e.message,
                     )
@@ -70,7 +70,11 @@ async function testResultPromise(
     }
 
     if (results && results.errorMessage) {
-        throw new Error(`[${testName}] [Lambda Error]: ${results.errorMessage}`)
+        results.testResults = {}
+        results.testResults[testName] = formatFailedTestResult(
+            testName,
+            `[Lambda Error] ${results.errorMessage}`,
+        )
     }
     if (!results || !results.testResults) {
         throw new Error(`[${testName}] Inconsistent service response`)
