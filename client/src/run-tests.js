@@ -19,6 +19,7 @@ async function testResultPromise(
     retryCount,
     enableLocal,
     localPort,
+    timeout,
 ) {
     let results = {}
     const testName = getTestName(testFiles)
@@ -56,6 +57,7 @@ async function testResultPromise(
             testVariables,
             retryCount,
             executionId,
+            timeout,
         )
             .then(response => {
                 results = JSON.parse(response.Payload)
@@ -128,11 +130,12 @@ async function lambdaInvoke(
     testVariables,
     retryCount,
     executionId,
+    timeout,
 ) {
     const lambda = new AWS.Lambda({
         apiVersion: '2015-03-31',
         httpOptions: {
-            timeout: 720000,
+            timeout: timeout,
             agent: agent,
         },
         maxRetries: 1,
@@ -166,6 +169,7 @@ async function runTests(
     retryCount,
     enableLocal,
     localPort,
+    timeout,
 ) {
     const executionId = uniqueString()
 
@@ -178,6 +182,7 @@ async function runTests(
             retryCount,
             enableLocal,
             localPort,
+            timeout,
         ),
     )
     return Promise.all(promises).then(
