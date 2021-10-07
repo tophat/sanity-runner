@@ -132,7 +132,7 @@ async function lambdaInvoke(
     const lambda = new AWS.Lambda({
         apiVersion: '2015-03-31',
         httpOptions: {
-            timeout: 660000,
+            timeout: 720000,
             agent: agent,
         },
         maxRetries: 1,
