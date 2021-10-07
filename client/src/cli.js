@@ -74,7 +74,7 @@ program
     )
     .option(
         '--timeout <timeout>',
-        'Specify the timeout (in milliseconds) for waiting on lambda to respond. Default: ${DEFAULT_TIMEOUT}',
+        `Specify the timeout (in milliseconds) for waiting on lambda to respond. Default: ${DEFAULT_TIMEOUT}`,
     )
     .parse(process.argv)
 
@@ -138,7 +138,7 @@ const testVariables = configuration.var
 const retryCount = configuration.retryCount || DEFAULT_RETRY_COUNT
 const localPort = configuration.localPort || DEFAULT_LOCAL_PORT
 const enableLocal = configuration.local || false
-const timeout = configuration.timeout || DEFAULT_TIMEOUT
+const timeout = parseInt(configuration.timeout) || DEFAULT_TIMEOUT
 
 runTests(
     functionName,
