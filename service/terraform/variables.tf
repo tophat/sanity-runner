@@ -25,5 +25,5 @@ variable "memory_size" {
 
 variable "timeout" {
     type = number
-    default = 600
+    default = 660
 }
