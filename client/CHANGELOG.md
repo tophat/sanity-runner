@@ -2,6 +2,19 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.5.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.4.1...sanity-runner-client@2.5.0) "sanity-runner-client" (2021-10-07)<a name="2.5.0"></a>
+
+### Features
+
+* increase timeout slightly ([efda14d](https://github.com/tophat/sanity-runner/commits/efda14d))
+* increase service timeout as well ([efda14d](https://github.com/tophat/sanity-runner/commits/efda14d))
+* make timeout configurable ([efda14d](https://github.com/tophat/sanity-runner/commits/efda14d))
+* fix casting to int ([efda14d](https://github.com/tophat/sanity-runner/commits/efda14d))
+* increase timeout slightly (#258) ([efda14d](https://github.com/tophat/sanity-runner/commits/efda14d))
+
+
+
+
 ## [2.4.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.4.0...sanity-runner-client@2.4.1) "sanity-runner-client" (2021-10-07)<a name="2.4.1"></a>
 
 ### Bug Fixes
