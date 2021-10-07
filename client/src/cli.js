@@ -21,12 +21,14 @@ const CONFIG_OPTIONS = [
     'retryCount',
     'local',
     'localPort',
+    'timeout',
 ]
 const DEFAULT_FUNCTION_NAME = 'sanity-runner-dev-default'
 const DEFAULT_LOCAL_PORT = '9000'
 const DEFAULT_TEST_DIR = '.'
 const DEFAULT_OUTPUT_DIR = './output'
 const DEFAULT_RETRY_COUNT = 0
+const DEFAULT_TIMEOUT = 720000
 
 program
     .version(require('../package.json').version)
@@ -69,6 +71,10 @@ program
     .option(
         '--retry-count <retryCount>',
         'Specify number of retries a test will perform if an error occurs (default 0)',
+    )
+    .option(
+        '--timeout <timeout>',
+        `Specify the timeout (in milliseconds) for waiting on lambda to respond. Default: ${DEFAULT_TIMEOUT}`,
     )
     .parse(process.argv)
 
@@ -132,6 +138,7 @@ const testVariables = configuration.var
 const retryCount = configuration.retryCount || DEFAULT_RETRY_COUNT
 const localPort = configuration.localPort || DEFAULT_LOCAL_PORT
 const enableLocal = configuration.local || false
+const timeout = parseInt(configuration.timeout) || DEFAULT_TIMEOUT
 
 runTests(
     functionName,
@@ -141,6 +148,7 @@ runTests(
     retryCount,
     enableLocal,
     localPort,
+    timeout,
 )
     .then(function(testsPassed) {
         console.log('All test suites ran.')
