@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.5.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.5.0...sanity-runner-service@2.5.1) "sanity-runner-service" (2021-10-07)<a name="2.5.1"></a>
+
+### Bug Fixes
+
+* catch lambda errors correctly (#257) ([9210d89](https://github.com/tophat/sanity-runner/commits/9210d89))
+
+
+
+
 ## [2.5.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.4.0...sanity-runner-service@2.5.0) "sanity-runner-service" (2021-10-05)<a name="2.5.0"></a>
 
 ### Bug Fixes
