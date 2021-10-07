@@ -170,16 +170,15 @@ const _formatTotal = (failures, skipped, total) => {
  */
 const formatTestResults = async results => {
     console.log('\n')
-
     const parsedResults = []
     for (const key in results) {
-        if (key === 'responseError') {
-            parsedResults.push(results[key].testsuites)
-            _printTestResult(results[key])
-        } else {
+        if (key.endsWith('.xml')) {
             const result = await _parseResultString(results[key])
             _printTestResult(result)
             parsedResults.push(result.testsuites)
+        } else {
+            parsedResults.push(results[key].testsuites)
+            _printTestResult(results[key])
         }
     }
     _printTestSummary(parsedResults)
