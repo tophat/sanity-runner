@@ -107,9 +107,12 @@ const sendSlackMessage = async function(
             )
         }
         const slack = new WebClient(slackToken.slack_api_token)
-        const slackChannels = testMetaData.Slack.split(/[ ,]+/).concat(
+        let slackChannels = testMetaData.Slack.split(/[ ,]+/).concat(
             additionalChannels,
         )
+        // Remove duplicates
+        slackChannels = [...new Set(slackChannels)]
+
         const slackMessage = testMetaData.SlackHandler
             ? `${testMetaData.SlackHandler} ${message.message}`
             : message.message
