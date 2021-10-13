@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.7.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.6.0...sanity-runner-client@2.7.0) "sanity-runner-client" (2021-10-13)<a name="2.7.0"></a>
+
+### Features
+
+* fix ci for service (#259) ([12d76fc](https://github.com/tophat/sanity-runner/commits/12d76fc))
+
+
+
+
 ## [2.6.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.5.0...sanity-runner-client@2.6.0) "sanity-runner-client" (2021-10-13)<a name="2.6.0"></a>
 
 ### Bug Fixes
