@@ -2,6 +2,30 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.6.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.5.0...sanity-runner-client@2.6.0) "sanity-runner-client" (2021-10-13)<a name="2.6.0"></a>
+
+### Bug Fixes
+
+* remove debug statements ([8343fbc](https://github.com/tophat/sanity-runner/commits/8343fbc))
+* remove unneeded casting ([8343fbc](https://github.com/tophat/sanity-runner/commits/8343fbc))
+* docker tag earlier ([8343fbc](https://github.com/tophat/sanity-runner/commits/8343fbc))
+* based on comments
+
+* remove duplicate channels ([8343fbc](https://github.com/tophat/sanity-runner/commits/8343fbc))
+
+### Features
+
+* add localPort and update docs ([8343fbc](https://github.com/tophat/sanity-runner/commits/8343fbc))
+* fix json bug ([8343fbc](https://github.com/tophat/sanity-runner/commits/8343fbc))
+* support multi channels and threads
+
+* doc: add docs on new var ([8343fbc](https://github.com/tophat/sanity-runner/commits/8343fbc))
+* release service ([8343fbc](https://github.com/tophat/sanity-runner/commits/8343fbc))
+* Support Slack multiple channel + slack threads   (#256) ([8343fbc](https://github.com/tophat/sanity-runner/commits/8343fbc))
+
+
+
+
 ## [2.5.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.4.1...sanity-runner-client@2.5.0) "sanity-runner-client" (2021-10-07)<a name="2.5.0"></a>
 
 ### Features
