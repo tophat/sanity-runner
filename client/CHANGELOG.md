@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.7.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.7.0...sanity-runner-client@2.7.1) "sanity-runner-client" (2021-10-13)<a name="2.7.1"></a>
+
+### Bug Fixes
+
+* fix copy pasta ([948cccc](https://github.com/tophat/sanity-runner/commits/948cccc))
+
+
+
+
 ## [2.7.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.6.0...sanity-runner-client@2.7.0) "sanity-runner-client" (2021-10-13)<a name="2.7.0"></a>
 
 ### Features
