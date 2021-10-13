@@ -16,7 +16,7 @@ which aws > /dev/null || { echo 'ERROR: aws-cli is not installed' ; exit 1; }
 which docker > /dev/null && docker ps > /dev/null || { echo 'ERROR: docker is not running' ; exit 1; }
 
 # retag and publish to private ecr for lambda 
-docker pull "$public_repo:$tag"
+docker inspect "$public_repo:$tag" || docker pull "$public_repo:$tag"
 docker tag "$public_repo:$tag" "$aws_ecr_repository_url:$tag"
 docker tag "$public_repo:$tag" "$aws_ecr_repository_url:latest"
 

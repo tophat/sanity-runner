@@ -59,6 +59,19 @@ sanity-runner --var SLACK_ALERT=true
 ``` 
 Enables Slack alerts to trigger if configured
 
+#### SLACK_CHANNELS
+```
+sanity-runner --var SLACK_CHANNELS=channel-name
+sanity-runner --var SLACK_CHANNELS=channel-name,another-channel
+sanity-runner --var SLACK_CHANNELS="channel-name another-channel"
+sanity-runner --var SLACK_CHANNELS=channel-name:123123123.123
+```
+Defines slack channel(s) to alert to incase of errors. These are appended in conjuction to the channels defined in a tests metadata. 
+
+Multiple channels can be defined by commas or spaces. 
+
+Slack threads can be passed in via the format <slack_channel>:<thread_ts>
+
 ### PAGERDUTY_ALERT
 ```
 sanity-runner --var SLACK_ALERT=true
