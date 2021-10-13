@@ -71,6 +71,6 @@ build-docker:
 .PHONY: publish-docker
 publish-docker:
 	@echo "Publishing Docker Image"
-	docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:${VERSION}
+	docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:${VERSION}
 	docker push ghcr.io/tophat/sanity-runner-service:latest
 	docker push ghcr.io/tophat/sanity-runner-service:${VERSION}
