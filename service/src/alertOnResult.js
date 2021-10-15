@@ -109,16 +109,14 @@ const sendSlackMessage = async function(
     additionalChannels,
 ) {
     try {
-        // const slackToken = await secretmanager.getSecretValue(
-        //     'sanity_runner/slack_api_token',
-        // )
-        const slackToken =
-            'xoxp-6901157939-419562465731-724004278518-0474ce3b2799d3ee7948d5bb891bfb36'
-        // if (!slackToken.hasOwnProperty('slack_api_token')) {
-        //     throw new Error(
-        //         `Secret sanity_runner/slack_api_token not found in AWS Secret Manager!`,
-        //     )
-        // }
+        const slackToken = await secretmanager.getSecretValue(
+            'sanity_runner/slack_api_token',
+        )
+        if (!slackToken.hasOwnProperty('slack_api_token')) {
+            throw new Error(
+                `Secret sanity_runner/slack_api_token not found in AWS Secret Manager!`,
+            )
+        }
         const slack = new WebClient(slackToken)
         let slackChannels = testMetaData.Slack.split(/[ ,]+/).concat(
             additionalChannels,
