@@ -2,6 +2,17 @@ const { parse } = require('jest-docblock')
 const { WebClient } = require('@slack/web-api')
 const secretmanager = require('./secrets')
 const pdClient = require('node-pagerduty')
+const fs = require('fs-extra')
+
+const getFullStoryUrl = async function() {
+    try {
+        const fullStoryUrl = fs.readFileSync('/tmp/fullStoryUrl.txt', 'utf8')
+        fs.remove('/tmp/fullStoryUrl.txt')
+        return fullStoryUrl
+    } catch (e) {
+        return 'ERROR: No FullStory URL found.'
+    }
+}
 
 const resolvePagerDutyAlert = async function(testFile, testMetaData) {
     try {
@@ -98,15 +109,17 @@ const sendSlackMessage = async function(
     additionalChannels,
 ) {
     try {
-        const slackToken = await secretmanager.getSecretValue(
-            'sanity_runner/slack_api_token',
-        )
-        if (!slackToken.hasOwnProperty('slack_api_token')) {
-            throw new Error(
-                `Secret sanity_runner/slack_api_token not found in AWS Secret Manager!`,
-            )
-        }
-        const slack = new WebClient(slackToken.slack_api_token)
+        // const slackToken = await secretmanager.getSecretValue(
+        //     'sanity_runner/slack_api_token',
+        // )
+        const slackToken =
+            'xoxp-6901157939-419562465731-724004278518-0474ce3b2799d3ee7948d5bb891bfb36'
+        // if (!slackToken.hasOwnProperty('slack_api_token')) {
+        //     throw new Error(
+        //         `Secret sanity_runner/slack_api_token not found in AWS Secret Manager!`,
+        //     )
+        // }
+        const slack = new WebClient(slackToken)
         let slackChannels = testMetaData.Slack.split(/[ ,]+/).concat(
             additionalChannels,
         )
@@ -158,6 +171,14 @@ const sendSlackMessage = async function(
                     text: screenshotMessage,
                     attachments: screenShotAttachments,
                 })
+
+                if (message.fullStoryMessage) {
+                    await slack.chat.postMessage({
+                        channel: channel,
+                        thread_ts: thread,
+                        text: message.fullStoryMessage,
+                    })
+                }
 
                 await slack.chat.postMessage({
                     channel: channel,
@@ -245,6 +266,12 @@ const constructMessage = async function(
 
     const runBook = testMetaData.Runbook ? testMetaData.Runbook : ''
 
+    let fullStoryMessage = null
+    if (testVariables.hasOwnProperty('FULLSTORY_ENABLED')) {
+        if (testVariables.FULLSTORY_ENABLED === 'true') {
+            fullStoryMessage = `FullStory URL: ${await getFullStoryUrl()}`
+        }
+    }
     const message = {
         testName: test,
         message: mainMessage,
@@ -252,6 +279,7 @@ const constructMessage = async function(
         variables: testVariables,
         manualSteps: manualSteps,
         runBook: runBook,
+        fullStoryMessage: fullStoryMessage,
         attachments: {
             screenShots: screenShots,
         },

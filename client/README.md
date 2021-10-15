@@ -84,6 +84,11 @@ sanity-runner --var APP_ENV=true
 ``` 
 Used in alerting to help signify which Environment the tests are running in. 
 
+### FULLSTORY_ENABLE
+```
+sanity-runner --var FULLSTORY_ENABLE=true
+``` 
+Enables fullstory integration. If enabled, the sanity runner will check if a fullstory URL is associated with a session, and if so append it to any slack alerts sent.
 
 ## Local Usage
 You can use the `--local` and `--localPort` flags to point the sanity-runner-client to a local container running the service. This can make local debugging of the sanity-runner-service a lot easier.
