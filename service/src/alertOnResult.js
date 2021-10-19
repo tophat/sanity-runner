@@ -117,7 +117,7 @@ const sendSlackMessage = async function(
                 `Secret sanity_runner/slack_api_token not found in AWS Secret Manager!`,
             )
         }
-        const slack = new WebClient(slackToken)
+        const slack = new WebClient(slackToken.slack_api_token)
         let slackChannels = testMetaData.Slack.split(/[ ,]+/).concat(
             additionalChannels,
         )

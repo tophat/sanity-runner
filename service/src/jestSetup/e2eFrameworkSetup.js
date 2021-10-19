@@ -46,6 +46,7 @@ afterEach(async () => {
                 global.fullStoryUrl = 'No FullStory URL Found'
             }
             fs.writeFile('/tmp/fullStoryUrl.txt', global.fullStoryUrl)
+            await new Promise((r) => setTimeout(r, 5000));
         }
     }
     await global.browser.close()
