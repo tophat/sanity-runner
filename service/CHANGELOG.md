@@ -2,6 +2,23 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.9.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.8.1...sanity-runner-service@2.9.0) "sanity-runner-service" (2021-10-19)<a name="2.9.0"></a>
+
+### Bug Fixes
+
+* add 5 second delay and fix token ([22e6fc9](https://github.com/tophat/sanity-runner/commits/22e6fc9))
+* lint ([22e6fc9](https://github.com/tophat/sanity-runner/commits/22e6fc9))
+
+### Features
+
+* add fullstory
+
+* remove testing ([22e6fc9](https://github.com/tophat/sanity-runner/commits/22e6fc9))
+* add fullstory (#260) ([22e6fc9](https://github.com/tophat/sanity-runner/commits/22e6fc9))
+
+
+
+
 ## [2.8.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.8.0...sanity-runner-service@2.8.1) "sanity-runner-service" (2021-10-13)<a name="2.8.1"></a>
 
 ### Bug Fixes
