@@ -35,5 +35,19 @@ afterEach(async () => {
         fullPage: true,
         path: screenshotPath,
     })
+
+    if (global.SANITY_VARIABLES.hasOwnProperty('FULLSTORY_ENABLED')) {
+        if (global.SANITY_VARIABLES.FULLSTORY_ENABLED === 'true') {
+            try {
+                global.fullStoryUrl = await global.page.evaluate(() => {
+                    return window.FS.getCurrentSessionURL()
+                })
+            } catch (err) {
+                global.fullStoryUrl = 'No FullStory URL Found'
+            }
+            fs.writeFile('/tmp/fullStoryUrl.txt', global.fullStoryUrl)
+            await new Promise(r => setTimeout(r, 5000))
+        }
+    }
     await global.browser.close()
 })

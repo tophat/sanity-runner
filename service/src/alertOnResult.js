@@ -2,6 +2,17 @@ const { parse } = require('jest-docblock')
 const { WebClient } = require('@slack/web-api')
 const secretmanager = require('./secrets')
 const pdClient = require('node-pagerduty')
+const fs = require('fs-extra')
+
+const getFullStoryUrl = async function() {
+    try {
+        const fullStoryUrl = fs.readFileSync('/tmp/fullStoryUrl.txt', 'utf8')
+        fs.remove('/tmp/fullStoryUrl.txt')
+        return fullStoryUrl
+    } catch (e) {
+        return 'ERROR: No FullStory URL found.'
+    }
+}
 
 const resolvePagerDutyAlert = async function(testFile, testMetaData) {
     try {
@@ -159,6 +170,14 @@ const sendSlackMessage = async function(
                     attachments: screenShotAttachments,
                 })
 
+                if (message.fullStoryMessage) {
+                    await slack.chat.postMessage({
+                        channel: channel,
+                        thread_ts: thread,
+                        text: message.fullStoryMessage,
+                    })
+                }
+
                 await slack.chat.postMessage({
                     channel: channel,
                     thread_ts: thread,
@@ -245,6 +264,12 @@ const constructMessage = async function(
 
     const runBook = testMetaData.Runbook ? testMetaData.Runbook : ''
 
+    let fullStoryMessage = null
+    if (testVariables.hasOwnProperty('FULLSTORY_ENABLED')) {
+        if (testVariables.FULLSTORY_ENABLED === 'true') {
+            fullStoryMessage = `FullStory URL: ${await getFullStoryUrl()}`
+        }
+    }
     const message = {
         testName: test,
         message: mainMessage,
@@ -252,6 +277,7 @@ const constructMessage = async function(
         variables: testVariables,
         manualSteps: manualSteps,
         runBook: runBook,
+        fullStoryMessage: fullStoryMessage,
         attachments: {
             screenShots: screenShots,
         },
