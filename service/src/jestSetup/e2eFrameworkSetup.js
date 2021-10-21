@@ -1,7 +1,10 @@
-const fs = require('fs-extra')
+const fs = require('fs')
 const path = require('path')
-const { SCREENSHOT_FILENAME } = require('../constants')
+
+const ensureDir = require('fs-extra').ensureDir
 const getState = require('expect/build/jestMatchersObject').getState
+
+const { SCREENSHOT_FILENAME } = require('../constants')
 
 require('expect-puppeteer') // modifies globals!
 
@@ -11,7 +14,7 @@ beforeEach(async () => {
     global.page = await global.browser.newPage()
     try {
         const testName = getState().currentTestName
-        await global.page.setUserAgent(`TophatSanityRunner`)
+        await global.page.setUserAgent('TophatSanityRunner')
         await global.page.setExtraHTTPHeaders({
             'x-sanity-runner-request-id': global.lambdaContext.sanityRequestId,
             'x-sanity-runner-test-name': testName,
@@ -30,23 +33,32 @@ afterEach(async () => {
         SCREENSHOT_FILENAME,
     )
 
-    await fs.ensureDir(path.dirname(screenshotPath))
+    await ensureDir(path.dirname(screenshotPath))
     await global.page.screenshot({
         fullPage: true,
         path: screenshotPath,
     })
 
-    if (global.SANITY_VARIABLES.hasOwnProperty('FULLSTORY_ENABLED')) {
+    if (
+        Object.prototype.hasOwnProperty.call(
+            global.SANITY_VARIABLES,
+            'FULLSTORY_ENABLED',
+        )
+    ) {
         if (global.SANITY_VARIABLES.FULLSTORY_ENABLED === 'true') {
             try {
                 global.fullStoryUrl = await global.page.evaluate(() => {
                     return window.FS.getCurrentSessionURL()
                 })
             } catch (err) {
-                global.fullStoryUrl = 'No FullStory URL Found'
+                console.log('No FullStory URL Found')
             }
-            fs.writeFile('/tmp/fullStoryUrl.txt', global.fullStoryUrl)
-            await new Promise(r => setTimeout(r, 5000))
+            await fs.promises.writeFile(
+                '/tmp/fullStoryUrl.txt',
+                global.fullStoryUrl ?? 'No FullStory URL Found',
+                'utf8',
+            )
+            await new Promise((r) => setTimeout(r, 5000))
         }
     }
     await global.browser.close()

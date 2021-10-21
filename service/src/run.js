@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require('uuid')
 const fs = require('fs-extra')
+
 const paths = require('./paths')
 
 module.exports = class {
@@ -53,7 +54,7 @@ module.exports = class {
     async writeSuites(testFiles) {
         const destination = paths.suite(this.id)
         await Promise.all(
-            Object.entries(testFiles).map(entry =>
+            Object.entries(testFiles).map((entry) =>
                 fs.outputFile(`${destination}/${entry[0]}`, entry[1]),
             ),
         )
@@ -76,10 +77,10 @@ module.exports = class {
  * Runtime initialization errors are not currently reported by junit reporter
  * https://github.com/jest-community/jest-junit/pull/47
  */
-const extractRuntimeErrors = function(results) {
+const extractRuntimeErrors = function (results) {
     const errors = []
     if (results.numRuntimeErrorTestSuites > 0) {
-        results.testResults.forEach(tc => {
+        results.testResults.forEach((tc) => {
             if (tc.assertionResults.length === 0 && tc.status === 'failed') {
                 errors.push({
                     message: tc.message,
