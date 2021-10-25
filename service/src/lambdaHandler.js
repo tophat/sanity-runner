@@ -1,5 +1,6 @@
 const execa = require('execa')
 const posix = require('posix')
+
 const TestRunner = require('./testRunner')
 
 if (process.pid === 1) {
@@ -8,7 +9,7 @@ if (process.pid === 1) {
     posix.setrlimit('core', { soft: 0, hard: 0 })
 }
 
-module.exports.handler = async function(event, context, callback) {
+module.exports.handler = async function (event, context, callback) {
     console.log((await execa('find', ['/tmp'])).stdout)
     const runner = new TestRunner()
     const testResults = await runner.runTests(

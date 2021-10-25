@@ -1,4 +1,4 @@
-const getSecretValue = async function(secretKey) {
+const getSecretValue = async function (secretKey) {
     const SecretsManager = require('aws-sdk/clients/secretsmanager')
     const secretsmanager = new SecretsManager()
 

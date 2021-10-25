@@ -1,10 +1,11 @@
 const { parse } = require('jest-docblock')
 const { WebClient } = require('@slack/web-api')
-const secretmanager = require('./secrets')
 const pdClient = require('node-pagerduty')
 const fs = require('fs-extra')
 
-const getFullStoryUrl = async function() {
+const secretmanager = require('./secrets')
+
+const getFullStoryUrl = async function () {
     try {
         const fullStoryUrl = fs.readFileSync('/tmp/fullStoryUrl.txt', 'utf8')
         fs.remove('/tmp/fullStoryUrl.txt')
@@ -14,7 +15,7 @@ const getFullStoryUrl = async function() {
     }
 }
 
-const resolvePagerDutyAlert = async function(testFile, testMetaData) {
+const resolvePagerDutyAlert = async function (testFile, testMetaData) {
     try {
         const pd = new pdClient()
         if (!testMetaData.Pagerduty) {
@@ -26,11 +27,14 @@ const resolvePagerDutyAlert = async function(testFile, testMetaData) {
         const pagerDutySecret = await secretmanager.getSecretValue(
             `sanity_runner/${testMetaData.Pagerduty}`,
         )
-        if (!pagerDutySecret.hasOwnProperty('integration_key')) {
+        if (
+            !Object.prototype.hasOwnProperty.call(
+                pagerDutySecret,
+                'integration_key',
+            )
+        ) {
             throw new Error(
-                `Secret sanity_runner/${
-                    testMetaData.Pagerduty
-                } not found in AWS Secret Manager!`,
+                `Secret sanity_runner/${testMetaData.Pagerduty} not found in AWS Secret Manager!`,
             )
         }
         const pgIntegrationId = pagerDutySecret.integration_key
@@ -46,7 +50,7 @@ const resolvePagerDutyAlert = async function(testFile, testMetaData) {
     }
 }
 
-const sendPagerDutyAlert = async function(message, testMetaData) {
+const sendPagerDutyAlert = async function (message, testMetaData) {
     try {
         const pd = new pdClient()
         if (!testMetaData.Pagerduty) {
@@ -58,11 +62,14 @@ const sendPagerDutyAlert = async function(message, testMetaData) {
         const pagerDutySecret = await secretmanager.getSecretValue(
             `sanity_runner/${testMetaData.Pagerduty}`,
         )
-        if (!pagerDutySecret.hasOwnProperty('integration_key')) {
+        if (
+            !Object.prototype.hasOwnProperty.call(
+                pagerDutySecret,
+                'integration_key',
+            )
+        ) {
             throw new Error(
-                `Secret sanity_runner/${
-                    testMetaData.Pagerduty
-                } not found in AWS Secret Manager!`,
+                `Secret sanity_runner/${testMetaData.Pagerduty} not found in AWS Secret Manager!`,
             )
         }
         const pgIntegrationId = pagerDutySecret.integration_key
@@ -103,7 +110,7 @@ const sendPagerDutyAlert = async function(message, testMetaData) {
     }
 }
 
-const sendSlackMessage = async function(
+const sendSlackMessage = async function (
     message,
     testMetaData,
     additionalChannels,
@@ -112,15 +119,16 @@ const sendSlackMessage = async function(
         const slackToken = await secretmanager.getSecretValue(
             'sanity_runner/slack_api_token',
         )
-        if (!slackToken.hasOwnProperty('slack_api_token')) {
+        if (
+            !Object.prototype.hasOwnProperty.call(slackToken, 'slack_api_token')
+        ) {
             throw new Error(
-                `Secret sanity_runner/slack_api_token not found in AWS Secret Manager!`,
+                'Secret sanity_runner/slack_api_token not found in AWS Secret Manager!',
             )
         }
         const slack = new WebClient(slackToken.slack_api_token)
-        let slackChannels = testMetaData.Slack.split(/[ ,]+/).concat(
-            additionalChannels,
-        )
+        let slackChannels =
+            testMetaData.Slack.split(/[ ,]+/).concat(additionalChannels)
         // Remove duplicates
         slackChannels = [...new Set(slackChannels)]
 
@@ -150,7 +158,7 @@ const sendSlackMessage = async function(
 
         // Send Slack message and format into thread
         await Promise.all(
-            slackChannels.map(async slackChannel => {
+            slackChannels.map(async (slackChannel) => {
                 const slackThreadTs = slackChannel.split(':')
                 const channel = slackThreadTs[0]
                 let thread =
@@ -234,7 +242,7 @@ const sendSlackMessage = async function(
     }
 }
 
-const constructMessage = async function(
+const constructMessage = async function (
     results,
     test,
     testMetaData,
@@ -265,7 +273,9 @@ const constructMessage = async function(
     const runBook = testMetaData.Runbook ? testMetaData.Runbook : ''
 
     let fullStoryMessage = null
-    if (testVariables.hasOwnProperty('FULLSTORY_ENABLED')) {
+    if (
+        Object.prototype.hasOwnProperty.call(testVariables, 'FULLSTORY_ENABLED')
+    ) {
         if (testVariables.FULLSTORY_ENABLED === 'true') {
             fullStoryMessage = `FullStory URL: ${await getFullStoryUrl()}`
         }
@@ -285,7 +295,7 @@ const constructMessage = async function(
 
     return message
 }
-module.exports = async function(testFiles, results, testVariables) {
+module.exports = async function (testFiles, results, testVariables) {
     if (results.numFailedTests > 0) {
         for (const testFile of Object.keys(testFiles)) {
             const testContents = testFiles[testFile]
@@ -298,13 +308,19 @@ module.exports = async function(testFiles, results, testVariables) {
             )
             console.log('here')
 
-            const additionalChannels = testVariables.hasOwnProperty(
+            const additionalChannels = Object.prototype.hasOwnProperty.call(
+                testVariables,
                 'SLACK_CHANNELS',
             )
                 ? testVariables.SLACK_CHANNELS.split(/[ ,]+/)
                 : []
 
-            if (testVariables.hasOwnProperty('SLACK_ALERT')) {
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    testVariables,
+                    'SLACK_ALERT',
+                )
+            ) {
                 if (testVariables.SLACK_ALERT) {
                     await sendSlackMessage(
                         message,
@@ -312,7 +328,9 @@ module.exports = async function(testFiles, results, testVariables) {
                         additionalChannels,
                     )
                 }
-            } else if (testVariables.hasOwnProperty('ALERT')) {
+            } else if (
+                Object.prototype.hasOwnProperty.call(testVariables, 'ALERT')
+            ) {
                 // Will delete eventually, but ensures no one using previous ENV will have their alerts break
                 if (testVariables.ALERT) {
                     await sendSlackMessage(
@@ -322,14 +340,24 @@ module.exports = async function(testFiles, results, testVariables) {
                     )
                 }
             }
-            if (testVariables.hasOwnProperty('PAGERDUTY_ALERT')) {
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    testVariables,
+                    'PAGERDUTY_ALERT',
+                )
+            ) {
                 if (testVariables.PAGERDUTY_ALERT) {
                     await sendPagerDutyAlert(message, testMetaData)
                 }
             }
         }
     } else if (results.numFailedTests === 0) {
-        if (testVariables.hasOwnProperty('PAGERDUTY_ALERT')) {
+        if (
+            Object.prototype.hasOwnProperty.call(
+                testVariables,
+                'PAGERDUTY_ALERT',
+            )
+        ) {
             for (const testFile of Object.keys(testFiles)) {
                 const testContents = testFiles[testFile]
                 const testMetaData = parse(testContents)

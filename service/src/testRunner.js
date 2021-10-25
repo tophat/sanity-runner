@@ -1,10 +1,11 @@
-const paths = require('./paths')
 const execa = require('execa')
-const Run = require('./run')
 const retry = require('async-retry')
+
+const paths = require('./paths')
+const Run = require('./run')
 const alertOnResult = require('./alertOnResult')
 
-const runJest = async function(chromePath, ...args) {
+const runJest = async function (chromePath, ...args) {
     const env = Object.assign({}, process.env, {
         PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true,
     })
@@ -33,7 +34,7 @@ const runJest = async function(chromePath, ...args) {
     return result
 }
 
-const logResults = function(
+const logResults = function (
     results,
     testVariables,
     retryCount,
@@ -88,7 +89,7 @@ module.exports = class {
                 },
                 {
                     retries: maxRetryCount,
-                    onRetry: function() {
+                    onRetry: function () {
                         retryCount++
                     },
                 },
