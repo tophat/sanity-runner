@@ -2,6 +2,17 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.8.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.8.0...sanity-runner-client@2.8.1) "sanity-runner-client" (2021-10-25)<a name="2.8.1"></a>
+
+### Bug Fixes
+
+* fix bug with FS and upgrade lint ([3bbd5f8](https://github.com/tophat/sanity-runner/commits/3bbd5f8))
+* updated yarn ([3bbd5f8](https://github.com/tophat/sanity-runner/commits/3bbd5f8))
+* fix bug with FS and upgrade lint (#263) ([3bbd5f8](https://github.com/tophat/sanity-runner/commits/3bbd5f8))
+
+
+
+
 ## [2.8.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.7.1...sanity-runner-client@2.8.0) "sanity-runner-client" (2021-10-19)<a name="2.8.0"></a>
 
 ### Bug Fixes

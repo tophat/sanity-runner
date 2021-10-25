@@ -2,6 +2,17 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.9.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.9.0...sanity-runner-service@2.9.1) "sanity-runner-service" (2021-10-25)<a name="2.9.1"></a>
+
+### Bug Fixes
+
+* fix bug with FS and upgrade lint ([3bbd5f8](https://github.com/tophat/sanity-runner/commits/3bbd5f8))
+* updated yarn ([3bbd5f8](https://github.com/tophat/sanity-runner/commits/3bbd5f8))
+* fix bug with FS and upgrade lint (#263) ([3bbd5f8](https://github.com/tophat/sanity-runner/commits/3bbd5f8))
+
+
+
+
 ## [2.9.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.8.1...sanity-runner-service@2.9.0) "sanity-runner-service" (2021-10-19)<a name="2.9.0"></a>
 
 ### Bug Fixes
