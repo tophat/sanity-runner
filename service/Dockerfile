@@ -5,7 +5,7 @@ FROM public.ecr.aws/lambda/nodejs:14
 RUN yum install -y git make gcc gcc-c++
 
 # Install yarn
-RUN npm install -g yarn
+RUN npm install -g corepack && corepack enable
 
 # Copy source files
 COPY package.json ./package.json
