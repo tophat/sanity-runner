@@ -20,10 +20,10 @@
   },
   "homepage": "https://sanity-runner.js.org",
   "devDependencies": {
-    "@monodeploy/plugin-github": "^0.3.9",
-    "@tophat/conventional-changelog-config": "^0.5.9",
-    "monodeploy": "^2.8.11"
+    "@monodeploy/plugin-github": "^0.3.15",
+    "@tophat/conventional-changelog-config": "^0.6.1",
+    "monodeploy": "^2.8.20"
   },
   "private": true,
-  "packageManager": "yarn@3.0.2"
+  "packageManager": "yarn@3.2.0"
 }
