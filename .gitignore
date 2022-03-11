@@ -20,6 +20,12 @@ release-archive
 .terraform/
 .terraform.lock.hcl
 
-.yarn/
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/versions
+!.yarn/sdks
+.pnp.*
 
 output
