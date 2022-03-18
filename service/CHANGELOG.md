@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.9.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.9.1...sanity-runner-service@2.9.2) "sanity-runner-service" (2022-03-18)<a name="2.9.2"></a>
+
+### Bug Fixes
+
+* dependency updates (#268) ([f4c8bea](https://github.com/tophat/sanity-runner/commits/f4c8bea))
+
+
+
+
 ## [2.9.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.9.0...sanity-runner-service@2.9.1) "sanity-runner-service" (2021-10-25)<a name="2.9.1"></a>
 
 ### Bug Fixes

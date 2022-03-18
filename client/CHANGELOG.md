@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.8.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.8.1...sanity-runner-client@2.8.2) "sanity-runner-client" (2022-03-18)<a name="2.8.2"></a>
+
+### Bug Fixes
+
+* dependency updates (#268) ([f4c8bea](https://github.com/tophat/sanity-runner/commits/f4c8bea))
+
+
+
+
 ## [2.8.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.8.0...sanity-runner-client@2.8.1) "sanity-runner-client" (2021-10-25)<a name="2.8.1"></a>
 
 ### Bug Fixes
