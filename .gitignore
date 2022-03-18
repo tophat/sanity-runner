@@ -18,7 +18,7 @@ example/repo/output/
 client/bin
 
 # service
-service/.bin
+.cache
 
 serverless_chromium.zip
 headless-chromium

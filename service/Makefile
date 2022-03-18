@@ -38,7 +38,7 @@ install: check-versions clean
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
 	echo $(TERRAFORM_VERSION)
 	curl -L -o terraform.zip "https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(OS)_${ARCH}.zip"
-	unzip terraform.zip -d .bin
+	unzip terraform.zip -d .cache
 	rm terraform.zip
 
 # ----- Helpers -----
@@ -50,6 +50,7 @@ check-versions:
 clean:
 	@rm -rf node_modules
 	@rm -rf "${ARTIFACTS_DIR}"
+	-@rm -rf .cache
 
 .PHONY: lint
 lint:
