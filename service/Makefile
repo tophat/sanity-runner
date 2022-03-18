@@ -29,12 +29,8 @@ endif
 ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
 ESLINT := yarn eslint $(ESLINT_ARGS)
 
-.PHONY: docker
-docker:
-	docker build ../. -t "sanity"
-
 .PHONY: install
-install: check-versions clean
+install: clean
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
 	echo $(TERRAFORM_VERSION)
 	curl -L -o terraform.zip "https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(OS)_${ARCH}.zip"
@@ -42,9 +38,6 @@ install: check-versions clean
 	rm terraform.zip
 
 # ----- Helpers -----
-.PHONY: check-versions
-check-versions:
-	@../infrastructure/scripts/check-versions.sh
 
 .PHONY: clean
 clean:
@@ -60,13 +53,27 @@ lint:
 lint-fix:
 	$(ESLINT) --fix .
 
+.PHONY: bundle
+bundle:
+	-@rm -rf dist
+	@mkdir -p dist
+	yarn workspace sanity-runner-service \
+		esbuild \
+			src/jestConfig/* --platform=node \
+			--target=node14 --outdir=dist/jestConfig
+	yarn workspace sanity-runner-service \
+		esbuild \
+			src/lambdaHandler.js --bundle --platform=node \
+			--target=node14 --outfile=dist/lambdaHandler.js \
+			--external:../node_modules/*
+
 .PHONY: package
-package: build-docker
+package: bundle build-docker
 
 .PHONY: build-docker
 build-docker:
 	@echo "Building Docker Container"
-	docker build . -t ghcr.io/tophat/sanity-runner-service
+	docker build ../ -f Dockerfile -t ghcr.io/tophat/sanity-runner-service
 
 .PHONY: publish-docker
 publish-docker:

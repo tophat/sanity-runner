@@ -1,18 +1,15 @@
 # Use aws lambda base image
 FROM public.ecr.aws/lambda/nodejs:14
 
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+
 # Install system dependencies
-RUN yum install -y git make gcc gcc-c++
+RUN yum install -y git make gcc gcc-c++ && \
+    corepack enable
 
-# Install yarn
-RUN corepack enable
+# Copy source files (rely on dockerignore to filter out unwanted files)
+ADD . .
 
-# Copy source files
-COPY package.json ./package.json
-COPY yarn.lock ./yarn.lock
-COPY src ./src
+RUN yarn workspaces focus sanity-runner-service --production
 
-# Install package dependencies
-RUN yarn install
-
-CMD ["src/lambdaHandler.handler"]
+CMD ["service/dist/lambdaHandler.handler"]

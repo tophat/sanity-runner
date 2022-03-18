@@ -253,7 +253,7 @@ const constructMessage = async function (
 
     // Messages
     const mainMessage = `Sanity... \`${test}\` has failed in \`${appEnv}\`!`
-    const errorMessage = testResults.message
+    const errorMessage = testResults.failureMessage
 
     //log to lambda for debugging
     console.log(errorMessage)

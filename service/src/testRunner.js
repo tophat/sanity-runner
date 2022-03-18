@@ -1,37 +1,17 @@
-const execa = require('execa')
 const retry = require('async-retry')
+const { runCLI } = require('@jest/core')
 
-const paths = require('./paths')
 const Run = require('./run')
 const alertOnResult = require('./alertOnResult')
 
-const runJest = async function (chromePath, ...args) {
-    const env = Object.assign({}, process.env, {
-        PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true,
-    })
-    const result = await execa(
-        paths.jest(),
-        ['--json', '--runInBand', ...args],
-        {
-            cwd: process.cwd(),
-            env,
-            reject: false,
-        },
-    )
-    try {
-        result.json = JSON.parse((result.stdout || '').toString())
-    } catch (e) {
-        console.warn(result)
-        throw new Error(
-            `
-              Cannot parse JSON jest output.
-              ERROR: ${e.name} ${e.message}
-              STDOUT: ${result.stdout}
-              STDERR: ${result.stderr}
-            `,
-        )
+const runJest = async function ({ config }) {
+    const jestArgs = {
+        json: true,
+        runInBand: true,
+        config: JSON.stringify(config),
     }
-    return result
+    const { results } = await runCLI(jestArgs, [process.cwd()])
+    return { results }
 }
 
 const logResults = function (
@@ -41,25 +21,28 @@ const logResults = function (
     runId,
     executionId,
 ) {
-    const newResult = {}
-    const duration =
-        (results.testResults[0].endTime - results.testResults[0].startTime) /
-        1000
-    const splitName = results.testResults[0].name.split('/')
-    let status = results.testResults[0].status
+    const suiteResults = results.testResults[0]
+    const result = suiteResults.testResults[0]
+
+    const duration = (result.endTime - result.startTime) / 1000
+
+    const splitName = result.name.split('/')
+    let status = result.status
     if (results.numPendingTests > 0) {
         status = 'skipped'
     }
 
-    newResult.variables = testVariables
-    newResult.retryCount = retryCount
-    newResult.duration = duration
-    newResult.status = status
-    newResult.endTime = results.testResults[0].endTime
-    newResult.startTime = results.testResults[0].startTime
-    newResult.testName = splitName[splitName.length - 1]
-    newResult.runId = runId
-    newResult.executionId = executionId
+    const newResult = {
+      variables: testVariables,
+      retryCount: retryCount,
+      duration: duration,
+      status: status,
+      endTime: result.endTime,
+      startTime: result.startTime,
+      testName: splitName[splitName.length - 1],
+      runId: runId,
+      executionId: executionId,
+    }
 
     console.log(JSON.stringify(newResult))
 }
@@ -72,20 +55,15 @@ module.exports = class {
             await run.writeSuites(testFiles)
             const results = await retry(
                 async () => {
-                    const res = await runJest(
-                        this.chromePath,
-                        '--config',
-                        JSON.stringify(run.jestConfig()),
-                    )
+                    const { results: jestResults } = await runJest({ config: run.jestConfig() })
                     // force retry if test was unsuccesfull
                     // if last retry, return as normal
-                    if (!res.json.success) {
-                        console.log(res.json)
-                        if (retryCount !== parseInt(maxRetryCount)) { // eslint-disable-line
+                    if (!jestResults.success) {
+                        if (retryCount !== parseInt(maxRetryCount)) {
                             throw new Error('Test Failed!')
                         }
                     }
-                    return res
+                    return jestResults
                 },
                 {
                     retries: maxRetryCount,
@@ -95,14 +73,14 @@ module.exports = class {
                 },
             )
             logResults(
-                results.json,
+                results,
                 testVariables,
                 retryCount,
                 run.id,
                 executionId,
             )
-            await alertOnResult(testFiles, results.json, testVariables)
-            return await run.format(results.json)
+            await alertOnResult(testFiles, results, testVariables)
+            return await run.format(results)
         } finally {
             await run.cleanup()
         }

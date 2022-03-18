@@ -5,9 +5,6 @@ module.exports = {
     chrome: function () {
         return path.join(os.tmpdir(), 'headless-chromium')
     },
-    jest: function () {
-        return path.resolve(__dirname, '../node_modules/jest-cli/bin/jest.js')
-    },
     junit: function (runId) {
         return path.join(this.results(runId), this.junitFileName(runId))
     },

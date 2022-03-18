@@ -6,7 +6,7 @@
  *  - confirms healthcheck api loads
  */
 
-describe('Google Fails', async () => {
+describe('Google Fails', () => {
     test('Test that Google.com fails to find element ', async () => {
         await page.goto('https://www.google.com')
         await expect("Asdas").toEqual("!23123")

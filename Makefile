@@ -2,7 +2,7 @@ SHELL := /bin/bash
 export PATH := $(shell yarn bin):$(PATH)
 
 .PHONY: install
-install: check-versions
+install:
 	yarn install
 
 .PHONY: deploy-release-dry
@@ -25,10 +25,3 @@ create-release-package:
 	rm -rf release-archive
 	mkdir release-archive
 	mv client/bin/* release-archive/
-
-# ----- Helpers -----
-.PHONY: check-versions
-check-versions:
-	@./infrastructure/scripts/check-versions.sh
-
-

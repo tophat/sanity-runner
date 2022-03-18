@@ -4,11 +4,11 @@ const path = require('path')
 const ensureDir = require('fs-extra').ensureDir
 const getState = require('expect/build/jestMatchersObject').getState
 
-const { SCREENSHOT_FILENAME } = require('../constants')
-
 require('expect-puppeteer') // modifies globals!
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 5*60000 //eslint-disable-line
+jest.setTimeout(5 * 60000)
+
+const SCREENSHOT_FILENAME = 'screenshot.png'
 
 beforeEach(async () => {
     global.page = await global.browser.newPage()

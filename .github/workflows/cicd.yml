@@ -18,15 +18,15 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/detect-env
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Restore node modules cache
         id: node-modules-cache
         uses: actions/cache@v2
         with:
-          path: ./client/node_modules
-          key: ${{ env.NODE_VERSION }}-${{ hashFiles('./client/yarn.lock') }}
+          path: ./node_modules
+          key: ${{ env.NODE_VERSION }}-${{ hashFiles('yarn.lock') }}
       - name: lint client
         uses: ./.github/actions/lint
         with:
@@ -55,15 +55,15 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/detect-env
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Restore node modules cache
         id: node-modules-cache
         uses: actions/cache@v2
         with:
-          path: ./service/node_modules
-          key: ${{ env.NODE_VERSION }}-${{ hashFiles('./service/yarn.lock') }}
+          path: ./node_modules
+          key: ${{ env.NODE_VERSION }}-${{ hashFiles('yarn.lock') }}
       - name: lint service
         uses: ./.github/actions/lint
         with:
@@ -102,7 +102,7 @@ jobs:
       - name: Load Docker Container
         run: docker load < service/artifacts/build/docker-cache/sanity-service-docker.tar
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Restore node modules cache
@@ -142,7 +142,7 @@ jobs:
       - name: Load Docker Container
         run: docker load < service/artifacts/build/docker-cache/sanity-service-docker.tar
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Restore node modules cache
@@ -191,15 +191,15 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/detect-env
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3.0.0
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Restore node modules cache
         id: node-modules-cache
         uses: actions/cache@v2
         with:
-          path: ./website/node_modules
-          key: ${{ env.NODE_VERSION }}-${{ hashFiles('./website/yarn.lock') }}
+          path: ./node_modules
+          key: ${{ env.NODE_VERSION }}-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
         if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile

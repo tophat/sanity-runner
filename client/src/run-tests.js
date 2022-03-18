@@ -39,9 +39,7 @@ async function testResultPromise(
                 if (e.response) {
                     results.testResults[testName] = formatFailedTestResult(
                         testName,
-                        `Status Code: ${e.response.status}. Message: ${
-                            e.response.message
-                        }`,
+                        `Status Code: ${e.response.status}. Message: ${e.response.message}`,
                     )
                 } else {
                     results.testResults[testName] = formatFailedTestResult(

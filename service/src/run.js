@@ -1,3 +1,5 @@
+const path = require('path')
+
 const { v4: uuidv4 } = require('uuid')
 const fs = require('fs-extra')
 
@@ -16,8 +18,14 @@ module.exports = class {
     jestConfig() {
         return {
             bail: false,
-            globalSetup: '<rootDir>/src/jestSetup/puppeteer/setup.js',
-            globalTeardown: '<rootDir>/src/jestSetup/puppeteer/teardown.js',
+            globalSetup: path.resolve(
+                __dirname,
+                'jestConfig/puppeteerSetup.js',
+            ),
+            globalTeardown: path.resolve(
+                __dirname,
+                'jestConfig/puppeteerTeardown.js',
+            ),
             globals: {
                 lambdaContext: {
                     sanityRequestId: this.id,
@@ -28,9 +36,15 @@ module.exports = class {
             notify: false,
             reporters: [
                 'default',
-                ['jest-junit', { output: paths.junit(this.id) }],
                 [
-                    '<rootDir>/src/jestSetup/screenshotReporter',
+                    'jest-junit',
+                    {
+                        outputDirectory: paths.results(this.id),
+                        outputName: paths.junitFileName(this.id),
+                    },
+                ],
+                [
+                    path.resolve(__dirname, 'jestConfig/screenshotReporter.js'),
                     {
                         output: paths.results(this.id),
                         urlExpirySeconds: 7200,
@@ -43,9 +57,12 @@ module.exports = class {
             roots: [paths.suite(this.id)],
             rootDir: process.cwd(),
             setupFilesAfterEnv: [
-                '<rootDir>/src/jestSetup/e2eFrameworkSetup.js',
+                path.resolve(__dirname, 'jestConfig/e2eFrameworkSetup.js'),
             ],
-            testEnvironment: '<rootDir>/src/jestSetup/puppeteer/environment.js',
+            testEnvironment: path.resolve(
+                __dirname,
+                'jestConfig/puppeteerEnvironment.js',
+            ),
             timers: 'real',
             verbose: true,
         }
@@ -80,14 +97,16 @@ module.exports = class {
 const extractRuntimeErrors = function (results) {
     const errors = []
     if (results.numRuntimeErrorTestSuites > 0) {
-        results.testResults.forEach((tc) => {
-            if (tc.assertionResults.length === 0 && tc.status === 'failed') {
-                errors.push({
-                    message: tc.message,
-                    name: tc.name,
-                })
-            }
-        })
+      for (const testSuite of results.testResults) {
+        for (const tc of testSuite.testResults) {
+          if (tc.assertionResults.length === 0 && tc.status === 'failed') {
+            errors.push({
+                message: tc.message,
+                name: tc.name,
+            })
+          }
+        }
+      }
     }
     return errors
 }

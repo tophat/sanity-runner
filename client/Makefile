@@ -15,7 +15,7 @@ endif
 ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
 
 .PHONY: install
-install: check-versions
+install:
 	yarn install
 
 .PHONY: build-docker
@@ -28,12 +28,9 @@ endif
 
 .PHONY: package
 package:
-	yarn pkg . --out-path bin/
+	yarn pkg . --out-path bin/ --targets "node16"
 
 # ----- Helpers -----
-.PHONY: check-versions
-check-versions:
-	@../infrastructure/scripts/check-versions.sh
 
 .PHONY: clean
 clean:
