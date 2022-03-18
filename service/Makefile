@@ -27,8 +27,7 @@ else
 endif
 
 ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
-NODE_MODULES_BIN := node_modules/.bin
-ESLINT := $(NODE_MODULES_BIN)/eslint $(ESLINT_ARGS)
+ESLINT := yarn eslint $(ESLINT_ARGS)
 
 .PHONY: docker
 docker:
@@ -39,7 +38,7 @@ install: check-versions clean
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
 	echo $(TERRAFORM_VERSION)
 	curl -L -o terraform.zip "https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(OS)_${ARCH}.zip"
-	unzip terraform.zip -d ${NODE_MODULES_BIN}
+	unzip terraform.zip -d .bin
 	rm terraform.zip
 
 # ----- Helpers -----

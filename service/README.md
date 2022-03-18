@@ -119,6 +119,7 @@ make  install
 # Build and package in docker container (currently only option)
 make build-docker
 ```
+
 `make -C client build-docker`: Packages the code in a docker container for usage. Container name is: **ghcr.io/tophat/sanity-runner-service**
 
 

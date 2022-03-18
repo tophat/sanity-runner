@@ -6,6 +6,3 @@ runs:
     - name: Determine Node Version
       run: echo NODE_VERSION=$(cat .nvmrc | tr -d '\n') >> $GITHUB_ENV
       shell: bash
-    - name: Determine Yarn Version
-      run: echo YARN_VERSION=$(cat .yvmrc | tr -d '\n') >> $GITHUB_ENV
-      shell: bash

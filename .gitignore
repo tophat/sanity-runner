@@ -1,8 +1,12 @@
+# IDE
 .idea/
+
+# OS
+.DS_Store
+
 .serverless/
 artifacts/
 node_modules/
-.DS_Store
 yarn-error.log
 npm-debug.log
 dist/
@@ -12,6 +16,9 @@ example/repo/output/
 
 # client
 client/bin
+
+# service
+service/.bin
 
 serverless_chromium.zip
 headless-chromium
