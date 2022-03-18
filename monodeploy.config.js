@@ -3,6 +3,6 @@ module.exports = {
     noRegistry: true,
     changelogFilename: '<packageDir>/CHANGELOG.md',
     persistVersions: true,
-    autoCommitMessage: 'chore: release terraform modules [skip ci]',
+    autoCommitMessage: 'chore: release sanity runner [skip ci]',
     plugins: ['@monodeploy/plugin-github'],
 }

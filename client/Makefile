@@ -13,9 +13,6 @@ else
 endif
 
 ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
-NODE_MODULES_BIN := ./node_modules/.bin
-ESLINT := $(NODE_MODULES_BIN)/eslint $(ESLINT_ARGS)
-PKG := $(NODE_MODULES_BIN)/pkg
 
 .PHONY: install
 install: check-versions
@@ -23,12 +20,15 @@ install: check-versions
 
 .PHONY: build-docker
 build-docker:
+ifndef CI
+	@make package
+endif
 	@echo "Building Docker Container"
 	docker build . -t ghcr.io/tophat/sanity-runner-client
 
 .PHONY: package
 package:
-	$(PKG) . --out-path bin/
+	yarn pkg . --out-path bin/
 
 # ----- Helpers -----
 .PHONY: check-versions
@@ -42,11 +42,11 @@ clean:
 
 .PHONY: lint
 lint:
-	$(ESLINT) .
+	yarn eslint $(ESLINT_ARGS) .
 
 .PHONY: lint-fix
 lint-fix:
-	$(ESLINT) --fix .
+	yarn eslint $(ESLINT_ARGS) --fix .
 
 PHONY: publish-docker
 publish-docker:

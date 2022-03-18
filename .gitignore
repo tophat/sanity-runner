@@ -1,8 +1,12 @@
+# IDE
 .idea/
+
+# OS
+.DS_Store
+
 .serverless/
 artifacts/
 node_modules/
-.DS_Store
 yarn-error.log
 npm-debug.log
 dist/
@@ -13,6 +17,9 @@ example/repo/output/
 # client
 client/bin
 
+# service
+.cache
+
 serverless_chromium.zip
 headless-chromium
 release-archive
@@ -20,6 +27,12 @@ release-archive
 .terraform/
 .terraform.lock.hcl
 
-.yarn/
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/versions
+!.yarn/sdks
+.pnp.*
 
 output
