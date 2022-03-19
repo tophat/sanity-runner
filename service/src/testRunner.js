@@ -1,8 +1,8 @@
-const retry = require('async-retry')
 const { runCLI } = require('@jest/core')
+const retry = require('async-retry')
 
-const Run = require('./run')
 const alertOnResult = require('./alertOnResult')
+const Run = require('./run')
 
 const runJest = async function ({ config }) {
     const jestArgs = {
@@ -14,13 +14,7 @@ const runJest = async function ({ config }) {
     return { results }
 }
 
-const logResults = function (
-    results,
-    testVariables,
-    retryCount,
-    runId,
-    executionId,
-) {
+const logResults = function (results, testVariables, retryCount, runId, executionId) {
     const suiteResults = results.testResults[0]
     const result = suiteResults.testResults[0]
 
@@ -33,15 +27,15 @@ const logResults = function (
     }
 
     const newResult = {
-      variables: testVariables,
-      retryCount: retryCount,
-      duration: duration,
-      status: status,
-      endTime: result.endTime,
-      startTime: result.startTime,
-      testName: splitName[splitName.length - 1],
-      runId: runId,
-      executionId: executionId,
+        variables: testVariables,
+        retryCount: retryCount,
+        duration: duration,
+        status: status,
+        endTime: result.endTime,
+        startTime: result.startTime,
+        testName: splitName[splitName.length - 1],
+        runId: runId,
+        executionId: executionId,
     }
 
     console.log(JSON.stringify(newResult))
@@ -72,13 +66,7 @@ module.exports = class {
                     },
                 },
             )
-            logResults(
-                results,
-                testVariables,
-                retryCount,
-                run.id,
-                executionId,
-            )
+            logResults(results, testVariables, retryCount, run.id, executionId)
             await alertOnResult(testFiles, results, testVariables)
             return await run.format(results)
         } finally {

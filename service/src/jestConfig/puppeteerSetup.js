@@ -1,8 +1,8 @@
 const os = require('os')
 const path = require('path')
 
-const fs = require('fs-extra')
 const chromium = require('chrome-aws-lambda')
+const fs = require('fs-extra')
 
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
 

@@ -20,15 +20,6 @@ ifeq ($(shell uname -m),aarch64)
   ARCH ?= arm
 endif
 
-ifdef CI
-	ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml
-else
-	ESLINT_EXTRA_ARGS=
-endif
-
-ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
-ESLINT := yarn eslint $(ESLINT_ARGS)
-
 .PHONY: install
 install: clean
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
@@ -44,14 +35,6 @@ clean:
 	@rm -rf node_modules
 	@rm -rf "${ARTIFACTS_DIR}"
 	-@rm -rf .cache
-
-.PHONY: lint
-lint:
-	$(ESLINT) .
-
-.PHONY: lint-fix
-lint-fix:
-	$(ESLINT) --fix .
 
 .PHONY: bundle
 bundle:

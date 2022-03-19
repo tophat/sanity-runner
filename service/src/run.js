@@ -1,9 +1,30 @@
 const path = require('path')
 
-const { v4: uuidv4 } = require('uuid')
 const fs = require('fs-extra')
+const { v4: uuidv4 } = require('uuid')
 
 const paths = require('./paths')
+
+/*
+ * Runtime initialization errors are not currently reported by junit reporter
+ * https://github.com/jest-community/jest-junit/pull/47
+ */
+const extractRuntimeErrors = function (results) {
+    const errors = []
+    if (results.numRuntimeErrorTestSuites > 0) {
+        for (const testSuite of results.testResults) {
+            for (const tc of testSuite.testResults) {
+                if (tc.assertionResults.length === 0 && tc.status === 'failed') {
+                    errors.push({
+                        message: tc.message,
+                        name: tc.name,
+                    })
+                }
+            }
+        }
+    }
+    return errors
+}
 
 module.exports = class {
     constructor(variables) {
@@ -18,14 +39,8 @@ module.exports = class {
     jestConfig() {
         return {
             bail: false,
-            globalSetup: path.resolve(
-                __dirname,
-                'jestConfig/puppeteerSetup.js',
-            ),
-            globalTeardown: path.resolve(
-                __dirname,
-                'jestConfig/puppeteerTeardown.js',
-            ),
+            globalSetup: path.resolve(__dirname, 'jestConfig/puppeteerSetup.js'),
+            globalTeardown: path.resolve(__dirname, 'jestConfig/puppeteerTeardown.js'),
             globals: {
                 lambdaContext: {
                     sanityRequestId: this.id,
@@ -56,13 +71,8 @@ module.exports = class {
             resetModules: false,
             roots: [paths.suite(this.id)],
             rootDir: process.cwd(),
-            setupFilesAfterEnv: [
-                path.resolve(__dirname, 'jestConfig/e2eFrameworkSetup.js'),
-            ],
-            testEnvironment: path.resolve(
-                __dirname,
-                'jestConfig/puppeteerEnvironment.js',
-            ),
+            setupFilesAfterEnv: [path.resolve(__dirname, 'jestConfig/e2eFrameworkSetup.js')],
+            testEnvironment: path.resolve(__dirname, 'jestConfig/puppeteerEnvironment.js'),
             timers: 'real',
             verbose: true,
         }
@@ -88,25 +98,4 @@ module.exports = class {
             },
         }
     }
-}
-
-/*
- * Runtime initialization errors are not currently reported by junit reporter
- * https://github.com/jest-community/jest-junit/pull/47
- */
-const extractRuntimeErrors = function (results) {
-    const errors = []
-    if (results.numRuntimeErrorTestSuites > 0) {
-      for (const testSuite of results.testResults) {
-        for (const tc of testSuite.testResults) {
-          if (tc.assertionResults.length === 0 && tc.status === 'failed') {
-            errors.push({
-                message: tc.message,
-                name: tc.name,
-            })
-          }
-        }
-      }
-    }
-    return errors
 }

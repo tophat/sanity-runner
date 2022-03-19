@@ -1,8 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 
-const ensureDir = require('fs-extra').ensureDir
-const getState = require('expect/build/jestMatchersObject').getState
+const { getState } = require('expect/build/jestMatchersObject')
+const { ensureDir } = require('fs-extra')
 
 require('expect-puppeteer') // modifies globals!
 
@@ -27,11 +27,7 @@ beforeEach(async () => {
 afterEach(async () => {
     const testName = getState().currentTestName
 
-    const screenshotPath = path.join(
-        global.SCREENSHOT_OUTPUT,
-        testName,
-        SCREENSHOT_FILENAME,
-    )
+    const screenshotPath = path.join(global.SCREENSHOT_OUTPUT, testName, SCREENSHOT_FILENAME)
 
     await ensureDir(path.dirname(screenshotPath))
     await global.page.screenshot({
@@ -39,12 +35,7 @@ afterEach(async () => {
         path: screenshotPath,
     })
 
-    if (
-        Object.prototype.hasOwnProperty.call(
-            global.SANITY_VARIABLES,
-            'FULLSTORY_ENABLED',
-        )
-    ) {
+    if (Object.prototype.hasOwnProperty.call(global.SANITY_VARIABLES, 'FULLSTORY_ENABLED')) {
         if (global.SANITY_VARIABLES.FULLSTORY_ENABLED === 'true') {
             try {
                 global.fullStoryUrl = await global.page.evaluate(() => {

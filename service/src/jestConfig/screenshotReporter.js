@@ -1,7 +1,7 @@
 const path = require('path')
 
-const fs = require('fs-extra')
 const AWS = require('aws-sdk')
+const fs = require('fs-extra')
 const { v4: uuidv4 } = require('uuid')
 
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
@@ -38,11 +38,8 @@ class PuppeteerScreenshotReporter {
             if (result.status === 'failed' && this._options.bucket) {
                 const downloadLink = await this.uploadScreenshotToS3(screenshot)
 
-                result.failureMessages.push(
-                    `Screenshot available at ${relativePath}`,
-                )
-                if (!aggregatedResult.screenshots)
-                    aggregatedResult.screenshots = {}
+                result.failureMessages.push(`Screenshot available at ${relativePath}`)
+                if (!aggregatedResult.screenshots) aggregatedResult.screenshots = {}
                 aggregatedResult.screenshots[relativePath] = downloadLink
             }
             fs.remove(screenshot)

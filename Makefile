@@ -1,6 +1,10 @@
 SHELL := /bin/bash
 export PATH := $(shell yarn bin):$(PATH)
 
+ARTIFACTS_DIR = artifacts
+BUILD_DIR = ${ARTIFACTS_DIR}/build
+TEST_REPORTS_DIR ?= $(ARTIFACTS_DIR)/reports
+
 .PHONY: install
 install:
 	yarn install
@@ -25,3 +29,20 @@ create-release-package:
 	rm -rf release-archive
 	mkdir release-archive
 	mv client/bin/* release-archive/
+
+
+ifdef CI
+    ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml
+else
+    ESLINT_EXTRA_ARGS=
+endif
+
+ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
+
+.PHONY: lint
+lint:
+	yarn eslint $(ESLINT_ARGS) .
+
+.PHONY: lint-fix
+lint-fix:
+	yarn eslint $(ESLINT_ARGS) --fix .

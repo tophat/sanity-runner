@@ -6,14 +6,6 @@ VERSION := $(shell cat package.json | jq -r '.version')
 ARTIFACT_DIR?=artifacts
 TEST_REPORTS_DIR?=$(ARTIFACT_DIR)/reports
 
-ifdef CI
-	ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml
-else
-	ESLINT_EXTRA_ARGS=
-endif
-
-ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
-
 .PHONY: install
 install:
 	yarn install
@@ -35,15 +27,6 @@ package:
 .PHONY: clean
 clean:
 	@rm -rf node_modules
-
-
-.PHONY: lint
-lint:
-	yarn eslint $(ESLINT_ARGS) .
-
-.PHONY: lint-fix
-lint-fix:
-	yarn eslint $(ESLINT_ARGS) --fix .
 
 PHONY: publish-docker
 publish-docker:
