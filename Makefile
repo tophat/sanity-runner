@@ -10,14 +10,14 @@ install:
 	yarn install
 
 .PHONY: deploy-release-dry
-deploy-release-dry:
+deploy-release-dry: install
 	yarn monodeploy \
 	 --config-file monodeploy.config.js \
 	 --log-level 0 \
 	 --dry-run
 
 .PHONY: deploy-release
-deploy-release:
+deploy-release: install
 	yarn monodeploy \
 	 --config-file monodeploy.config.js \
 	 --log-level 0 \
@@ -40,9 +40,9 @@ endif
 ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
 
 .PHONY: lint
-lint:
+lint: install
 	yarn eslint $(ESLINT_ARGS) .
 
 .PHONY: lint-fix
-lint-fix:
+lint-fix: install
 	yarn eslint $(ESLINT_ARGS) --fix .

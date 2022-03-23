@@ -20,13 +20,21 @@ ifeq ($(shell uname -m),aarch64)
   ARCH ?= arm
 endif
 
-.PHONY: install
-install: clean
-	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
+.PHONY: terraform-dependencies
+terraform-dependencies:
 	echo $(TERRAFORM_VERSION)
 	curl -L -o terraform.zip "https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(OS)_${ARCH}.zip"
 	unzip terraform.zip -d .cache
 	rm terraform.zip
+
+.PHONY: dependencies
+dependencies:
+	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
+
+.PHONY: install
+install: clean
+    make terraform-dependencies
+	make dependencies
 
 # ----- Helpers -----
 
@@ -37,11 +45,11 @@ clean:
 	-@rm -rf .cache
 
 .PHONY: typecheck
-typecheck:
+typecheck: dependencies
 	yarn workspace sanity-runner-service tsc -p tsconfig.json --noEmit
 
 .PHONY: bundle
-bundle: typecheck
+bundle: dependencies typecheck
 	-@rm -rf dist
 	@mkdir -p dist
 	yarn workspace sanity-runner-service \
