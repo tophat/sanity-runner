@@ -36,8 +36,12 @@ clean:
 	@rm -rf "${ARTIFACTS_DIR}"
 	-@rm -rf .cache
 
+.PHONY: typecheck
+typecheck:
+	yarn workspace sanity-runner-service tsc -p tsconfig.json --noEmit
+
 .PHONY: bundle
-bundle:
+bundle: typecheck
 	-@rm -rf dist
 	@mkdir -p dist
 	yarn workspace sanity-runner-service \
@@ -46,7 +50,7 @@ bundle:
 			--target=node14 --outdir=dist/jestConfig
 	yarn workspace sanity-runner-service \
 		esbuild \
-			src/lambdaHandler.js --bundle --platform=node \
+			src/lambdaHandler.ts --bundle --platform=node \
 			--target=node14 --outfile=dist/lambdaHandler.js \
 			--external:../node_modules/*
 

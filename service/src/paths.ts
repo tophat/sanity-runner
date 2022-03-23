@@ -1,23 +1,23 @@
-const os = require('os')
-const path = require('path')
+import os from 'os'
+import path from 'path'
 
-module.exports = {
+export default {
     chrome: function () {
         return path.join(os.tmpdir(), 'headless-chromium')
     },
-    junit: function (runId) {
+    junit: function (runId: string) {
         return path.join(this.results(runId), this.junitFileName(runId))
     },
-    junitFileName: function (runId) {
+    junitFileName: function (runId: string) {
         return `${runId}.junit.xml`
     },
-    run: function (runId) {
+    run: function (runId: string) {
         return path.join(os.tmpdir(), 'runs', runId)
     },
-    suite: function (runId) {
+    suite: function (runId: string) {
         return path.join(this.run(runId), 'suites')
     },
-    results: function (runId) {
+    results: function (runId: string) {
         return path.join(this.run(runId), 'results')
     },
 }

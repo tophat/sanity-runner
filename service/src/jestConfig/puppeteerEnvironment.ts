@@ -1,17 +1,21 @@
-const os = require('os')
-const path = require('path')
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
 
-const chromium = require('chrome-aws-lambda')
-const fs = require('fs-extra')
-const NodeEnvironment = require('jest-environment-node')
+import chromium from 'chrome-aws-lambda'
+import NodeEnvironment from 'jest-environment-node'
 
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
 const wsEndpointDir = path.join(DIR, 'wsEndpoint')
 
+type Browser = {
+    disconnect(): void
+}
+
 class PuppeteerEnvironment extends NodeEnvironment {
     async setup() {
         await super.setup()
-        const wsEndpoint = await fs.readFile(wsEndpointDir, 'utf8')
+        const wsEndpoint = await fs.promises.readFile(wsEndpointDir, 'utf-8')
         if (!wsEndpoint) throw new Error('wsEndpoint not found')
         this.global.browser = await chromium.puppeteer.connect({
             browserWSEndpoint: wsEndpoint,
@@ -19,7 +23,8 @@ class PuppeteerEnvironment extends NodeEnvironment {
     }
 
     async teardown() {
-        this.global.browser.disconnect()
+        ;(this.global.browser as Browser).disconnect()
     }
 }
-module.exports = PuppeteerEnvironment
+
+export = PuppeteerEnvironment

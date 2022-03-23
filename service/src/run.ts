@@ -1,42 +1,46 @@
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
-const fs = require('fs-extra')
-const { v4: uuidv4 } = require('uuid')
+import { v4 as uuidv4 } from 'uuid'
 
-const paths = require('./paths')
+import paths from './paths'
+import { EnhancedAggregatedResult } from './types'
+
+import type { Config } from '@jest/types'
 
 /*
  * Runtime initialization errors are not currently reported by junit reporter
  * https://github.com/jest-community/jest-junit/pull/47
  */
-const extractRuntimeErrors = function (results) {
+const extractRuntimeErrors = function (results: EnhancedAggregatedResult) {
     const errors = []
     if (results.numRuntimeErrorTestSuites > 0) {
         for (const testSuite of results.testResults) {
-            for (const tc of testSuite.testResults) {
-                if (tc.assertionResults.length === 0 && tc.status === 'failed') {
-                    errors.push({
-                        message: tc.message,
-                        name: tc.name,
-                    })
-                }
+            if (testSuite.testExecError) {
+                errors.push({
+                    message: testSuite.testExecError.message,
+                    name: testSuite.displayName,
+                })
             }
         }
     }
     return errors
 }
 
-module.exports = class {
-    constructor(variables) {
+export default class Run {
+    id: string
+    variables: Record<string, unknown>
+
+    constructor(variables: Record<string, unknown>) {
         this.id = uuidv4()
         this.variables = variables
     }
 
     async cleanup() {
-        await fs.remove(paths.run(this.id))
+        await fs.promises.rm(paths.run(this.id), { recursive: true })
     }
 
-    jestConfig() {
+    jestConfig(): Config.InitialOptions {
         return {
             bail: false,
             globalSetup: path.resolve(__dirname, 'jestConfig/puppeteerSetup.js'),
@@ -78,17 +82,17 @@ module.exports = class {
         }
     }
 
-    async writeSuites(testFiles) {
+    async writeSuites(testFiles: Record<string, string>) {
         const destination = paths.suite(this.id)
         await Promise.all(
             Object.entries(testFiles).map((entry) =>
-                fs.outputFile(`${destination}/${entry[0]}`, entry[1]),
+                fs.promises.writeFile(`${destination}/${entry[0]}`, entry[1], 'utf-8'),
             ),
         )
     }
 
-    async format(results) {
-        const junitContents = await fs.readFile(paths.junit(this.id), 'utf8')
+    async format(results: EnhancedAggregatedResult) {
+        const junitContents = await fs.promises.readFile(paths.junit(this.id), 'utf-8')
         return {
             passed: results.success,
             screenshots: results.screenshots,
