@@ -33,7 +33,7 @@ dependencies:
 
 .PHONY: install
 install: clean
-    make terraform-dependencies
+	make terraform-dependencies
 	make dependencies
 
 # ----- Helpers -----
@@ -68,7 +68,7 @@ package: bundle build-docker
 .PHONY: build-docker
 build-docker:
 	@echo "Building Docker Container"
-	docker build ../ -f Dockerfile -t ghcr.io/tophat/sanity-runner-service
+	docker build ../ -f service.Dockerfile -t ghcr.io/tophat/sanity-runner-service
 
 .PHONY: publish-docker
 publish-docker:

@@ -16,11 +16,11 @@ ifndef CI
 	@make package
 endif
 	@echo "Building Docker Container"
-	docker build . -t ghcr.io/tophat/sanity-runner-client
+	docker build . -f client.Dockerfile -t ghcr.io/tophat/sanity-runner-client
 
 .PHONY: package
 package:
-	yarn pkg . --out-path bin/ --targets "node16"
+	yarn workspace sanity-runner-client pkg . --out-path bin/ --targets "node16-linux"
 
 # ----- Helpers -----
 
