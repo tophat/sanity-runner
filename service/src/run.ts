@@ -1,12 +1,13 @@
 import fs from 'fs'
 import path from 'path'
 
-import { v4 as uuidv4 } from 'uuid'
-
 import paths from './paths'
 import { EnhancedAggregatedResult } from './types'
 
 import type { Config } from '@jest/types'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { v4: uuidv4 } = require('uuid')
 
 /*
  * Runtime initialization errors are not currently reported by junit reporter
@@ -83,10 +84,14 @@ export default class Run {
     }
 
     async writeSuites(testFiles: Record<string, string>) {
+        await fs.promises.mkdir(paths.results(this.id), { recursive: true })
+
         const destination = paths.suite(this.id)
+        await fs.promises.mkdir(destination, { recursive: true })
+
         await Promise.all(
             Object.entries(testFiles).map((entry) =>
-                fs.promises.writeFile(`${destination}/${entry[0]}`, entry[1], 'utf-8'),
+                fs.promises.writeFile(path.join(destination, entry[0]), entry[1], 'utf-8'),
             ),
         )
     }

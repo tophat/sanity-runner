@@ -20,7 +20,8 @@ endif
 
 .PHONY: package
 package:
-	yarn workspace sanity-runner-client pkg . --out-path bin/ --targets "node16-linux"
+	mkdir -p bin
+	yarn workspace sanity-runner-client pkg . --out-path bin/ --targets "node16-linux,node16-macos,node16-win"
 
 # ----- Helpers -----
 

@@ -2,11 +2,13 @@ import fs from 'fs'
 import path from 'path'
 
 import AWS from 'aws-sdk'
-import { v4 as uuidv4 } from 'uuid'
 
 import type { EnhancedAggregatedResult } from '../types'
 import type { Context, Reporter, ReporterOnStartOptions, Test, TestResult } from '@jest/reporters'
 import type { AggregatedResult } from '@jest/test-result'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { v4: uuidv4 } = require('uuid')
 
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
 

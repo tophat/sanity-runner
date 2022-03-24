@@ -55,7 +55,8 @@ bundle: dependencies typecheck
 	yarn workspace sanity-runner-service \
 		esbuild \
 			src/jestConfig/* --platform=node \
-			--target=node14 --outdir=dist/jestConfig
+			--target=node14 --outdir=dist/jestConfig \
+			--external:../node_modules/* --bundle
 	yarn workspace sanity-runner-service \
 		esbuild \
 			src/lambdaHandler.ts --bundle --platform=node \

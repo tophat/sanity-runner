@@ -14,7 +14,9 @@ export async function handler(
     context: unknown,
     callback: (arg0: unknown, arg1: any) => void,
 ) {
-    childProcess.execSync('find /tmp', { encoding: 'utf-8', stdio: 'inherit' })
+    if (process.env.DEBUG?.includes('sanity-runner')) {
+        childProcess.execSync('find /tmp', { encoding: 'utf-8', stdio: 'inherit' })
+    }
     const runner = new TestRunner()
     const testResults = await runner.runTests(
         event.testFiles,
