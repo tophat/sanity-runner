@@ -1,10 +1,10 @@
+const crypto = require('crypto')
 const https = require('https')
 const path = require('path')
 
 const AWS = require('aws-sdk')
 const axios = require('axios')
 const fs = require('fs-extra')
-const uniqueString = require('unique-string')
 
 const agent = new https.Agent({
     keepAlive: true,
@@ -137,7 +137,7 @@ async function runTests(
     localPort,
     timeout,
 ) {
-    const executionId = uniqueString()
+    const executionId = crypto.randomBytes(32).toString('hex')
 
     const promises = Object.entries(testFiles).map((entry) =>
         testResultPromise(
