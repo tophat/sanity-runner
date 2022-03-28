@@ -14,7 +14,7 @@ We provided some sample tests under the sanities folder. Outlined below is a hig
 Confirms google loads correctly
 
 ```
-describe('Google Loads', async () => {
+describe('Google Loads', () => {
     test('Test that Google.com is working ', async () => {
         await page.goto('https://www.google.com')
         await expect(page).toMatchElement('#main')
@@ -30,7 +30,7 @@ describe('Google Loads', async () => {
 Confirms element is not on page
 
 ```
-describe('Google Fails', async () => {
+describe('Google Fails', () => {
     test('Test that Google.com fails to find element ', async () => {
         await page.goto('https://www.google.com')
         await expect(page).not.toMatchElement('#thiswillfail')
@@ -45,7 +45,7 @@ describe('Google Fails', async () => {
 Confirms Google Search is working
 
 ```
-describe('Google Loads', async () => {
+describe('Google Loads', () => {
     test('Test Google Search is working ', async () => {
         await page.goto('https://www.google.com')
         await expect(page).toFill('[title=Search]', "Tophat\n")

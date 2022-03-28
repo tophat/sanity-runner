@@ -20,31 +20,23 @@ ifeq ($(shell uname -m),aarch64)
   ARCH ?= arm
 endif
 
-ifdef CI
-	ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml
-else
-	ESLINT_EXTRA_ARGS=
-endif
-
-ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
-ESLINT := yarn eslint $(ESLINT_ARGS)
-
-.PHONY: docker
-docker:
-	docker build ../. -t "sanity"
-
-.PHONY: install
-install: check-versions clean
-	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
+.PHONY: terraform-dependencies
+terraform-dependencies:
 	echo $(TERRAFORM_VERSION)
 	curl -L -o terraform.zip "https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(OS)_${ARCH}.zip"
 	unzip terraform.zip -d .cache
 	rm terraform.zip
 
+.PHONY: dependencies
+dependencies:
+	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn install
+
+.PHONY: install
+install: clean
+	make terraform-dependencies
+	make dependencies
+
 # ----- Helpers -----
-.PHONY: check-versions
-check-versions:
-	@../infrastructure/scripts/check-versions.sh
 
 .PHONY: clean
 clean:
@@ -52,25 +44,44 @@ clean:
 	@rm -rf "${ARTIFACTS_DIR}"
 	-@rm -rf .cache
 
-.PHONY: lint
-lint:
-	$(ESLINT) .
+.PHONY: typecheck
+typecheck: dependencies
+	yarn workspace sanity-runner-service tsc -p tsconfig.json --noEmit
 
-.PHONY: lint-fix
-lint-fix:
-	$(ESLINT) --fix .
+.PHONY: bundle
+bundle: dependencies typecheck
+	-@rm -rf dist
+	@mkdir -p dist
+	yarn workspace sanity-runner-service \
+		esbuild \
+			src/jestConfig/* --platform=node \
+			--target=node14 --outdir=dist/jestConfig \
+			--external:../node_modules/* --bundle
+	yarn workspace sanity-runner-service \
+		esbuild \
+			src/lambdaHandler.ts --bundle --platform=node \
+			--target=node14 --outfile=dist/lambdaHandler.js \
+			--external:../node_modules/*
 
 .PHONY: package
-package: build-docker
+package: bundle build-docker
 
 .PHONY: build-docker
 build-docker:
 	@echo "Building Docker Container"
-	docker build . -t ghcr.io/tophat/sanity-runner-service
+	docker build ../ -f service.Dockerfile -t ghcr.io/tophat/sanity-runner-service
 
 .PHONY: publish-docker
 publish-docker:
 	@echo "Publishing Docker Image"
 	docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:${VERSION}
 	docker push ghcr.io/tophat/sanity-runner-service:latest
+	docker push ghcr.io/tophat/sanity-runner-service:${VERSION}
+
+.PHONY: publish-docker-prerelease
+publish-docker-prerelease:
+	@echo "Publishing Docker Image"
+	docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:${VERSION}
+	docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:next
+	docker push ghcr.io/tophat/sanity-runner-service:next
 	docker push ghcr.io/tophat/sanity-runner-service:${VERSION}

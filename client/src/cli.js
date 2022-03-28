@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 const path = require('path')
 
+const chalk = require('chalk')
+const program = require('commander')
 const fs = require('fs-extra')
 const glob = require('glob')
-const program = require('commander')
 
 const EXIT_CODES = require('./exit-codes')
-const { collectVariables, retrieveConfigurations } = require('./utils')
 const runTests = require('./run-tests')
-
-const chalk = require('chalk')
+const { collectVariables, retrieveConfigurations } = require('./utils')
 
 const CONFIG_OPTIONS = [
     'lambdaFunction',
@@ -62,12 +61,7 @@ program
         'Enables local mode for the sanity-runner-client. Will send tests to local container instead of lambda. Used in conjuction with --containerName',
     )
     .option('--output-dir <directory>', 'Test results output directory.')
-    .option(
-        '--var [VAR=VALUE]',
-        'Custom variables passed to all jest tests.',
-        collectVariables,
-        {},
-    )
+    .option('--var [VAR=VALUE]', 'Custom variables passed to all jest tests.', collectVariables, {})
     .option(
         '--retry-count <retryCount>',
         'Specify number of retries a test will perform if an error occurs (default 0)',
@@ -80,25 +74,14 @@ program
 
 const baseConfiguration = {}
 if (program.args.length > 0) baseConfiguration.testPathPattern = program.args[0]
-const configuration = retrieveConfigurations(
-    program,
-    CONFIG_OPTIONS,
-    baseConfiguration,
-)
-const testDir = path.resolve(
-    process.cwd(),
-    configuration.testDir || DEFAULT_TEST_DIR,
-)
+const configuration = retrieveConfigurations(program, CONFIG_OPTIONS, baseConfiguration)
+const testDir = path.resolve(process.cwd(), configuration.testDir || DEFAULT_TEST_DIR)
 const testFileNames = glob.sync('**/*.js', { cwd: testDir })
 
 console.log(`Reading test files in ${testDir}...`)
 
-const includeRegex = configuration.include
-    ? new RegExp(configuration.include)
-    : null
-const excludeRegex = configuration.exclude
-    ? new RegExp(configuration.exclude)
-    : null
+const includeRegex = configuration.include ? new RegExp(configuration.include) : null
+const excludeRegex = configuration.exclude ? new RegExp(configuration.exclude) : null
 
 const testFiles = testFileNames.reduce((payload, filename) => {
     const filePath = path.join(testDir, filename)
@@ -115,11 +98,9 @@ const testFiles = testFileNames.reduce((payload, filename) => {
 
 if (Object.keys(testFiles).length === 0) {
     if (includeRegex || excludeRegex) {
-        console.log(
-            `No test file(s) is found matching the regex supplied in your config settings.`,
-        )
+        console.log('No test file(s) is found matching the regex supplied in your config settings.')
     } else {
-        console.log(`No test file(s) is found.`)
+        console.log('No test file(s) is found.')
     }
     process.exit(EXIT_CODES.INVALID_ARGUMENT)
 }
@@ -150,11 +131,11 @@ runTests(
     localPort,
     timeout,
 )
-    .then(function(testsPassed) {
+    .then(function (testsPassed) {
         console.log('All test suites ran.')
         process.exit(testsPassed ? EXIT_CODES : EXIT_CODES.TEST_FAILED)
     })
-    .catch(function(err) {
+    .catch(function (err) {
         console.log('Caught rejection')
         console.log(err)
         process.exit(EXIT_CODES.FATAL_ERROR)
