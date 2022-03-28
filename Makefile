@@ -16,6 +16,14 @@ deploy-release-dry: install
 	 --log-level 0 \
 	 --dry-run
 
+.PHONY: deploy-prerelease-dry
+deploy-prerelease-dry: install
+	yarn monodeploy \
+	 --config-file monodeploy.config.js \
+	 --log-level 0 \
+	 --prerelease \
+	 --dry-run
+
 .PHONY: deploy-release
 deploy-release: install
 	yarn monodeploy \
@@ -23,6 +31,14 @@ deploy-release: install
 	 --log-level 0 \
 	 --push \
 	 --auto-commit
+
+.PHONY: deploy-prerelease
+deploy-prerelease: install
+	yarn monodeploy \
+	 --config-file monodeploy.config.js \
+	 --log-level 0 \
+	 --prerelease \
+	 --push
 
 .PHONY: create-release-package
 create-release-package:

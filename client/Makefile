@@ -35,3 +35,11 @@ publish-docker:
 	docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:${VERSION}
 	docker push ghcr.io/tophat/sanity-runner-client:latest
 	docker push ghcr.io/tophat/sanity-runner-client:${VERSION}
+
+PHONY: publish-docker-prerelease
+publish-docker-prerelease:
+	@echo "Publishing Docker Image"
+	docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:${VERSION}
+	docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:next
+	docker push ghcr.io/tophat/sanity-runner-client:next
+	docker push ghcr.io/tophat/sanity-runner-client:${VERSION}
