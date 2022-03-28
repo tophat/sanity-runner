@@ -41,6 +41,14 @@ deploy-prerelease: install
 	 --push \
 	 --auto-commit
 
+.PHONY: deploy-prerelease
+deploy-prerelease: install
+	yarn monodeploy \
+	 --config-file monodeploy.config.js \
+	 --log-level 0 \
+	 --prerelease \
+	 --push
+
 .PHONY: create-release-package
 create-release-package:
 	rm -rf release-archive
