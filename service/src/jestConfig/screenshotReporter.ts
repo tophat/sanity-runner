@@ -72,7 +72,9 @@ export default class PuppeteerScreenshotReporter implements Reporter {
                 enhancedResults.screenshots ??= {}
                 enhancedResults.screenshots[relativePath] = downloadLink
             }
-            await fs.promises.unlink(screenshot)
+            try {
+                await fs.promises.unlink(screenshot)
+            } catch {}
         }
     }
 }
