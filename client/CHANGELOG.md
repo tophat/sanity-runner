@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.9.1-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.9.0-rc.0...sanity-runner-client@2.9.1-rc.0) "sanity-runner-client" (2022-03-30)<a name="2.9.1-rc.0"></a>
+
+### Bug Fixes
+
+* commit pre-release artifacts (#273) ([db208cc](https://github.com/tophat/sanity-runner/commits/db208cc))
+
+
+
+
 ## [2.8.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.8.1...sanity-runner-client@2.8.2) "sanity-runner-client" (2022-03-18)<a name="2.8.2"></a>
 
 ### Bug Fixes
