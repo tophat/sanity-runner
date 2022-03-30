@@ -90,9 +90,11 @@ export default class Run {
         await fs.promises.mkdir(destination, { recursive: true })
 
         await Promise.all(
-            Object.entries(testFiles).map((entry) =>
-                fs.promises.writeFile(path.join(destination, entry[0]), entry[1], 'utf-8'),
-            ),
+            Object.entries(testFiles).map(async ([filename, content]) => {
+                const filepath = path.join(destination, filename)
+                await fs.promises.mkdir(path.dirname(filepath), { recursive: true })
+                await fs.promises.writeFile(filepath, content, 'utf-8')
+            }),
         )
     }
 
