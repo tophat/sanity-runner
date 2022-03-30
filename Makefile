@@ -38,7 +38,8 @@ deploy-prerelease: install
 	 --config-file monodeploy.config.js \
 	 --log-level 0 \
 	 --prerelease \
-	 --push
+	 --push \
+	 --auto-commit
 
 .PHONY: create-release-package
 create-release-package:
