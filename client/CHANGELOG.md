@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.9.3-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.9.2-rc.0...sanity-runner-client@2.9.3-rc.0) "sanity-runner-client" (2022-03-30)<a name="2.9.3-rc.0"></a>
+
+### Bug Fixes
+
+* slack check (#275) ([bee1c5c](https://github.com/tophat/sanity-runner/commits/bee1c5c))
+
+
+
+
 ## [2.9.2-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.9.1-rc.0...sanity-runner-client@2.9.2-rc.0) "sanity-runner-client" (2022-03-30)<a name="2.9.2-rc.0"></a>
 
 ### Bug Fixes
