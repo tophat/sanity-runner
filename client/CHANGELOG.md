@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.9.2-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.9.1-rc.0...sanity-runner-client@2.9.2-rc.0) "sanity-runner-client" (2022-03-30)<a name="2.9.2-rc.0"></a>
+
+### Bug Fixes
+
+* ensure suites directory exists (#274) ([2c0a842](https://github.com/tophat/sanity-runner/commits/2c0a842))
+
+
+
+
 ## [2.9.1-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.9.0-rc.0...sanity-runner-client@2.9.1-rc.0) "sanity-runner-client" (2022-03-30)<a name="2.9.1-rc.0"></a>
 
 ### Bug Fixes
