@@ -31,17 +31,12 @@ export const constructMessage = async function ({
         )
     }
     console.log(testMetadata)
-    const manualSteps = testMetadata.Description
-        ? testMetadata.Description.replace(/ - /gi, '\n- ')
-        : ''
-
-    const runBook = testMetadata.Runbook ? testMetadata.Runbook : ''
+    const manualSteps = testMetadata.Description?.replace(/ - /gi, '\n- ') ?? ''
+    const runBook = testMetadata?.Runbook ?? ''
 
     let fullStoryMessage = null
-    if (Object.prototype.hasOwnProperty.call(testVariables, 'FULLSTORY_ENABLED')) {
-        if (testVariables.FULLSTORY_ENABLED === 'true') {
-            fullStoryMessage = `FullStory URL: ${await getFullStoryUrl()}`
-        }
+    if (testVariables?.FULLSTORY_ENABLED === 'true') {
+        fullStoryMessage = `FullStory URL: ${await getFullStoryUrl()}`
     }
     const message = {
         testName: testFile,

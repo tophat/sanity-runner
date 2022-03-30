@@ -60,12 +60,14 @@ export async function sendSlackMessage({
                     link_names: true,
                 })
                 thread = thread ? thread : resParent.ts
-                await slack.chat.postMessage({
-                    channel: channel,
-                    thread_ts: thread,
-                    text: screenshotMessage,
-                    attachments: screenShotAttachments,
-                })
+                if (screenShotUrls.length || screenShotAttachments.length) {
+                    await slack.chat.postMessage({
+                        channel: channel,
+                        thread_ts: thread,
+                        text: screenshotMessage,
+                        attachments: screenShotAttachments,
+                    })
+                }
 
                 if (message.fullStoryMessage) {
                     await slack.chat.postMessage({
