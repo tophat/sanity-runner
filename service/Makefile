@@ -46,7 +46,9 @@ clean:
 
 .PHONY: typecheck
 typecheck: dependencies
+ifneq ($(SKIP_TYPECHECK),1)
 	yarn workspace sanity-runner-service tsc -p tsconfig.json --noEmit
+endif
 
 .PHONY: bundle
 bundle: dependencies typecheck
@@ -69,7 +71,16 @@ package: bundle build-docker
 .PHONY: build-docker
 build-docker:
 	@echo "Building Docker Container"
+ifeq ($(LOCAL),1)
+	docker build ../ -f service-local.Dockerfile -t ghcr.io/tophat/sanity-runner-service
+else
 	docker build ../ -f service.Dockerfile -t ghcr.io/tophat/sanity-runner-service
+endif
+
+.PHONY: run-local
+run-local:
+	@LOCAL=1 SKIP_TYPECHECK=1 make package
+	docker run -p 9000:8080 --mount type=bind,source=$$(realpath ../node_modules),target=/node_modules --mount type=bind,source=$$(realpath ./dist),target=/service/dist,readonly ghcr.io/tophat/sanity-runner-service:latest
 
 .PHONY: publish-docker
 publish-docker:
