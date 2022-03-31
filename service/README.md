@@ -3,13 +3,25 @@
 The sanity-runner service is a lambda function that sits in AWS. It takes a [jest-puppeteer](https://github.com/smooth-code/jest-puppeteer) test file as input and returns the result of the test.
 
 
-# Deployment 
+## Local
 
-##  Terraform
+You can use the --local and --localPort flags to point the sanity-runner-client to a local container running the service. This can make local debugging of the sanity-runner-service a lot easier.
+
+Launch service container
+
+docker run -p 9000:8080 ghcr.io/tophat/sanity-runner-service:latest
+In a seperate terminal...
+
+sanity-runner-client --test-dir example/repo/sanities/ --local --output-dir output --include google-fail-example
+NOTE: local usage of the sanity-runner-client requires only a SINGLE test being passed in. Either use a test suite with one test, or use the --include to regex match on a single test.
+
+## Deployment
+
+###  Terraform
 
 We currently use [terraform](https://www.terraform.io/docs/index.html) to deploy to AWS lambda. We use [input variables](https://www.terraform.io/docs/language/values/variables.html) to help define resource names allowing for easy deployment of multiple sanity-runners across the same environment.
 
-The prefered way to deploy the sanity runner would be reference the module in a `main.tf` file like the below example. This lets you pin to a specific version of the terraform code. 
+The prefered way to deploy the sanity runner would be reference the module in a `main.tf` file like the below example. This lets you pin to a specific version of the terraform code.
 
 EX)
 ```
@@ -58,7 +70,7 @@ variable "timeout" {
     type = number
     default = 600
 }
-# Input Variables
+## Input Variables
 
 | Variable                      | Default Value                                         | Description   |
 | ----------------------------- |-----------------------------------------------------  |:----------------|
@@ -71,19 +83,19 @@ variable "timeout" {
 
 
 
-# Configuration 
+## Configuration
 
-## Alerting 
+### Alerting
 
 Sanity Runner supports two backends currently for alerting. (Pagerduty alerts and Slack messages)
 
-### Slack
+#### Slack
 
 Requires a slack api key to be in AWS Secret Manager with the formatted name `sanity_runner/slack_api_token`. This secret should be set up with the secret/value pair of `secret:`slack_api_token and `value:` <insert slack_api_token>
 
-#### SlackHandler
+##### SlackHandler
 
-Requires slack integration to be enabled. Optional configuration that allows a handler to be prepended to from of slack messages. 
+Requires slack integration to be enabled. Optional configuration that allows a handler to be prepended to from of slack messages.
 
 ### Pagerduty
 
@@ -97,15 +109,15 @@ ex)
  * @Slack #someslack-id
  * @SlackHandler @some-group-name
  * @Pagerduty pagerduty-tophat
- * @Description 
+ * @Description
  *  - It does this
  */
 ```
 
 
-# Quick Start
+## Quick Start
 
-## Installation
+### Installation
 * requires aws-cli
 * requires jq
 
@@ -113,7 +125,7 @@ ex)
 make  install
 ```
 
-## Package
+### Package
 
 ```
 # Build and package in docker container (currently only option)
@@ -123,7 +135,7 @@ make build-docker
 `make -C client build-docker`: Packages the code in a docker container for usage. Container name is: **ghcr.io/tophat/sanity-runner-service**
 
 
-## Deploy 
+### Deploy
 * requires terraform
 
 ```
