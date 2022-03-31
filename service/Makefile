@@ -80,7 +80,7 @@ endif
 .PHONY: run-local
 run-local:
 	@LOCAL=1 SKIP_TYPECHECK=1 make package
-	docker run -p 9000:8080 --mount type=bind,source=$$(realpath ../node_modules),target=/node_modules --mount type=bind,source=$$(realpath ./dist),target=/service/dist,readonly ghcr.io/tophat/sanity-runner-service:latest
+	docker run -p 9000:8080 --mount type=bind,source=$$(abspath ../node_modules 2>/dev/null || realpath ../node_modules),target=/var/task/node_modules --mount type=bind,source=$$(abspath ./dist 2>/dev/null || realpath ./dist),target=/var/task/service/dist,readonly ghcr.io/tophat/sanity-runner-service:latest
 
 .PHONY: publish-docker
 publish-docker:
