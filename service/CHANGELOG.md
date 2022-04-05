@@ -2,6 +2,23 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [3.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.5-rc.0...sanity-runner-service@3.0.0) "sanity-runner-service" (2022-04-05)<a name="3.0.0"></a>
+
+### Breaking Changes
+
+* Update to Jest 27 ([a6ed950](https://github.com/tophat/sanity-runner/commits/a6ed950))
+
+### Bug Fixes
+
+* do not fail on missing screenshot (#272) ([a6ed950](https://github.com/tophat/sanity-runner/commits/a6ed950))
+
+### Features
+
+* update jest to v27, as well as misc dependencies (#271) ([a6ed950](https://github.com/tophat/sanity-runner/commits/a6ed950))
+
+
+
+
 ## [2.10.5-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.4-rc.0...sanity-runner-service@2.10.5-rc.0) "sanity-runner-service" (2022-04-05)<a name="2.10.5-rc.0"></a>
 
 ### Reverts
