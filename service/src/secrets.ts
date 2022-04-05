@@ -7,8 +7,6 @@ export async function getSecretValue(secretKey: string) {
         SecretId: secretKey,
     }
 
-    console.log(`[getSecretValue] secret key: ${secretKey}`)
-
     const result = await secretsmanager.getSecretValue(params).promise()
     return result.SecretString ? JSON.parse(result.SecretString) : null
 }
