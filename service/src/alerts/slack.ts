@@ -142,8 +142,11 @@ export async function sendSlackMessage({
     testResults: EnhancedAggregatedResult
 }) {
     try {
+        console.log('[sendSlackMessage] Starting to send message')
+
         const slackToken = await getSecretValue('sanity_runner/slack_api_token')
         if (!slackToken || !('slack_api_token' in slackToken)) {
+            console.log('[sendSlackMessage] Cannot find slack token')
             throw new Error('Secret sanity_runner/slack_api_token not found in AWS Secret Manager!')
         }
 
