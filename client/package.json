@@ -1,6 +1,6 @@
 {
     "name": "sanity-runner-client",
-    "version": "2.9.3-rc.0",
+    "version": "2.9.4-rc.0",
     "description": "Sanity cli client",
     "author": "Top Hat Monocle Inc.",
     "license": "UNLICENSED",

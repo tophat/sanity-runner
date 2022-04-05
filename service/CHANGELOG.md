@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.10.4-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.3-rc.0...sanity-runner-service@2.10.4-rc.0) "sanity-runner-service" (2022-04-05)<a name="2.10.4-rc.0"></a>
+
+### Bug Fixes
+
+* add temporary logging (#277) ([40f7675](https://github.com/tophat/sanity-runner/commits/40f7675))
+
+
+
+
 ## [2.10.3-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.2-rc.0...sanity-runner-service@2.10.3-rc.0) "sanity-runner-service" (2022-03-30)<a name="2.10.3-rc.0"></a>
 
 ### Bug Fixes
