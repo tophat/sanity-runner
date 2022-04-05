@@ -30,6 +30,7 @@ export const constructMessage = async function ({
             ...Object.values(results.screenshots).filter((v): v is string => Boolean(v)),
         )
     }
+    console.log(testMetadata)
     const manualSteps = testMetadata.Description?.replace(/ - /gi, '\n- ') ?? ''
     const runBook = testMetadata?.Runbook ?? ''
 
