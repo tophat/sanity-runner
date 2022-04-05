@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.9.5-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.9.4-rc.0...sanity-runner-client@2.9.5-rc.0) "sanity-runner-client" (2022-04-05)<a name="2.9.5-rc.0"></a>
+
+### Reverts
+
+* Revert [40f7675](https://github.com/tophat/sanity-runner/commits/40f7675): "fix: add temporary logging (#277)" ([d64c063](https://github.com/tophat/sanity-runner/commits/d64c063))
+
+
+
+
 ## [2.9.4-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@2.9.3-rc.0...sanity-runner-client@2.9.4-rc.0) "sanity-runner-client" (2022-04-05)<a name="2.9.4-rc.0"></a>
 
 ### Bug Fixes
