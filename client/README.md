@@ -1,10 +1,20 @@
 # sanity-runner (client)
 
-The sanity-runner client takes a suite of test files and distributes them to a different instance of the sanity-runner lambda function.  
+The sanity-runner client takes a suite of test files and distributes them to a different instance of the sanity-runner lambda function.
 
 ## Usage
+
+Ensure AWS Creds are setup
+
+```sh
+export AWS_PROFILE=<AWS account>
+export AWS_REGION=<AWS region>
 ```
-sanity-runner --test-dir path/to/tests --output-dir path/to/output/dir --lambda-function lambdafunction-name
+
+Run Client against folder with written sanity tests
+
+```sh
+./client/bin/sanity-runner-client-<OS> --test-dir example/repo/sanities --lambda-function <FUNCTION_NAME> --output-dir output
 ```
 
 ## Supported Arguments
@@ -56,7 +66,7 @@ Variables within the config.json must be set via camel case
 ### SLACK_ALERT
 ```
 sanity-runner --var SLACK_ALERT=true
-``` 
+```
 Enables Slack alerts to trigger if configured
 
 #### SLACK_CHANNELS
@@ -66,34 +76,34 @@ sanity-runner --var SLACK_CHANNELS=channel-name,another-channel
 sanity-runner --var SLACK_CHANNELS="channel-name another-channel"
 sanity-runner --var SLACK_CHANNELS=channel-name:123123123.123
 ```
-Defines slack channel(s) to alert to incase of errors. These are appended in conjuction to the channels defined in a tests metadata. 
+Defines slack channel(s) to alert to incase of errors. These are appended in conjuction to the channels defined in a tests metadata.
 
-Multiple channels can be defined by commas or spaces. 
+Multiple channels can be defined by commas or spaces.
 
 Slack threads can be passed in via the format <slack_channel>:<thread_ts>
 
 ### PAGERDUTY_ALERT
 ```
 sanity-runner --var SLACK_ALERT=true
-``` 
+```
 Enables Slack alerts to trigger if configured
 
 ### APP_ENV
 ```
 sanity-runner --var APP_ENV=true
-``` 
-Used in alerting to help signify which Environment the tests are running in. 
+```
+Used in alerting to help signify which Environment the tests are running in.
 
 ### FULLSTORY_ENABLE
 ```
 sanity-runner --var FULLSTORY_ENABLE=true
-``` 
+```
 Enables fullstory integration. If enabled, the sanity runner will check if a fullstory URL is associated with a session, and if so append it to any slack alerts sent.
 
 ## Local Usage
 You can use the `--local` and `--localPort` flags to point the sanity-runner-client to a local container running the service. This can make local debugging of the sanity-runner-service a lot easier.
 
-Launch service container 
+Launch service container
 ```
 docker run -p 9000:8080 ghcr.io/tophat/sanity-runner-service:latest
 ```

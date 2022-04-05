@@ -11,7 +11,8 @@
   },
   "workspaces": [
     "client",
-    "service"
+    "service",
+    "website"
   ],
   "author": "",
   "license": "Apache-2.0",
@@ -22,7 +23,24 @@
   "devDependencies": {
     "@monodeploy/plugin-github": "^0.3.15",
     "@tophat/conventional-changelog-config": "^0.6.1",
-    "monodeploy": "^2.8.20"
+    "@tophat/eslint-config": "^3.1.0",
+    "@tophat/eslint-import-resolver-require": "^0.1.3",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
+    "@yarnpkg/sdks": "^2.6.0",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.1",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "monodeploy": "^2.8.20",
+    "prettier": "^2.6.0",
+    "typescript": "~4.6.2"
   },
   "private": true,
   "packageManager": "yarn@3.2.0"

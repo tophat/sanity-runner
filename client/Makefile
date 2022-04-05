@@ -6,16 +6,8 @@ VERSION := $(shell cat package.json | jq -r '.version')
 ARTIFACT_DIR?=artifacts
 TEST_REPORTS_DIR?=$(ARTIFACT_DIR)/reports
 
-ifdef CI
-	ESLINT_EXTRA_ARGS=--format junit --output-file $(TEST_REPORTS_DIR)/lint/eslint.junit.xml
-else
-	ESLINT_EXTRA_ARGS=
-endif
-
-ESLINT_ARGS=--max-warnings 0 $(ESLINT_EXTRA_ARGS)
-
 .PHONY: install
-install: check-versions
+install:
 	yarn install
 
 .PHONY: build-docker
@@ -24,33 +16,30 @@ ifndef CI
 	@make package
 endif
 	@echo "Building Docker Container"
-	docker build . -t ghcr.io/tophat/sanity-runner-client
+	docker build . -f client.Dockerfile -t ghcr.io/tophat/sanity-runner-client
 
 .PHONY: package
 package:
-	yarn pkg . --out-path bin/
+	mkdir -p bin
+	yarn workspace sanity-runner-client pkg . --out-path bin/ --targets "node16-linux,node16-macos,node16-win"
 
 # ----- Helpers -----
-.PHONY: check-versions
-check-versions:
-	@../infrastructure/scripts/check-versions.sh
 
 .PHONY: clean
 clean:
 	@rm -rf node_modules
-
-
-.PHONY: lint
-lint:
-	yarn eslint $(ESLINT_ARGS) .
-
-.PHONY: lint-fix
-lint-fix:
-	yarn eslint $(ESLINT_ARGS) --fix .
 
 PHONY: publish-docker
 publish-docker:
 	@echo "Publishing Docker Image"
 	docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:${VERSION}
 	docker push ghcr.io/tophat/sanity-runner-client:latest
+	docker push ghcr.io/tophat/sanity-runner-client:${VERSION}
+
+PHONY: publish-docker-prerelease
+publish-docker-prerelease:
+	@echo "Publishing Docker Image"
+	docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:${VERSION}
+	docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:next
+	docker push ghcr.io/tophat/sanity-runner-client:next
 	docker push ghcr.io/tophat/sanity-runner-client:${VERSION}

@@ -1,13 +1,14 @@
-const fs = require('fs-extra')
+const crypto = require('crypto')
 const https = require('https')
 const path = require('path')
-const uniqueString = require('unique-string')
 
 const AWS = require('aws-sdk')
+const axios = require('axios')
+const fs = require('fs-extra')
+
 const agent = new https.Agent({
     keepAlive: true,
 })
-const axios = require('axios')
 
 const { formatTestResults } = require('./utils')
 
@@ -24,50 +25,29 @@ async function testResultPromise(
     let results = {}
     const testName = getTestName(testFiles)
     if (enableLocal) {
-        await localInvoke(
-            testFiles,
-            testVariables,
-            retryCount,
-            executionId,
-            localPort,
-        )
-            .then(response => {
+        await localInvoke(testFiles, testVariables, retryCount, executionId, localPort)
+            .then((response) => {
                 results = response.data
             })
-            .catch(e => {
+            .catch((e) => {
                 results.testResults = {}
                 if (e.response) {
                     results.testResults[testName] = formatFailedTestResult(
                         testName,
-                        `Status Code: ${e.response.status}. Message: ${
-                            e.response.message
-                        }`,
+                        `Status Code: ${e.response.status}. Message: ${e.response.message}`,
                     )
                 } else {
-                    results.testResults[testName] = formatFailedTestResult(
-                        testName,
-                        e.message,
-                    )
+                    results.testResults[testName] = formatFailedTestResult(testName, e.message)
                 }
             })
     } else {
-        await lambdaInvoke(
-            functionName,
-            testFiles,
-            testVariables,
-            retryCount,
-            executionId,
-            timeout,
-        )
-            .then(response => {
+        await lambdaInvoke(functionName, testFiles, testVariables, retryCount, executionId, timeout)
+            .then((response) => {
                 results = JSON.parse(response.Payload)
             })
-            .catch(e => {
+            .catch((e) => {
                 results.testResults = {}
-                results.testResults.responseError = formatFailedTestResult(
-                    testName,
-                    e.toString(),
-                )
+                results.testResults.responseError = formatFailedTestResult(testName, e.toString())
             })
     }
 
@@ -82,12 +62,10 @@ async function testResultPromise(
         throw new Error(`[${testName}] Inconsistent service response`)
     }
     if (results.errors && results.errors.length > 0) {
-        results.errors.forEach(error => {
+        results.errors.forEach((error) => {
             console.error(error.message)
         })
-        throw new Error(
-            `[${testName}] There have been problems executing your test suite`,
-        )
+        throw new Error(`[${testName}] There have been problems executing your test suite`)
     }
     return results
 }
@@ -95,24 +73,12 @@ async function testResultPromise(
 function reduceTestResults(accumulated, current) {
     return {
         passed: accumulated.passed && current.passed,
-        testResults: Object.assign(
-            accumulated.testResults,
-            current.testResults,
-        ),
-        screenshots: Object.assign(
-            accumulated.screenshots || {},
-            current.screenshots || {},
-        ),
+        testResults: Object.assign(accumulated.testResults, current.testResults),
+        screenshots: Object.assign(accumulated.screenshots || {}, current.screenshots || {}),
     }
 }
 
-async function localInvoke(
-    testFiles,
-    testVariables,
-    retryCount,
-    executionId,
-    localPort,
-) {
+async function localInvoke(testFiles, testVariables, retryCount, executionId, localPort) {
     return axios.post(
         `http://localhost:${localPort}/2015-03-31/functions/function/invocations`,
         JSON.stringify({
@@ -171,9 +137,9 @@ async function runTests(
     localPort,
     timeout,
 ) {
-    const executionId = uniqueString()
+    const executionId = crypto.randomBytes(32).toString('hex')
 
-    const promises = Object.entries(testFiles).map(entry =>
+    const promises = Object.entries(testFiles).map((entry) =>
         testResultPromise(
             functionName,
             executionId,
@@ -186,17 +152,14 @@ async function runTests(
         ),
     )
     return Promise.all(promises).then(
-        async results => {
+        async (results) => {
             const aggregatedResults = results.reduce(reduceTestResults)
             _archiveTestResults(outputDir, aggregatedResults.testResults)
-            await _archiveTestScreenshots(
-                outputDir,
-                aggregatedResults.screenshots,
-            )
+            await _archiveTestScreenshots(outputDir, aggregatedResults.screenshots)
             await formatTestResults(aggregatedResults.testResults)
             return aggregatedResults.passed
         },
-        reason => {
+        (reason) => {
             console.log(reason)
             throw reason
         },
@@ -221,17 +184,17 @@ async function _archiveTestScreenshots(outputDir, screenshots) {
         return new Promise((resolve, reject) => {
             const screenshot = fs.createWriteStream(outputPath)
             screenshot.on('finish', () => resolve())
-            screenshot.on('error', err => reject(err))
-            https.get(value, res => {
+            screenshot.on('error', (err) => reject(err))
+            https.get(value, (res) => {
                 res.pipe(screenshot)
-                res.on('error', err => reject(err))
+                res.on('error', (err) => reject(err))
             })
         })
     })
     await Promise.all(promises)
 }
 
-const formatFailedTestResult = (file, error) => {
+function formatFailedTestResult(file, error) {
     return {
         testsuites: {
             $: {
@@ -264,7 +227,7 @@ const formatFailedTestResult = (file, error) => {
     }
 }
 
-const getTestName = testFile => {
+function getTestName(testFile) {
     return Object.keys(testFile)[0]
 }
 

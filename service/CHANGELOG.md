@@ -2,6 +2,51 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.10.5-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.4-rc.0...sanity-runner-service@2.10.5-rc.0) "sanity-runner-service" (2022-04-05)<a name="2.10.5-rc.0"></a>
+
+### Reverts
+
+* Revert [40f7675](https://github.com/tophat/sanity-runner/commits/40f7675): "fix: add temporary logging (#277)" ([d64c063](https://github.com/tophat/sanity-runner/commits/d64c063))
+
+
+
+
+## [2.10.4-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.3-rc.0...sanity-runner-service@2.10.4-rc.0) "sanity-runner-service" (2022-04-05)<a name="2.10.4-rc.0"></a>
+
+### Bug Fixes
+
+* add temporary logging (#277) ([40f7675](https://github.com/tophat/sanity-runner/commits/40f7675))
+
+
+
+
+## [2.10.3-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.2-rc.0...sanity-runner-service@2.10.3-rc.0) "sanity-runner-service" (2022-03-30)<a name="2.10.3-rc.0"></a>
+
+### Bug Fixes
+
+* slack check (#275) ([bee1c5c](https://github.com/tophat/sanity-runner/commits/bee1c5c))
+
+
+
+
+## [2.10.2-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.1-rc.0...sanity-runner-service@2.10.2-rc.0) "sanity-runner-service" (2022-03-30)<a name="2.10.2-rc.0"></a>
+
+### Bug Fixes
+
+* ensure suites directory exists (#274) ([2c0a842](https://github.com/tophat/sanity-runner/commits/2c0a842))
+
+
+
+
+## [2.10.1-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.0-rc.0...sanity-runner-service@2.10.1-rc.0) "sanity-runner-service" (2022-03-30)<a name="2.10.1-rc.0"></a>
+
+### Bug Fixes
+
+* commit pre-release artifacts (#273) ([db208cc](https://github.com/tophat/sanity-runner/commits/db208cc))
+
+
+
+
 ## [2.9.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.9.1...sanity-runner-service@2.9.2) "sanity-runner-service" (2022-03-18)<a name="2.9.2"></a>
 
 ### Bug Fixes
