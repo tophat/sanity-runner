@@ -2,6 +2,10 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [3.1.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@3.1.0...sanity-runner-client@3.1.1) "sanity-runner-client" (2022-04-06)<a name="3.1.1"></a>
+
+
+
 ## [3.1.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@3.0.0...sanity-runner-client@3.1.0) "sanity-runner-client" (2022-04-06)<a name="3.1.0"></a>
 
 ### Features
