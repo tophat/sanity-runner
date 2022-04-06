@@ -5,7 +5,7 @@
 [![Discord](https://img.shields.io/discord/809577721751142410)](https://discord.gg/YhK3GFcZrk)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 </div>
@@ -83,9 +83,32 @@ For more information about the [Client](./client/README.md) and [Service](./serv
 
 Thanks goes to these wonderful people [emoji key](https://github.com/kentcdodds/all-contributors#emoji-key):
 
-| [<img src="https://avatars1.githubusercontent.com/u/42545233?s=400&v=4" width="100px;"/><br /><sub><b>Matt Haber</b></sub>](https://github.com/mhaber-tophat)<br />[💻](https://github.com/mhaber-tophat)[🚇](https://github.com/tophat/sanity-runner/commits?author=mhaber-tophat) | [<img src="https://avatars.githubusercontent.com/u/39271619?s=100" width="100px;"/><br /><sub><b>Brandon Baksh</b></sub>](https://github.com/brandonbaksh)<br />[📖](https://github.com/tophat/sanity-runner/commits?author=brandonbaksh) | [<img src="https://avatars2.githubusercontent.com/u/2723622?s=400&v=4" width="100px;"/><br /><sub><b>Martin Lai</b></sub>](https://github.com/eastenluis)<br />[💻](https://github.com/tophat/sanity-runner) |
-| :---: | :---: | :---: |
-| [<img src="https://avatars3.githubusercontent.com/u/76803?s=400&v=4" width="100px;"/><br /><sub><b>Martin Ringehahn</b></sub>](https://github.com/chrono)<br />[💻](https://github.com/tophat/sanity-runner) | [<img src="https://avatars3.githubusercontent.com/u/4661702?s=400&v=4" width="100px;"/><br /><sub><b>Tom Grant</b></sub>](https://github.com/tgrant59)<br />[💻](https://github.com/tophat/sanity-runner) |
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/mattthaber"><img src="https://avatars.githubusercontent.com/u/42545233?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mattthaber</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=mattthaber" title="Code">💻</a> <a href="#infra-mattthaber" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://noahnu.com/"><img src="https://avatars.githubusercontent.com/u/1297096?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Noah</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=noahnu" title="Code">💻</a> <a href="#infra-noahnu" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/brandonbaksh/"><img src="https://avatars.githubusercontent.com/u/39271619?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Brandon Baksh</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=brandonbaksh" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/eastenluis"><img src="https://avatars.githubusercontent.com/u/2723622?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Martin Lai</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=eastenluis" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.linkedin.com/profile/view?id=245244184"><img src="https://avatars.githubusercontent.com/u/4661702?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tom Grant</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=tgrant59" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/chrono"><img src="https://avatars.githubusercontent.com/u/76803?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Martin Ringehahn</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=chrono" title="Code">💻</a></td>
+    <td align="center"><a href="https://jakebolam.com/"><img src="https://avatars.githubusercontent.com/u/3534236?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jake Bolam</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=jakebolam" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://gabriellesc.github.io/"><img src="https://avatars.githubusercontent.com/u/5559014?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gabrielle Singh Cadieux</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=gabriellesc" title="Code">💻</a></td>
+    <td align="center"><a href="http://dra.pe/"><img src="https://avatars.githubusercontent.com/u/539437?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shawn Drape</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=shawndrape" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/allen-lam"><img src="https://avatars.githubusercontent.com/u/43854211?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Allen Lam</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=allen-lam" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.karnov.club/"><img src="https://avatars.githubusercontent.com/u/6210361?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Marc Cataford</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=mcataford" title="Code">💻</a></td>
+    <td align="center"><a href="https://opensource.tophat.com/"><img src="https://avatars.githubusercontent.com/u/6020693?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shouvik DCosta</b></sub></a><br /><a href="https://github.com/tophat/sanity-runner/commits?author=sdcosta" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 We welcome contributions from the community, Top Hatters and non-Top Hatters alike. Check out our [contributing guidelines](CONTRIBUTING.md) for more details.
 
