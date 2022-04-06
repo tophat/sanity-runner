@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [3.1.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.0.0...sanity-runner-service@3.1.0) "sanity-runner-service" (2022-04-06)<a name="3.1.0"></a>
+
+### Features
+
+* increase screenshot expiry to 30 days (#278) ([f7cdba2](https://github.com/tophat/sanity-runner/commits/f7cdba2))
+
+
+
+
 ## [3.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.5-rc.0...sanity-runner-service@3.0.0) "sanity-runner-service" (2022-04-05)<a name="3.0.0"></a>
 
 ### Breaking Changes
