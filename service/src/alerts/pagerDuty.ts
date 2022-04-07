@@ -1,5 +1,6 @@
 import PagerDutyClient from 'node-pagerduty'
 
+import { logger } from '../logger'
 import { getSecretValue } from '../secrets'
 
 import type { AlertMessage, TestMetadata } from '../types'
@@ -14,7 +15,7 @@ export async function resolvePagerDutyAlert({
     try {
         const pd = new PagerDutyClient()
         if (!testMetadata.Pagerduty) {
-            console.log(
+            logger.info(
                 'Unable to send Pagerduty alert: no Pagerduty Integration Id supplied in test Metadata',
             )
             return
@@ -34,7 +35,7 @@ export async function resolvePagerDutyAlert({
         }
         await pd.events.sendEvent(pl)
     } catch (err) {
-        console.error(err)
+        logger.error('Unable to resolve PagerDuty alert.', err)
     }
 }
 
@@ -48,7 +49,7 @@ export async function sendPagerDutyAlert({
     try {
         const pd = new PagerDutyClient()
         if (!testMetadata.Pagerduty) {
-            console.log(
+            logger.info(
                 'Unable to send Pagerduty alert: no Pagerduty Integration Id supplied in test Metadata',
             )
             return
@@ -83,6 +84,6 @@ export async function sendPagerDutyAlert({
 
         await pd.events.sendEvent(pl)
     } catch (err) {
-        console.error(err)
+        logger.error('Unable to send PagerDuty alert.', err)
     }
 }

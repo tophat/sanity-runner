@@ -1,3 +1,5 @@
+import { logger } from '../logger'
+
 import { getFullStoryUrl } from './fullstory'
 
 import type { AlertMessage, EnhancedAggregatedResult, TestMetadata } from '../types'
@@ -21,7 +23,7 @@ export const constructMessage = async function ({
     const errorMessage = testResults.failureMessage
 
     //log to lambda for debugging
-    console.log(errorMessage)
+    logger.info('Test Error Message', errorMessage)
 
     //Attachments
     const screenShots: Array<string> = []
@@ -30,7 +32,7 @@ export const constructMessage = async function ({
             ...Object.values(results.screenshots).filter((v): v is string => Boolean(v)),
         )
     }
-    console.log(testMetadata)
+    logger.info('Test Metadata', testMetadata)
     const manualSteps = testMetadata.Description?.replace(/ - /gi, '\n- ') ?? ''
     const runBook = testMetadata?.Runbook ?? ''
 

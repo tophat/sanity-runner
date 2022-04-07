@@ -1,5 +1,6 @@
 import { WebClient } from '@slack/web-api'
 
+import { logger } from '../logger'
 import { getSecretValue } from '../secrets'
 
 import type { AlertMessage, TestMetadata } from '../types'
@@ -129,6 +130,6 @@ export async function sendSlackMessage({
             }),
         )
     } catch (err) {
-        console.error(err)
+        logger.error('Failure sending Slack message.', err)
     }
 }
