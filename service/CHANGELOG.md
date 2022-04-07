@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [3.2.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.1.1...sanity-runner-service@3.2.0) "sanity-runner-service" (2022-04-07)<a name="3.2.0"></a>
+
+### Features
+
+* improve console logging (#280) ([d6f860e](https://github.com/tophat/sanity-runner/commits/d6f860e))
+
+
+
+
 ## [3.1.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.1.0...sanity-runner-service@3.1.1) "sanity-runner-service" (2022-04-06)<a name="3.1.1"></a>
 
 
