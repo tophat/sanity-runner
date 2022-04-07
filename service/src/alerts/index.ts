@@ -1,5 +1,7 @@
 import { parse } from 'jest-docblock'
 
+import { logger } from '../logger'
+
 import { resolvePagerDutyAlert, sendPagerDutyAlert } from './pagerDuty'
 import { sendSlackMessage } from './slack'
 import { constructMessage } from './utils'
@@ -31,7 +33,7 @@ export async function alertOnResult({
 
             if (testVariables.SLACK_ALERT || testVariables.ALERT) {
                 if (testVariables.ALERT) {
-                    console.warn(
+                    logger.warn(
                         "The test variable 'ALERT' is deprecated. Please use 'SLACK_ALERT' instead.",
                     )
                 }
