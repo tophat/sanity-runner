@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [3.4.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.3.0...sanity-runner-service@3.4.0) "sanity-runner-service" (2022-04-12)<a name="3.4.0"></a>
+
+### Features
+
+* consolidate slack message (#281) ([7484062](https://github.com/tophat/sanity-runner/commits/7484062))
+
+
+
+
 ## [3.3.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.2.0...sanity-runner-service@3.3.0) "sanity-runner-service" (2022-04-12)<a name="3.3.0"></a>
 
 ### Features
