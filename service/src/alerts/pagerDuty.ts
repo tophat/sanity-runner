@@ -3,7 +3,7 @@ import PagerDutyClient from 'node-pagerduty'
 import { logger } from '../logger'
 import { getSecretValue } from '../secrets'
 
-import type { AlertMessage, TestMetadata } from '../types'
+import type { AlertContext, TestMetadata } from '../types'
 
 export async function resolvePagerDutyAlert({
     testFile,
@@ -43,7 +43,7 @@ export async function sendPagerDutyAlert({
     message,
     testMetadata,
 }: {
-    message: AlertMessage
+    message: AlertContext
     testMetadata: TestMetadata
 }) {
     try {
