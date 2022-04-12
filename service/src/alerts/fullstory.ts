@@ -5,12 +5,12 @@ import fs from 'fs'
  *
  * TODO: This should be abstracted so we can persist general browser session metadata.
  */
-export async function getFullStoryUrl() {
+export async function getFullStoryUrl(): Promise<string | null> {
     try {
         const fullStoryUrl = await fs.promises.readFile('/tmp/fullStoryUrl.txt', 'utf-8')
         await fs.promises.unlink('/tmp/fullStoryUrl.txt')
         return fullStoryUrl
     } catch (e) {
-        return 'ERROR: No FullStory URL found.'
+        return null
     }
 }

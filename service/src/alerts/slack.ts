@@ -1,16 +1,126 @@
-import { WebClient } from '@slack/web-api'
+import { KnownBlock, WebClient } from '@slack/web-api'
 
 import { logger } from '../logger'
 import { getSecretValue } from '../secrets'
 
-import type { AlertMessage, TestMetadata } from '../types'
+import type { AlertContext, TestMetadata } from '../types'
+
+async function buildMessageBlocks({
+    message,
+    testMetadata,
+}: {
+    message: AlertContext
+    testMetadata: TestMetadata
+}) {
+    const blocks: Array<KnownBlock> = []
+
+    blocks.push({
+        type: 'context',
+        elements: [
+            {
+                type: 'mrkdwn',
+                text: `Sanity Test Failure - *${message.variables.APP_ENV ?? 'N/A'}*`,
+            },
+        ],
+    })
+
+    blocks.push({
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: `*Test*: ${message.testName} ${testMetadata.SlackHandler ?? ''}`,
+        },
+    })
+
+    // jest-docblock does not support multiline strings and seperates them with spaces.
+    // We enforce a standard of "-" surronded by spaces as the standard practice for making
+    // a new line in the description of a test.
+    if (message.manualSteps) {
+        blocks.push({
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text:
+                    `*Manual Steps*: ${
+                        message.runBook ? `(<${message.runBook}|see runbook>)` : ''
+                    }` + `\n${message.manualSteps}`,
+            },
+        })
+    }
+
+    if (message.errorMessage) {
+        blocks.push({
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: `*Error Message*:\n\n${message.errorMessage
+                    .split('\n')
+                    .map((line) => `> ${line}`)
+                    .join('\n')}`,
+            },
+        })
+    }
+
+    const links: Array<{ name: string; url: string }> = []
+    if (message.fullstoryUrl) {
+        links.push({ name: 'Fullstory Session', url: message.fullstoryUrl })
+    }
+    if (links.length) {
+        blocks.push({
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: `*Links*: ${links.map(({ name, url }) => `<${url}|${name}>`).join(' | ')}`,
+            },
+        })
+    }
+
+    if (message.attachments.screenShots.length) {
+        for (let i = 0; i < message.attachments.screenShots.length; i++) {
+            const screenshotUrl = message.attachments.screenShots[i]
+            blocks.push({
+                type: 'section',
+                text: {
+                    type: 'mrkdwn',
+                    text: `Screenshot #${i + 1}`,
+                },
+                accessory: {
+                    type: 'image',
+                    image_url: screenshotUrl,
+                    alt_text: `Screenshot ${i + 1}`,
+                },
+            })
+        }
+    }
+
+    blocks.push({
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: `\`\`\`\n${JSON.stringify(message.variables)}\n\`\`\``,
+        },
+    })
+
+    blocks.push({ type: 'divider' })
+    blocks.push({
+        type: 'context',
+        elements: [
+            {
+                type: 'mrkdwn',
+                text: `Run Id: *${message.runId ?? 'N/A'}*`,
+            },
+        ],
+    })
+
+    return blocks
+}
 
 export async function sendSlackMessage({
     message,
     testMetadata,
     additionalChannels,
 }: {
-    message: AlertMessage
+    message: AlertContext
     testMetadata: TestMetadata
     additionalChannels: Array<string>
 }) {
@@ -19,122 +129,59 @@ export async function sendSlackMessage({
         if (!slackToken || !('slack_api_token' in slackToken)) {
             throw new Error('Secret sanity_runner/slack_api_token not found in AWS Secret Manager!')
         }
+
         const slack = new WebClient(slackToken.slack_api_token)
-        const slackChannels = [
-            ...new Set([...(testMetadata.Slack?.split(/[ ,]+/) ?? []), ...additionalChannels]),
-        ]
 
-        const slackMessage = testMetadata.SlackHandler
-            ? `${testMetadata.SlackHandler} ${message.message}`
-            : message.message
+        const testSpecificChannels = testMetadata.Slack?.split(/[ ,]+/) ?? []
+        const slackChannels = Array.from(new Set([...testSpecificChannels, ...additionalChannels]))
 
-        const screenShotAttachments: Array<{
-            title: string
-            image_url: string
-            color: string
-        }> = [
-            ...message.attachments.screenShots.map((image_url) => ({
-                title: message.testName,
-                image_url,
-                color: '#D40E0D',
-            })),
-        ]
-        const screenShotUrls = [
-            ...message.attachments.screenShots.map((url) => url.split('AWSAccessKeyId')[0]),
-        ]
+        const blocks = await buildMessageBlocks({ message, testMetadata })
 
-        const screenshotMessage = `Attached Screenshot at time of error. Screenshot s3 URL(s): ${screenShotUrls.join(
-            ', ',
-        )}`
-
-        // Send Slack message and format into thread
         await Promise.all(
-            slackChannels.map(async (slackChannel: string) => {
-                const slackThreadTs = slackChannel.split(':')
-                const channel = slackThreadTs[0]
-                let thread = slackThreadTs.length === 2 ? slackThreadTs[1] : undefined
+            slackChannels.map(async (channelId: string) => {
+                // eslint-disable-next-line prefer-const
+                let [channel, thread] = channelId.split(':')
 
-                const resParent = await slack.chat.postMessage({
-                    channel: channel,
-                    thread_ts: thread,
-                    text: slackMessage,
-                    link_names: true,
-                })
-                thread = thread ? thread : resParent.ts
-                if (screenShotUrls.length || screenShotAttachments.length) {
-                    await slack.chat.postMessage({
-                        channel: channel,
-                        thread_ts: thread,
-                        text: screenshotMessage,
-                        attachments: screenShotAttachments,
-                    })
-                }
-
-                if (message.fullStoryMessage) {
-                    await slack.chat.postMessage({
-                        channel: channel,
-                        thread_ts: thread,
-                        text: message.fullStoryMessage,
-                    })
-                }
-
-                if (message.runId) {
-                    await slack.chat.postMessage({
-                        channel: channel,
-                        thread_ts: thread,
-                        title: 'runId for sanity test:',
-                        text: message.runId,
-                    })
-                }
-
-                await slack.chat.postMessage({
-                    channel: channel,
-                    thread_ts: thread,
-                    attachments: [
-                        {
-                            title: 'Error Message',
-                            text: message.errorMessage ?? undefined,
-                            color: '#D40E0D',
-                        },
-                    ],
-                })
-
-                await slack.chat.postMessage({
-                    channel: channel,
-                    thread_ts: thread,
-                    attachments: [
-                        {
-                            title: 'Variables used by given test',
-                            text: JSON.stringify(message.variables),
-                        },
-                    ],
-                })
-
-                if (message.runBook) {
-                    await slack.chat.postMessage({
-                        channel: channel,
-                        thread_ts: thread,
-                        attachments: [
+                if (!thread) {
+                    // We're not posting to a thread, we're posting to a channel. To prevent noise,
+                    // we'll post a short summary and then following up with details in the thread.
+                    const response = await slack.chat.postMessage({
+                        channel,
+                        text: `${message.testName} has failed in *${
+                            message.variables.APP_ENV ?? 'N/A'
+                        }*`,
+                        link_names: true,
+                        blocks: [
                             {
-                                title: 'Runbook to follow',
-                                text: message.runBook,
+                                type: 'context',
+                                elements: [
+                                    {
+                                        type: 'mrkdwn',
+                                        text: `Sanity Test Failure - *${
+                                            message.variables.APP_ENV ?? 'N/A'
+                                        }*`,
+                                    },
+                                ],
+                            },
+                            {
+                                type: 'section',
+                                text: {
+                                    type: 'mrkdwn',
+                                    text: `\`${message.testName}\` has failed. ${
+                                        testMetadata.SlackHandler ?? ''
+                                    }\n\nSee thread for details.`,
+                                },
                             },
                         ],
                     })
+                    thread = response.ts!
                 }
 
-                // jest-docblock does not support multiline strings and seperates them with spaces.
-                // We enforce a standard of "-" surronded by spaces as the standard practice for making
-                // a new line in the description of a test.
                 await slack.chat.postMessage({
-                    channel: channel,
+                    channel,
                     thread_ts: thread,
-                    attachments: [
-                        {
-                            title: 'Manual Steps for Sanity',
-                            text: message.manualSteps.replace(/ - /gi, '\n- '),
-                        },
-                    ],
+                    text: message.errorMessage ?? 'Unknown error',
+                    attachments: [{ color: '#A30201', blocks }],
                 })
             }),
         )

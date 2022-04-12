@@ -2,7 +2,7 @@ import { logger } from '../logger'
 
 import { getFullStoryUrl } from './fullstory'
 
-import type { AlertMessage, EnhancedAggregatedResult, TestMetadata } from '../types'
+import type { AlertContext, EnhancedAggregatedResult, TestMetadata } from '../types'
 
 export const constructMessage = async function ({
     results,
@@ -16,7 +16,7 @@ export const constructMessage = async function ({
     testMetadata: TestMetadata
     testVariables: Partial<Record<string, string>>
     runId: string
-}): Promise<AlertMessage> {
+}): Promise<AlertContext> {
     const appEnv = testVariables.APP_ENV || '!APP_ENV not supplied!'
     const testResults = results.testResults[0]
 
@@ -38,10 +38,9 @@ export const constructMessage = async function ({
     const manualSteps = testMetadata.Description?.replace(/ - /gi, '\n- ') ?? ''
     const runBook = testMetadata?.Runbook ?? ''
 
-    let fullStoryMessage = null
-    if (testVariables?.FULLSTORY_ENABLED === 'true') {
-        fullStoryMessage = `FullStory URL: ${await getFullStoryUrl()}`
-    }
+    const fullstoryUrl =
+        testVariables?.FULLSTORY_ENABLED === 'true' ? await getFullStoryUrl() : undefined
+
     const message = {
         testName: testFile,
         message: mainMessage,
@@ -49,8 +48,8 @@ export const constructMessage = async function ({
         variables: testVariables,
         manualSteps: manualSteps,
         runBook: runBook,
-        fullStoryMessage: fullStoryMessage,
         runId: runId,
+        fullstoryUrl,
         attachments: {
             screenShots: screenShots,
         },
