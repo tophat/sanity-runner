@@ -20,5 +20,6 @@ export type AlertMessage = {
     manualSteps: string
     runBook: string
     fullStoryMessage: string | null
+    runId: string
     attachments: { screenShots: Array<string> }
 }

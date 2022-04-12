@@ -12,10 +12,12 @@ export async function alertOnResult({
     testFiles,
     results,
     testVariables,
+    runId,
 }: {
     testFiles: Record<string, string>
     results: EnhancedAggregatedResult
     testVariables: Partial<Record<string, string>>
+    runId: string
 }) {
     const isFailure = results.numFailedTests > 0
 
@@ -27,6 +29,7 @@ export async function alertOnResult({
                 testFile,
                 testMetadata,
                 testVariables,
+                runId,
             })
 
             const additionalChannels = testVariables.SLACK_CHANNELS?.split(/[ ,]+/) ?? []

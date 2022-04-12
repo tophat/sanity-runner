@@ -90,7 +90,7 @@ export default class TestRunner {
                 },
             )
             logResults(results, testVariables, retryCount, run.id, executionId)
-            await alertOnResult({ testFiles, results, testVariables })
+            await alertOnResult({ testFiles, results, testVariables, runId: run.id })
             return await run.format(results)
         } finally {
             await run.cleanup()

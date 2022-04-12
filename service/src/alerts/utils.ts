@@ -9,11 +9,13 @@ export const constructMessage = async function ({
     testFile,
     testMetadata,
     testVariables,
+    runId,
 }: {
     results: EnhancedAggregatedResult
     testFile: string
     testMetadata: TestMetadata
     testVariables: Partial<Record<string, string>>
+    runId: string
 }): Promise<AlertMessage> {
     const appEnv = testVariables.APP_ENV || '!APP_ENV not supplied!'
     const testResults = results.testResults[0]
@@ -48,6 +50,7 @@ export const constructMessage = async function ({
         manualSteps: manualSteps,
         runBook: runBook,
         fullStoryMessage: fullStoryMessage,
+        runId: runId,
         attachments: {
             screenShots: screenShots,
         },

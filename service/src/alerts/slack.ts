@@ -78,6 +78,15 @@ export async function sendSlackMessage({
                     })
                 }
 
+                if (message.runId) {
+                    await slack.chat.postMessage({
+                        channel: channel,
+                        thread_ts: thread,
+                        title: 'runId for sanity test:',
+                        text: message.runId,
+                    })
+                }
+
                 await slack.chat.postMessage({
                     channel: channel,
                     thread_ts: thread,
