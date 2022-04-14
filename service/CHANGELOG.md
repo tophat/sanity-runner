@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [3.4.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.4.0...sanity-runner-service@3.4.1) "sanity-runner-service" (2022-04-14)<a name="3.4.1"></a>
+
+### Bug Fixes
+
+* formatting issues in slack message (#282) ([a75e604](https://github.com/tophat/sanity-runner/commits/a75e604))
+
+
+
+
 ## [3.4.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.3.0...sanity-runner-service@3.4.0) "sanity-runner-service" (2022-04-12)<a name="3.4.0"></a>
 
 ### Features
