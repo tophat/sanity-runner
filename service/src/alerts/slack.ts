@@ -3,15 +3,18 @@ import { KnownBlock, WebClient } from '@slack/web-api'
 import { logger } from '../logger'
 import { getSecretValue } from '../secrets'
 
-import type { AlertContext, TestMetadata } from '../types'
+import type { AlertContext, EnhancedAggregatedResult, TestMetadata } from '../types'
 
 async function buildMessageBlocks({
     message,
     testMetadata,
+    testResults,
 }: {
     message: AlertContext
     testMetadata: TestMetadata
+    testResults: EnhancedAggregatedResult
 }) {
+    const result = testResults.testResults[0]
     const blocks: Array<KnownBlock> = []
 
     blocks.push({
@@ -24,11 +27,20 @@ async function buildMessageBlocks({
         ],
     })
 
+    if (result.displayName) {
+        blocks.push({
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: `*Test*: ${result.displayName}`,
+            },
+        })
+    }
     blocks.push({
         type: 'section',
         text: {
             type: 'mrkdwn',
-            text: `*Test*: ${message.testName} ${testMetadata.SlackHandler ?? ''}`,
+            text: `*Filename*: ${message.testName} ${testMetadata.SlackHandler ?? ''}`,
         },
     })
 
@@ -82,7 +94,7 @@ async function buildMessageBlocks({
                 type: 'section',
                 text: {
                     type: 'mrkdwn',
-                    text: `Screenshot #${i + 1}`,
+                    text: `<${screenshotUrl}|Screenshot #${i + 1}>`,
                 },
                 accessory: {
                     type: 'image',
@@ -119,10 +131,12 @@ export async function sendSlackMessage({
     message,
     testMetadata,
     additionalChannels,
+    testResults,
 }: {
     message: AlertContext
     testMetadata: TestMetadata
     additionalChannels: Array<string>
+    testResults: EnhancedAggregatedResult
 }) {
     try {
         const slackToken = await getSecretValue('sanity_runner/slack_api_token')
@@ -135,7 +149,7 @@ export async function sendSlackMessage({
         const testSpecificChannels = testMetadata.Slack?.split(/[ ,]+/) ?? []
         const slackChannels = Array.from(new Set([...testSpecificChannels, ...additionalChannels]))
 
-        const blocks = await buildMessageBlocks({ message, testMetadata })
+        const blocks = await buildMessageBlocks({ message, testMetadata, testResults })
 
         await Promise.all(
             slackChannels.map(async (channelId: string) => {
@@ -180,8 +194,13 @@ export async function sendSlackMessage({
                 await slack.chat.postMessage({
                     channel,
                     thread_ts: thread,
-                    text: message.errorMessage ?? 'Unknown error',
-                    attachments: [{ color: '#A30201', blocks }],
+                    attachments: [
+                        {
+                            color: '#A30201',
+                            fallback: message.errorMessage ?? 'Unknown error',
+                            blocks,
+                        },
+                    ],
                 })
             }),
         )

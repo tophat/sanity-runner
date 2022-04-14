@@ -53,11 +53,9 @@ afterEach(async () => {
         } catch (err) {
             logger.info('No FullStory URL Found')
         }
-        await fs.promises.writeFile(
-            '/tmp/fullStoryUrl.txt',
-            global.fullStoryUrl ?? 'No FullStory URL Found',
-            'utf8',
-        )
+        if (global.fullStoryUrl) {
+            await fs.promises.writeFile('/tmp/fullStoryUrl.txt', global.fullStoryUrl, 'utf8')
+        }
         await new Promise((r) => setTimeout(r, 5000))
     }
     await global.browser.close()
