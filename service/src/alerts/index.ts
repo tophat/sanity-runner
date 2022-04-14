@@ -40,7 +40,12 @@ export async function alertOnResult({
                         "The test variable 'ALERT' is deprecated. Please use 'SLACK_ALERT' instead.",
                     )
                 }
-                await sendSlackMessage({ message, testMetadata, additionalChannels })
+                await sendSlackMessage({
+                    message,
+                    testMetadata,
+                    additionalChannels,
+                    testResults: results,
+                })
             }
 
             if (testVariables.PAGERDUTY_ALERT) {
