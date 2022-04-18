@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [3.4.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@3.4.1...sanity-runner-client@3.4.2) "sanity-runner-client" (2022-04-18)<a name="3.4.2"></a>
+
+### Bug Fixes
+
+* truncate error message to first 3001 characters (#283) ([83bd821](https://github.com/tophat/sanity-runner/commits/83bd821))
+
+
+
+
 ## [3.4.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@3.4.0...sanity-runner-client@3.4.1) "sanity-runner-client" (2022-04-14)<a name="3.4.1"></a>
 
 ### Bug Fixes
