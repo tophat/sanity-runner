@@ -60,6 +60,8 @@ async function buildMessageBlocks({
         })
     }
 
+    // taking first lines of stack trace due to Slack character limits (3001 chars)
+    // https://api.slack.com/methods/chat.postMessage#formatting
     if (message.errorMessage) {
         blocks.push({
             type: 'section',
@@ -68,7 +70,8 @@ async function buildMessageBlocks({
                 text: `*Error Message*:\n\n${message.errorMessage
                     .split('\n')
                     .map((line) => `> ${line}`)
-                    .join('\n')}`,
+                    .join('\n')
+                    .slice(0, 2980)}`,
             },
         })
     }
