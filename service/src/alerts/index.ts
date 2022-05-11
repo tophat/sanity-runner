@@ -19,7 +19,7 @@ export async function alertOnResult({
     testVariables: Partial<Record<string, string>>
     runId: string
 }) {
-    const isFailure = results.numFailedTests > 0 && results.numPassedTests == 0
+    const isFailure = results.numFailedTests > 0 && results.numPassedTests === 0
 
     if (isFailure) {
         for (const [testFile, testContents] of Object.entries(testFiles)) {
