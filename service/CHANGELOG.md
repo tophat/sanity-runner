@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [3.5.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.4.2...sanity-runner-service@3.5.0) "sanity-runner-service" (2022-05-13)<a name="3.5.0"></a>
+
+### Features
+
+* update service docker image to node 16 (#285) ([e546815](https://github.com/tophat/sanity-runner/commits/e546815))
+
+
+
+
 ## [3.4.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.4.1...sanity-runner-service@3.4.2) "sanity-runner-service" (2022-04-18)<a name="3.4.2"></a>
 
 ### Bug Fixes
