@@ -5,6 +5,7 @@ import { AggregatedResult } from '@jest/test-result'
 import retry from 'async-retry'
 
 import { alertOnResult } from './alerts'
+import { logger } from './logger'
 import Run from './run'
 import { type EnhancedAggregatedResult } from './types'
 
@@ -23,6 +24,9 @@ const runJest = async function ({
         config: JSON.stringify(config),
     }
     const { results } = await runCLI(jestArgs, [process.cwd()])
+
+    // insert a newline after the Jest stderr output to make logs easier to read
+    process.stderr.write('\n')
 
     // The AggregatedResult is converted to EnhancedAggregatedResult via a custom reporter.
     return { results } as { results: EnhancedAggregatedResult }
@@ -50,7 +54,7 @@ const logResults = function (
                 runId: runId,
                 executionId: executionId,
             }
-            console.log(JSON.stringify(formatted))
+            logger.info('Test Case Results', formatted)
         }
     }
 }
@@ -86,7 +90,7 @@ export default class TestRunner {
                 },
             )
             logResults(results, testVariables, retryCount, run.id, executionId)
-            await alertOnResult({ testFiles, results, testVariables })
+            await alertOnResult({ testFiles, results, testVariables, runId: run.id })
             return await run.format(results)
         } finally {
             await run.cleanup()

@@ -1,6 +1,6 @@
 {
   "name": "sanity-runner-service",
-  "version": "2.10.5-rc.0",
+  "version": "3.5.0",
   "description": "Distributed Sanity Test Suite Runner",
   "main": "service/handler.js",
   "scripts": {
@@ -42,6 +42,7 @@
     "jest-junit": "^13.0.0",
     "node-pagerduty": "^1.3.6",
     "puppeteer-core": "^10.4.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "winston": "^3.7.2"
   }
 }

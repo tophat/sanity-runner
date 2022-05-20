@@ -2,6 +2,90 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [3.5.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.4.2...sanity-runner-service@3.5.0) "sanity-runner-service" (2022-05-13)<a name="3.5.0"></a>
+
+### Features
+
+* update service docker image to node 16 (#285) ([e546815](https://github.com/tophat/sanity-runner/commits/e546815))
+
+
+
+
+## [3.4.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.4.1...sanity-runner-service@3.4.2) "sanity-runner-service" (2022-04-18)<a name="3.4.2"></a>
+
+### Bug Fixes
+
+* truncate error message to first 3001 characters (#283) ([83bd821](https://github.com/tophat/sanity-runner/commits/83bd821))
+
+
+
+
+## [3.4.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.4.0...sanity-runner-service@3.4.1) "sanity-runner-service" (2022-04-14)<a name="3.4.1"></a>
+
+### Bug Fixes
+
+* formatting issues in slack message (#282) ([a75e604](https://github.com/tophat/sanity-runner/commits/a75e604))
+
+
+
+
+## [3.4.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.3.0...sanity-runner-service@3.4.0) "sanity-runner-service" (2022-04-12)<a name="3.4.0"></a>
+
+### Features
+
+* consolidate slack message (#281) ([7484062](https://github.com/tophat/sanity-runner/commits/7484062))
+
+
+
+
+## [3.3.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.2.0...sanity-runner-service@3.3.0) "sanity-runner-service" (2022-04-12)<a name="3.3.0"></a>
+
+### Features
+
+* add runId to slack thread (#270) ([b94253f](https://github.com/tophat/sanity-runner/commits/b94253f))
+
+
+
+
+## [3.2.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.1.1...sanity-runner-service@3.2.0) "sanity-runner-service" (2022-04-07)<a name="3.2.0"></a>
+
+### Features
+
+* improve console logging (#280) ([d6f860e](https://github.com/tophat/sanity-runner/commits/d6f860e))
+
+
+
+
+## [3.1.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.1.0...sanity-runner-service@3.1.1) "sanity-runner-service" (2022-04-06)<a name="3.1.1"></a>
+
+
+
+## [3.1.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.0.0...sanity-runner-service@3.1.0) "sanity-runner-service" (2022-04-06)<a name="3.1.0"></a>
+
+### Features
+
+* increase screenshot expiry to 30 days (#278) ([f7cdba2](https://github.com/tophat/sanity-runner/commits/f7cdba2))
+
+
+
+
+## [3.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.5-rc.0...sanity-runner-service@3.0.0) "sanity-runner-service" (2022-04-05)<a name="3.0.0"></a>
+
+### Breaking Changes
+
+* Update to Jest 27 ([a6ed950](https://github.com/tophat/sanity-runner/commits/a6ed950))
+
+### Bug Fixes
+
+* do not fail on missing screenshot (#272) ([a6ed950](https://github.com/tophat/sanity-runner/commits/a6ed950))
+
+### Features
+
+* update jest to v27, as well as misc dependencies (#271) ([a6ed950](https://github.com/tophat/sanity-runner/commits/a6ed950))
+
+
+
+
 ## [2.10.5-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@2.10.4-rc.0...sanity-runner-service@2.10.5-rc.0) "sanity-runner-service" (2022-04-05)<a name="2.10.5-rc.0"></a>
 
 ### Reverts
