@@ -17,6 +17,9 @@
         "pkg": "^5.5.2",
         "xml2js": "^0.4.23"
     },
+    "devDependencies": {
+        "@types/node": "^16.11.36"
+    },
     "bin": {
         "sanity-runner": "./src/cli.js"
     },
