@@ -57,12 +57,12 @@ bundle: dependencies typecheck
 	yarn workspace sanity-runner-service \
 		esbuild \
 			src/jestConfig/* --platform=node \
-			--target=node14 --outdir=dist/jestConfig \
+			--target=node16 --outdir=dist/jestConfig \
 			--external:../node_modules/* --bundle
 	yarn workspace sanity-runner-service \
 		esbuild \
 			src/lambdaHandler.ts --bundle --platform=node \
-			--target=node14 --outfile=dist/lambdaHandler.js \
+			--target=node16 --outfile=dist/lambdaHandler.js \
 			--external:../node_modules/*
 
 .PHONY: package
