@@ -2,11 +2,15 @@
     "name": "sanity-runner-client",
     "version": "3.5.0",
     "description": "Sanity cli client",
-    "author": "Top Hat Monocle Inc.",
-    "license": "UNLICENSED",
+    "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
+    "license": "Apache-2.0",
     "files": [
         "src"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tophat/sanity-runner.git"
+    },
     "dependencies": {
         "aws-sdk": "^2.1099.0",
         "chalk": "^4.1.2",
