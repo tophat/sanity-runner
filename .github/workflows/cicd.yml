@@ -16,7 +16,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.0.2
       - uses: ./.github/actions/detect-env
       - name: Setup Node.js
         uses: actions/setup-node@v3.0.0
@@ -34,7 +34,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.0.2
       - uses: ./.github/actions/detect-env
       - name: Setup Node.js
         uses: actions/setup-node@v3.0.0
@@ -67,7 +67,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.0.2
       - uses: ./.github/actions/detect-env
       - name: Setup Node.js
         uses: actions/setup-node@v3.0.0
@@ -99,7 +99,9 @@ jobs:
     needs: [service, client]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.0.2
+        with:
+          fetch-depth: 0
       - uses: actions/download-artifact@v2
         with:
           name: service-artifacts
@@ -137,9 +139,10 @@ jobs:
     needs: [static-analysis, service, client]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.0.2
         with:
           token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
+          fetch-depth: 0
       - uses: actions/download-artifact@v2
         with:
           name: service-artifacts
@@ -196,9 +199,10 @@ jobs:
     needs: [static-analysis, service, client]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.0.2
         with:
           token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
+          fetch-depth: 0
       - uses: actions/download-artifact@v2
         with:
           name: service-artifacts
@@ -255,7 +259,7 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.0.2
         with:
           persist-credentials: false
       - uses: ./.github/actions/detect-env
