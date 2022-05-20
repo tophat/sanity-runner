@@ -3,6 +3,8 @@ import path from 'path'
 
 import 'expect-puppeteer'
 
+import { logger } from '../logger'
+
 jest.setTimeout(5 * 60000)
 
 const SCREENSHOT_FILENAME = 'screenshot.png'
@@ -30,7 +32,7 @@ beforeEach(async () => {
             'x-sanity-runner-test-name': testName,
         })
     } catch (err) {
-        console.error(err)
+        logger.error('Unable to configure global page.', err)
     }
 })
 
@@ -49,13 +51,11 @@ afterEach(async () => {
         try {
             global.fullStoryUrl = await global.page.evaluate('window.FS.getCurrentSessionURL()')
         } catch (err) {
-            console.log('No FullStory URL Found')
+            logger.info('No FullStory URL Found')
         }
-        await fs.promises.writeFile(
-            '/tmp/fullStoryUrl.txt',
-            global.fullStoryUrl ?? 'No FullStory URL Found',
-            'utf8',
-        )
+        if (global.fullStoryUrl) {
+            await fs.promises.writeFile('/tmp/fullStoryUrl.txt', global.fullStoryUrl, 'utf8')
+        }
         await new Promise((r) => setTimeout(r, 5000))
     }
     await global.browser.close()

@@ -67,7 +67,7 @@ export default class Run {
                     path.resolve(__dirname, 'jestConfig/screenshotReporter.js'),
                     {
                         output: paths.results(this.id),
-                        urlExpirySeconds: 7200,
+                        urlExpirySeconds: 30 * 24 * 3600,
                         bucket: process.env.SCREENSHOT_BUCKET,
                     },
                 ],

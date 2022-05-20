@@ -1,18 +1,22 @@
+import { logger } from '../logger'
+
 import { getFullStoryUrl } from './fullstory'
 
-import type { AlertMessage, EnhancedAggregatedResult, TestMetadata } from '../types'
+import type { AlertContext, EnhancedAggregatedResult, TestMetadata } from '../types'
 
 export const constructMessage = async function ({
     results,
     testFile,
     testMetadata,
     testVariables,
+    runId,
 }: {
     results: EnhancedAggregatedResult
     testFile: string
     testMetadata: TestMetadata
     testVariables: Partial<Record<string, string>>
-}): Promise<AlertMessage> {
+    runId: string
+}): Promise<AlertContext> {
     const appEnv = testVariables.APP_ENV || '!APP_ENV not supplied!'
     const testResults = results.testResults[0]
 
@@ -21,7 +25,7 @@ export const constructMessage = async function ({
     const errorMessage = testResults.failureMessage
 
     //log to lambda for debugging
-    console.log(errorMessage)
+    logger.info('Test Error Message', errorMessage)
 
     //Attachments
     const screenShots: Array<string> = []
@@ -30,14 +34,13 @@ export const constructMessage = async function ({
             ...Object.values(results.screenshots).filter((v): v is string => Boolean(v)),
         )
     }
-    console.log(testMetadata)
+    logger.info('Test Metadata', testMetadata)
     const manualSteps = testMetadata.Description?.replace(/ - /gi, '\n- ') ?? ''
     const runBook = testMetadata?.Runbook ?? ''
 
-    let fullStoryMessage = null
-    if (testVariables?.FULLSTORY_ENABLED === 'true') {
-        fullStoryMessage = `FullStory URL: ${await getFullStoryUrl()}`
-    }
+    const fullstoryUrl =
+        testVariables?.FULLSTORY_ENABLED === 'true' ? await getFullStoryUrl() : undefined
+
     const message = {
         testName: testFile,
         message: mainMessage,
@@ -45,7 +48,8 @@ export const constructMessage = async function ({
         variables: testVariables,
         manualSteps: manualSteps,
         runBook: runBook,
-        fullStoryMessage: fullStoryMessage,
+        runId: runId,
+        fullstoryUrl,
         attachments: {
             screenShots: screenShots,
         },

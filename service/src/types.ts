@@ -12,13 +12,14 @@ export type TestMetadata = {
     SlackHandler?: string
 }
 
-export type AlertMessage = {
+export type AlertContext = {
     testName: string
     message: string
     errorMessage: string | null | undefined
     variables: Partial<Record<string, string>>
     manualSteps: string
     runBook: string
-    fullStoryMessage: string | null
+    fullstoryUrl: string | null | undefined
+    runId: string
     attachments: { screenShots: Array<string> }
 }
