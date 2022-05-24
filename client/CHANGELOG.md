@@ -2,6 +2,19 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [4.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@4.0.0-rc.0...sanity-runner-client@4.0.0) "sanity-runner-client" (2022-05-24)<a name="4.0.0"></a>
+
+### Breaking Changes
+
+* See puppeteer changelog for entries from v10 to v14. This also updates the version of chromium used to 102.0.5002.0 (r991974). ([4a838c0](https://github.com/tophat/sanity-runner/commits/4a838c0))
+
+### Features
+
+* upgrade puppeteer from v10 to v14 (#288) ([4a838c0](https://github.com/tophat/sanity-runner/commits/4a838c0))
+
+
+
+
 ## [4.0.0-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@3.5.0...sanity-runner-client@4.0.0-rc.0) "sanity-runner-client" (2022-05-20)<a name="4.0.0-rc.0"></a>
 
 ### Breaking Changes
