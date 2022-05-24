@@ -4,7 +4,13 @@ import path from 'path'
 import AWS from 'aws-sdk'
 
 import type { EnhancedAggregatedResult } from '../types'
-import type { Context, Reporter, ReporterOnStartOptions, Test, TestResult } from '@jest/reporters'
+import type {
+    Reporter,
+    ReporterOnStartOptions,
+    Test,
+    TestContext,
+    TestResult,
+} from '@jest/reporters'
 import type { AggregatedResult } from '@jest/test-result'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -32,7 +38,7 @@ export default class PuppeteerScreenshotReporter implements Reporter {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onRunComplete(_contexts: Set<Context>, _results: AggregatedResult) {
+    onRunComplete(_contexts: Set<TestContext>, _results: AggregatedResult) {
         return
     }
 

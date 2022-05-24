@@ -2,7 +2,7 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-import chromium from 'chrome-aws-lambda'
+import chromium from '@sparticuz/chrome-aws-lambda'
 import NodeEnvironment from 'jest-environment-node'
 
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')

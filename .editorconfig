@@ -17,3 +17,7 @@ indent_style = tab
 
 [{CHANGELOG.md,package.json,yarn.lock}]
 indent_size = false
+
+[*.json]
+indent_size = 4
+indent_style = space

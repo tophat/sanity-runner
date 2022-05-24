@@ -146,7 +146,6 @@ export async function sendSlackMessage({
         if (!slackToken || !('slack_api_token' in slackToken)) {
             throw new Error('Secret sanity_runner/slack_api_token not found in AWS Secret Manager!')
         }
-
         const slack = new WebClient(slackToken.slack_api_token)
 
         const testSpecificChannels = testMetadata.Slack?.split(/[ ,]+/) ?? []

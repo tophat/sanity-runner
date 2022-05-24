@@ -78,7 +78,9 @@ export default class Run {
             rootDir: process.cwd(),
             setupFilesAfterEnv: [path.resolve(__dirname, 'jestConfig/e2eFrameworkSetup.js')],
             testEnvironment: path.resolve(__dirname, 'jestConfig/puppeteerEnvironment.js'),
-            timers: 'real',
+            fakeTimers: {
+                enableGlobally: false,
+            },
             verbose: true,
         }
     }

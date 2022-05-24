@@ -2,6 +2,30 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [4.0.0-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.5.0...sanity-runner-service@4.0.0-rc.0) "sanity-runner-service" (2022-05-20)<a name="4.0.0-rc.0"></a>
+
+### Breaking Changes
+
+* See puppeteer changelog for entries from v10 to v14. This also updates the version of chromium used to 102.0.5002.0 (r991974). ([4a838c0](https://github.com/tophat/sanity-runner/commits/4a838c0))
+* Upgrade to Jest 28. Please see Jest v28 changelog for details. ([92f1fd5](https://github.com/tophat/sanity-runner/commits/92f1fd5))
+
+### Bug Fixes
+
+* add temporary logging (#277) ([847877e](https://github.com/tophat/sanity-runner/commits/847877e))
+* target node 16 in lambda build ([4e48254](https://github.com/tophat/sanity-runner/commits/4e48254))
+
+### Features
+
+* upgrade puppeteer from v10 to v14 (#288) ([4a838c0](https://github.com/tophat/sanity-runner/commits/4a838c0))
+* upgrade to jest 28 ([92f1fd5](https://github.com/tophat/sanity-runner/commits/92f1fd5))
+
+### Reverts
+
+* Revert [40f7675](https://github.com/tophat/sanity-runner/commits/40f7675): "fix: add temporary logging (#277)" ([b268fd5](https://github.com/tophat/sanity-runner/commits/b268fd5))
+
+
+
+
 ## [3.5.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@3.4.2...sanity-runner-service@3.5.0) "sanity-runner-service" (2022-05-13)<a name="3.5.0"></a>
 
 ### Features
