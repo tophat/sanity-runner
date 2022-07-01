@@ -67,7 +67,7 @@ make -C service package && docker run -p 9000:8080 ghcr.io/tophat/sanity-runner-
 One the service is up and running, execute:
 
 ```sh
-yarn node $(yarn workspace sanity-runner-client bin sanity-runner) --test-dir example/repo/sanities/ --local --output-dir output --include google-fail-example
+yarn ts-node --transpile-only $(yarn workspace sanity-runner-client bin sanity-runner) --test-dir example/repo/sanities/ --local --output-dir output --include google-fail-example -vv
 ```
 
 For more information about the [Client](./client/README.md) and [Service](./service/README.md), see the respective READMEs.

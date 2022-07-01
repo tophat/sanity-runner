@@ -1,4 +1,4 @@
-FROM node:16.14-slim
+FROM node:16.15-slim
 
 RUN apt-get update && \
     apt-get install -yq python-pip jq git unzip && \
