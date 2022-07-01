@@ -1,6 +1,6 @@
 {
     "name": "sanity-runner-client",
-    "version": "4.0.0",
+    "version": "4.1.0-rc.0",
     "description": "Sanity cli client",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",

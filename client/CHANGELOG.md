@@ -2,6 +2,19 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [4.1.0-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@4.0.0...sanity-runner-client@4.1.0-rc.0) "sanity-runner-client" (2022-07-01)<a name="4.1.0-rc.0"></a>
+
+### Features
+
+* add log formatting option for structured logs ([84ea36a](https://github.com/tophat/sanity-runner/commits/84ea36a))
+* add verbosity config options ([84ea36a](https://github.com/tophat/sanity-runner/commits/84ea36a))
+* add concurrency limit config options ([84ea36a](https://github.com/tophat/sanity-runner/commits/84ea36a))
+* added progress bar option ([84ea36a](https://github.com/tophat/sanity-runner/commits/84ea36a))
+* rewrite client in TypeScript (#295) ([84ea36a](https://github.com/tophat/sanity-runner/commits/84ea36a))
+
+
+
+
 ## [4.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@4.0.0-rc.0...sanity-runner-client@4.0.0) "sanity-runner-client" (2022-05-24)<a name="4.0.0"></a>
 
 ### Breaking Changes
