@@ -1,6 +1,6 @@
 {
     "name": "@tophat/sanity-runner-types",
-    "version": "0.0.1",
+    "version": "0.0.2-rc.0",
     "description": "Sanity runner typescript types",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",

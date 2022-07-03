@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [4.0.1-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@4.0.0...sanity-runner-service@4.0.1-rc.0) "sanity-runner-service" (2022-07-03)<a name="4.0.1-rc.0"></a>
+
+### Bug Fixes
+
+* update aws sdk to v3 ([d2fe298](https://github.com/tophat/sanity-runner/commits/d2fe298))
+
+
+
+
 ## [4.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@4.0.0-rc.0...sanity-runner-service@4.0.0) "sanity-runner-service" (2022-05-24)<a name="4.0.0"></a>
 
 ### Breaking Changes

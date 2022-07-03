@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [4.1.0-rc.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@4.1.0-rc.0...sanity-runner-client@4.1.0-rc.1) "sanity-runner-client" (2022-07-03)<a name="4.1.0-rc.1"></a>
+
+### Bug Fixes
+
+* update aws sdk to v3 ([d2fe298](https://github.com/tophat/sanity-runner/commits/d2fe298))
+
+
+
+
 ## [4.1.0-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@4.0.0...sanity-runner-client@4.1.0-rc.0) "sanity-runner-client" (2022-07-01)<a name="4.1.0-rc.0"></a>
 
 ### Features
