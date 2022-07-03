@@ -1,8 +1,11 @@
 import chalk from 'chalk'
 import xml2js from 'xml2js'
 
+import type { ClientConfiguration, JUnitReport } from '@tophat/sanity-runner-types'
+
 import { getLogger } from '../logger'
-import { AggregatedTestRunResults, Configuration, JUnitReport, LogFormat } from '../types'
+
+import type { AggregatedTestRunResults } from '../types'
 
 async function parseJUnitReport(
     reportFilename: string,
@@ -30,7 +33,7 @@ function formatTotal(failures: number, skipped: number, total: number): string {
 
 export async function printTestSummary(
     results: AggregatedTestRunResults,
-    { config }: { config: Configuration },
+    { config }: { config: ClientConfiguration },
 ): Promise<void> {
     const logger = getLogger()
     const allResults: Array<JUnitReport['testsuites']> = []
@@ -110,7 +113,7 @@ export async function printTestSummary(
         }
     }
 
-    if (config.logFormat === LogFormat.Terminal) {
+    if (config.logFormat === 'terminal') {
         const testSuiteResult = formatTotal(
             counts.numTestSuiteFailures,
             counts.numTestSuiteSkipped,

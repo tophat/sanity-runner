@@ -1,8 +1,10 @@
 import axios from 'axios'
 
+import type { InvokePayload, InvokeResponsePayload } from '@tophat/sanity-runner-types'
+
 import { formatFailedTestResult } from './utils'
 
-import type { InvokeBackend, InvokeResponsePayload, TaskPayload, TestRunResult } from '../types'
+import type { InvokeBackend, TaskPayload, TestRunResult } from '../types'
 
 export class InvokeLocal implements InvokeBackend {
     BackendName = 'Local'
@@ -11,14 +13,16 @@ export class InvokeLocal implements InvokeBackend {
 
     async invoke({ config, filename, code, executionId }: TaskPayload): Promise<TestRunResult> {
         try {
+            const invokePayload: InvokePayload = {
+                testFiles: { [filename]: code },
+                testVariables: config.vars,
+                retryCount: config.retryCount,
+                executionId,
+            }
+
             const response = await axios.post<InvokeResponsePayload>(
                 `http://localhost:${config.localPort}/2015-03-31/functions/function/invocations`,
-                JSON.stringify({
-                    testFiles: { [filename]: code },
-                    testVariables: config.vars,
-                    retryCount: config.retryCount,
-                    executionId,
-                }),
+                JSON.stringify(invokePayload),
             )
 
             return {

@@ -1,4 +1,4 @@
-import { JUnitReport } from '../types'
+import type { JUnitReport } from '@tophat/sanity-runner-types'
 
 export function formatFailedTestResult(file: string, error: unknown): JUnitReport {
     return {

@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
+import type { InvokeResponsePayload } from '@tophat/sanity-runner-types'
+
 import paths from './paths'
 import { EnhancedAggregatedResult } from './types'
 
@@ -100,7 +102,7 @@ export default class Run {
         )
     }
 
-    async format(results: EnhancedAggregatedResult) {
+    async format(results: EnhancedAggregatedResult): Promise<InvokeResponsePayload> {
         const junitContents = await fs.promises.readFile(paths.junit(this.id), 'utf-8')
         return {
             passed: results.success,

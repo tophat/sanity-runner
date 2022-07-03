@@ -1,3 +1,5 @@
+import type { TestVariables } from '@tophat/sanity-runner-types'
+
 import { logger } from '../logger'
 
 import { getFullStoryUrl } from './fullstory'
@@ -14,7 +16,7 @@ export const constructMessage = async function ({
     results: EnhancedAggregatedResult
     testFile: string
     testMetadata: TestMetadata
-    testVariables: Partial<Record<string, string>>
+    testVariables: TestVariables
     runId: string
 }): Promise<AlertContext> {
     const appEnv = testVariables.APP_ENV || '!APP_ENV not supplied!'

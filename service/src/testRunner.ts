@@ -4,6 +4,8 @@ import { runCLI } from '@jest/core'
 import { AggregatedResult } from '@jest/test-result'
 import retry from 'async-retry'
 
+import type { InvokeResponsePayload } from '@tophat/sanity-runner-types'
+
 import { alertOnResult } from './alerts'
 import { logger } from './logger'
 import Run from './run'
@@ -65,7 +67,7 @@ export default class TestRunner {
         testVariables: Partial<Record<string, string>>,
         maxRetryCount: number,
         executionId: string,
-    ) {
+    ): Promise<InvokeResponsePayload> {
         let retryCount = 0
         const run = new Run(testVariables)
         try {

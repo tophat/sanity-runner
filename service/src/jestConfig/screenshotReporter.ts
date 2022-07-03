@@ -1,7 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import AWS from 'aws-sdk'
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 import type { EnhancedAggregatedResult } from '../types'
 import type {
@@ -15,8 +16,6 @@ import type { AggregatedResult } from '@jest/test-result'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { v4: uuidv4 } = require('uuid')
-
-const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
 
 type ScreenshotReporterOptions = {
     bucket: string
@@ -48,18 +47,23 @@ export default class PuppeteerScreenshotReporter implements Reporter {
 
     async uploadScreenshotToS3(screenshot: string) {
         const screenshotObjectName = `${uuidv4()}.png`
-        await s3
-            .putObject({
+
+        const s3Client = new S3Client({ apiVersion: '2006-03-01' })
+        await s3Client.send(
+            new PutObjectCommand({
+                Key: screenshotObjectName,
+                Bucket: this.#options.bucket,
                 Body: fs.createReadStream(screenshot),
+            }),
+        )
+        return await getSignedUrl(
+            s3Client,
+            new GetObjectCommand({
                 Bucket: this.#options.bucket,
                 Key: screenshotObjectName,
-            })
-            .promise()
-        return s3.getSignedUrl('getObject', {
-            Bucket: this.#options.bucket,
-            Key: screenshotObjectName,
-            Expires: this.#options.urlExpirySeconds,
-        })
+            }),
+            { expiresIn: this.#options.urlExpirySeconds },
+        )
     }
 
     async onTestResult(_test: Test, testResult: TestResult, aggregatedResult: AggregatedResult) {
