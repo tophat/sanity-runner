@@ -15,7 +15,7 @@
     "url": "https://github.com/tophat/sanity-runner/issues",
     "homepage": "https://github.com/tophat/sanity-runner#readme",
     "devDependencies": {
-        "@tophat/sanity-runner-types": "*",
+        "@tophat/sanity-runner-types": "workspace:*",
         "@types/async-retry": "^1.4.4",
         "@types/expect-puppeteer": "^4.4.7",
         "@types/jest": "^27.5.1",
