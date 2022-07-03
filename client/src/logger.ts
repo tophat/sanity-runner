@@ -33,14 +33,14 @@ export function configureLogger({
         transports: [new winston.transports.Console()],
     }
 
-    if (format === LogFormat.Terminal) {
+    if (format === 'terminal') {
         config.format = winston.format.combine(
             winston.format.timestamp(),
             winston.format.printf(
                 ({ level, message, timestamp }) => `${timestamp} [${level}]: ${message}`,
             ),
         )
-    } else if (format === LogFormat.Structured) {
+    } else if (format === 'structured') {
         config.format = winston.format.combine(winston.format.timestamp(), winston.format.json())
     }
 

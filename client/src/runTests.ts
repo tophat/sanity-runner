@@ -6,6 +6,8 @@ import chalk from 'chalk'
 import cliProgress from 'cli-progress'
 import pLimit from 'p-limit'
 
+import type { ClientConfiguration } from '@tophat/sanity-runner-types'
+
 import { InvokeLambda } from './backends/lambda'
 import { InvokeLocal } from './backends/local'
 import { disableProgress, enableProgress, getLogger } from './logger'
@@ -14,7 +16,6 @@ import { printTestSummary } from './utils/printTestSummary'
 
 import type {
     AggregatedTestRunResults,
-    Configuration,
     InvokeBackendConstructor,
     RunResults,
     TaskPayload,
@@ -50,7 +51,7 @@ export async function runTests({
     config,
     testFilenames,
 }: {
-    config: Configuration
+    config: ClientConfiguration
     testFilenames: Array<string>
 }): Promise<RunResults> {
     const logger = getLogger()
@@ -151,10 +152,12 @@ export async function runTests({
             Object.entries(results.screenshots ?? {}).map(async ([screenshotName, url]) => {
                 const outputFilename = path.join(config.outputDir, screenshotName)
                 try {
-                    await downloadFile(outputFilename, url)
-                    logger.verbose(
-                        `[Screenshot] Downloaded '${screenshotName}' to ${outputFilename}`,
-                    )
+                    if (url) {
+                        await downloadFile(outputFilename, url)
+                        logger.verbose(
+                            `[Screenshot] Downloaded '${screenshotName}' to ${outputFilename}`,
+                        )
+                    }
                 } catch (err) {
                     logger.error(
                         `[Screenshot] Failed downloading screenshot for '${screenshotName}'`,

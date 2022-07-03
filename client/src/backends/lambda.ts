@@ -1,12 +1,15 @@
 import https from 'https'
 
-import AWS from 'aws-sdk'
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
+import { NodeHttpHandler } from '@aws-sdk/node-http-handler'
+
+import type { InvokePayload, InvokeResponsePayload } from '@tophat/sanity-runner-types'
 
 import { formatFailedTestResult } from './utils'
 
-import type { InvokeBackend, InvokeResponsePayload, TaskPayload, TestRunResult } from '../types'
+import type { InvokeBackend, TaskPayload, TestRunResult } from '../types'
 
-const agent = new https.Agent({
+const httpAgent = new https.Agent({
     keepAlive: true,
 })
 
@@ -17,28 +20,38 @@ export class InvokeLambda implements InvokeBackend {
 
     async invoke({ config, filename, code, executionId }: TaskPayload): Promise<TestRunResult> {
         try {
-            const lambda = new AWS.Lambda({
+            const client = new LambdaClient({
                 apiVersion: '2015-03-31',
-                httpOptions: {
-                    timeout: config.timeout,
-                    agent: agent,
-                },
-                maxRetries: 1,
+                maxAttempts: 1,
+                requestHandler: new NodeHttpHandler({
+                    httpAgent,
+                }),
             })
 
-            const params: AWS.Lambda.InvocationRequest = {
-                FunctionName: config.lambdaFunction,
-                Payload: JSON.stringify({
-                    testFiles: { [filename]: code },
-                    testVariables: config.vars,
-                    retryCount: config.retryCount,
-                    executionId,
-                }),
+            const lambdaPayload: InvokePayload = {
+                testFiles: { [filename]: code },
+                testVariables: config.vars,
+                retryCount: config.retryCount,
+                executionId,
             }
 
-            const rawResponse = await lambda.invoke(params).promise()
+            const response = await client.send(
+                new InvokeCommand({
+                    FunctionName: config.lambdaFunction,
+                    Payload: Buffer.from(JSON.stringify(lambdaPayload)),
+                }),
+            )
+
+            if (response.FunctionError && !response.Payload) {
+                throw new Error(response.FunctionError)
+            }
+
+            if (!response.Payload) {
+                throw new Error('No response from Lambda.')
+            }
+
             const result: InvokeResponsePayload = JSON.parse(
-                rawResponse.Payload?.toString() ?? 'undefined',
+                Buffer.from(response.Payload).toString('utf-8'),
             )
 
             return {

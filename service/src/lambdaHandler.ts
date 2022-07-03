@@ -1,19 +1,15 @@
 import childProcess from 'child_process'
 
+import type { InvokePayload, InvokeResponsePayload } from '@tophat/sanity-runner-types'
+
 import TestRunner from './testRunner'
 
-interface SanityRunnerEvent {
-    testFiles: Record<string, string>
-    testVariables: Partial<Record<string, string>>
-    retryCount: string | number
-    executionId: string
-}
+import type { APIGatewayProxyResultV2, Context } from 'aws-lambda'
 
 export async function handler(
-    event: SanityRunnerEvent,
-    context: unknown,
-    callback: (arg0: unknown, arg1: any) => void,
-) {
+    event: InvokePayload,
+    _context: Context,
+): Promise<APIGatewayProxyResultV2<InvokeResponsePayload>> {
     if (process.env.DEBUG?.includes('sanity-runner')) {
         childProcess.execSync('find /tmp', { encoding: 'utf-8', stdio: 'inherit' })
     }
@@ -21,8 +17,8 @@ export async function handler(
     const testResults = await runner.runTests(
         event.testFiles,
         event.testVariables,
-        Number(event.retryCount),
+        event.retryCount,
         event.executionId,
     )
-    callback(null, testResults)
+    return testResults
 }

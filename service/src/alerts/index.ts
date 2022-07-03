@@ -1,5 +1,7 @@
 import { parse } from 'jest-docblock'
 
+import type { TestVariables } from '@tophat/sanity-runner-types'
+
 import { logger } from '../logger'
 
 import { resolvePagerDutyAlert, sendPagerDutyAlert } from './pagerDuty'
@@ -16,7 +18,7 @@ export async function alertOnResult({
 }: {
     testFiles: Record<string, string>
     results: EnhancedAggregatedResult
-    testVariables: Partial<Record<string, string>>
+    testVariables: TestVariables
     runId: string
 }) {
     const isFailure = results.numFailedTests > 0

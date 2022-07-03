@@ -7,6 +7,8 @@ import { Cli, Command, Option } from 'clipanion'
 import glob from 'glob'
 import * as t from 'typanion'
 
+import type { ClientConfiguration } from '@tophat/sanity-runner-types'
+
 import { version } from '../package.json'
 
 import {
@@ -19,7 +21,8 @@ import {
 } from './defaults'
 import { configureLogger, logLevelByVerbosity } from './logger'
 import { runTests } from './runTests'
-import { Configuration, ExecutionContext, LogFormat } from './types'
+
+import type { ExecutionContext, LogFormat } from './types'
 
 const EXIT_CODES = {
     SUCCESS: 0,
@@ -39,7 +42,7 @@ class BaseCommand extends Command<ExecutionContext> {
     })
     logFormat = Option.String('--log-format', {
         description: 'How logs should be formatted.',
-        validator: t.isEnum(LogFormat),
+        validator: t.isEnum<LogFormat>(['structured', 'terminal']),
     })
     verbosity = Option.Counter('-v', { description: 'Log verbosity.' })
     concurrency = Option.String('--concurrency', {
@@ -87,8 +90,8 @@ class BaseCommand extends Command<ExecutionContext> {
 
     testPathPatterns = Option.Rest()
 
-    async normalizeConfig(): Promise<Configuration> {
-        const baseConfig: Partial<Configuration> = {}
+    async normalizeConfig(): Promise<ClientConfiguration> {
+        const baseConfig: Partial<ClientConfiguration> = {}
         if (this.config) {
             Object.assign(baseConfig, JSON.parse(await fs.promises.readFile(this.config, 'utf-8')))
         }
@@ -101,7 +104,7 @@ class BaseCommand extends Command<ExecutionContext> {
         )
 
         return {
-            logFormat: this.logFormat ?? baseConfig.logFormat ?? LogFormat.Terminal,
+            logFormat: this.logFormat ?? baseConfig.logFormat ?? 'terminal',
             logLevel: process.env.DEBUG?.includes('sanity-runner-client')
                 ? 'debug'
                 : logLevelByVerbosity(this.verbosity),
