@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [4.1.0-rc.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@4.1.0-rc.1...sanity-runner-client@4.1.0-rc.2) "sanity-runner-client" (2022-07-04)<a name="4.1.0-rc.2"></a>
+
+### Bug Fixes
+
+* use https agent for lambda invoke (#299) ([598ab31](https://github.com/tophat/sanity-runner/commits/598ab31))
+
+
+
+
 ## [4.1.0-rc.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@4.1.0-rc.0...sanity-runner-client@4.1.0-rc.1) "sanity-runner-client" (2022-07-03)<a name="4.1.0-rc.1"></a>
 
 ### Bug Fixes
