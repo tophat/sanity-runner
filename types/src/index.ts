@@ -68,7 +68,7 @@ export type InvokeResponsePayload = {
         message: string
         name?: { name: string }
     }>
-    testResults: Record<JUnitReportFilename, StringifiedJUnitReport | JUnitReport>
+    testResults: Record<JUnitReportFilename, JUnitReport>
 }
 
 export type TestVariables = Partial<Record<string, string>>

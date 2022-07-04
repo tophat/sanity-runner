@@ -21,8 +21,7 @@
         "lodash": "^4.17.21",
         "p-limit": "^3.0.0",
         "typanion": "^3.9.0",
-        "winston": "^3.7.2",
-        "xml2js": "^0.4.23"
+        "winston": "^3.7.2"
     },
     "devDependencies": {
         "@tophat/sanity-runner-types": "workspace:*",
@@ -30,7 +29,6 @@
         "@types/glob": "^7.2.0",
         "@types/lodash": "^4.14.182",
         "@types/node": "^16.11.36",
-        "@types/xml2js": "^0.4.11",
         "esbuild": "^0.14.48",
         "pkg": "^5.7.0",
         "typescript": "4.7.4"

@@ -1,7 +1,13 @@
 import fs from 'fs'
 import path from 'path'
 
-import type { EnhancedAggregatedResult, InvokeResponsePayload } from '@tophat/sanity-runner-types'
+import xml2js from 'xml2js'
+
+import type {
+    EnhancedAggregatedResult,
+    InvokeResponsePayload,
+    JUnitReport,
+} from '@tophat/sanity-runner-types'
 
 import paths from './paths'
 
@@ -9,6 +15,19 @@ import type { Config } from '@jest/types'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { v4: uuidv4 } = require('uuid')
+
+async function parseJUnitReport(
+    reportFilename: string,
+    report: string | JUnitReport,
+): Promise<JUnitReport> {
+    if (typeof report === 'string') {
+        if (reportFilename.endsWith('.xml')) {
+            return await xml2js.parseStringPromise(report)
+        }
+        return JSON.parse(report)
+    }
+    return report
+}
 
 /*
  * Runtime initialization errors are not currently reported by junit reporter
@@ -102,13 +121,15 @@ export default class Run {
     }
 
     async format(results: EnhancedAggregatedResult): Promise<InvokeResponsePayload> {
-        const junitContents = await fs.promises.readFile(paths.junit(this.id), 'utf-8')
+        const reportFilename = paths.junit(this.id)
+        const junitContents = await fs.promises.readFile(reportFilename, 'utf-8')
+        const report = await parseJUnitReport(reportFilename, junitContents)
         return {
             passed: results.success,
             screenshots: results.screenshots,
             errors: extractRuntimeErrors(results),
             testResults: {
-                [paths.junitFileName(this.id)]: junitContents,
+                [path.basename(reportFilename)]: report,
             },
         }
     }

@@ -117,11 +117,8 @@ export default class TestRunner {
                 testMetadata,
                 testVariables,
                 runId: run.id,
-                testDisplayName:
-                    results.testResults[0].displayName?.name ??
-                    Object.keys(response.testResults)[0] ??
-                    'Unknown',
-                testFilename: Object.keys(response.testResults)[0] ?? 'Unknown',
+                testDisplayName: results.testResults[0].displayName?.name ?? 'Unknown',
+                testFilename: Object.keys(testFiles)[0] ?? 'Unknown',
                 failureMessage: results.testResults[0]?.failureMessage ?? undefined,
             }
 
