@@ -9,7 +9,7 @@ import { formatFailedTestResult } from './utils'
 
 import type { InvokeBackend, TaskPayload, TestRunResult } from '../types'
 
-const httpAgent = new https.Agent({
+const httpsAgent = new https.Agent({
     keepAlive: true,
 })
 
@@ -24,7 +24,7 @@ export class InvokeLambda implements InvokeBackend {
                 apiVersion: '2015-03-31',
                 maxAttempts: 1,
                 requestHandler: new NodeHttpHandler({
-                    httpAgent,
+                    httpsAgent,
                 }),
             })
 
