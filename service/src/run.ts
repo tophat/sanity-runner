@@ -45,8 +45,8 @@ export default class Run {
     jestConfig(): Config.InitialOptions {
         return {
             bail: false,
-            globalSetup: path.resolve(__dirname, 'jestConfig/puppeteerSetup.js'),
-            globalTeardown: path.resolve(__dirname, 'jestConfig/puppeteerTeardown.js'),
+            globalSetup: path.resolve(__dirname, 'testHooks/globalSetup.js'),
+            globalTeardown: path.resolve(__dirname, 'testHooks/globalTeardown.js'),
             globals: {
                 lambdaContext: {
                     sanityRequestId: this.id,
@@ -65,7 +65,7 @@ export default class Run {
                     },
                 ],
                 [
-                    path.resolve(__dirname, 'jestConfig/screenshotReporter.js'),
+                    path.resolve(__dirname, 'testHooks/screenshotReporter.js'),
                     {
                         output: paths.results(this.id),
                         urlExpirySeconds: 30 * 24 * 3600,
@@ -77,8 +77,8 @@ export default class Run {
             resetModules: false,
             roots: [paths.suite(this.id)],
             rootDir: process.cwd(),
-            setupFilesAfterEnv: [path.resolve(__dirname, 'jestConfig/e2eFrameworkSetup.js')],
-            testEnvironment: path.resolve(__dirname, 'jestConfig/puppeteerEnvironment.js'),
+            setupFilesAfterEnv: [path.resolve(__dirname, 'testHooks/setupFilesAfterEnv.js')],
+            testEnvironment: path.resolve(__dirname, 'testHooks/testEnvironment.js'),
             fakeTimers: {
                 enableGlobally: false,
             },

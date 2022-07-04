@@ -56,8 +56,8 @@ bundle: dependencies typecheck
 	@mkdir -p dist
 	yarn workspace sanity-runner-service \
 		esbuild \
-			src/jestConfig/* --platform=node \
-			--target=node16 --outdir=dist/jestConfig \
+			src/testHooks/* --platform=node \
+			--target=node16 --outdir=dist/testHooks \
 			--external:../node_modules/* --bundle
 	yarn workspace sanity-runner-service \
 		esbuild \
