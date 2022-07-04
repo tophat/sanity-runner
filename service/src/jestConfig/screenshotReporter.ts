@@ -4,7 +4,8 @@ import path from 'path'
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
-import type { EnhancedAggregatedResult } from '../types'
+import type { EnhancedAggregatedResult } from '@tophat/sanity-runner-types'
+
 import type {
     Reporter,
     ReporterOnStartOptions,

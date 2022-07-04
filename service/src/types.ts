@@ -1,18 +1,4 @@
-import { AggregatedResult } from '@jest/test-result'
-
-import type { ReportScreenshots, TestVariables } from '@tophat/sanity-runner-types'
-
-export type EnhancedAggregatedResult = AggregatedResult & {
-    screenshots: ReportScreenshots
-}
-
-export type TestMetadata = {
-    Description?: string
-    Runbook?: string
-    Pagerduty?: string
-    Slack?: string
-    SlackHandler?: string
-}
+import type { TestVariables } from '@tophat/sanity-runner-types'
 
 export type AlertContext = {
     testName: string

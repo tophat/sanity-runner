@@ -13,7 +13,8 @@
         "client",
         "service",
         "website",
-        "types"
+        "types",
+        "plugins/*"
     ],
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
