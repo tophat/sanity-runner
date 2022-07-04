@@ -4,12 +4,18 @@ import { runCLI } from '@jest/core'
 import { AggregatedResult } from '@jest/test-result'
 import retry from 'async-retry'
 
-import type { InvokeResponsePayload } from '@tophat/sanity-runner-types'
+import type {
+    EnhancedAggregatedResult,
+    InvokeResponsePayload,
+    OnTestCompleteContext,
+    PluginHooks,
+    TestMetadata,
+    TestVariables,
+} from '@tophat/sanity-runner-types'
 
-import { alertOnResult } from './alerts'
 import { logger } from './logger'
 import Run from './run'
-import { type EnhancedAggregatedResult } from './types'
+import { getSecretValue } from './secrets'
 
 import type { Config } from '@jest/types'
 
@@ -62,12 +68,21 @@ const logResults = function (
 }
 
 export default class TestRunner {
-    async runTests(
-        testFiles: Record<string, string>,
-        testVariables: Partial<Record<string, string>>,
-        maxRetryCount: number,
-        executionId: string,
-    ): Promise<InvokeResponsePayload> {
+    async runTests({
+        testFiles,
+        testVariables,
+        maxRetryCount,
+        executionId,
+        hooks,
+        testMetadata,
+    }: {
+        testFiles: Record<string, string>
+        testVariables: TestVariables
+        maxRetryCount: number
+        executionId: string
+        hooks: PluginHooks
+        testMetadata: TestMetadata
+    }): Promise<InvokeResponsePayload> {
         let retryCount = 0
         const run = new Run(testVariables)
         try {
@@ -92,8 +107,31 @@ export default class TestRunner {
                 },
             )
             logResults(results, testVariables, retryCount, run.id, executionId)
-            await alertOnResult({ testFiles, results, testVariables, runId: run.id })
-            return await run.format(results)
+
+            const response = await run.format(results)
+
+            const context: OnTestCompleteContext<TestMetadata> = {
+                logger,
+                getSecretValue,
+                results: response,
+                testMetadata,
+                testVariables,
+                runId: run.id,
+                testDisplayName:
+                    results.testResults[0].displayName?.name ??
+                    Object.keys(response.testResults)[0] ??
+                    'Unknown',
+                testFilename: Object.keys(response.testResults)[0] ?? 'Unknown',
+                failureMessage: results.testResults[0]?.failureMessage ?? undefined,
+            }
+
+            if (response.passed) {
+                await hooks.onTestSuccess.promise(context)
+            } else {
+                await hooks.onTestFailure.promise(context)
+            }
+
+            return response
         } finally {
             await run.cleanup()
         }

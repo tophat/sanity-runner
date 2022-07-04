@@ -63,7 +63,12 @@ bundle: dependencies typecheck
 		esbuild \
 			src/lambdaHandler.ts --bundle --platform=node \
 			--target=node16 --outfile=dist/lambdaHandler.js \
-			--external:../node_modules/*
+			--external:../node_modules/babel* \
+			--external:../node_modules/jest* \
+			--external:../node_modules/@jest* \
+			--external:../node_modules/@aws-sdk* \
+			--external:../node_modules/@sparticuz* \
+			--external:../node_modules/puppeteer*
 
 .PHONY: package
 package: bundle build-docker

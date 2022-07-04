@@ -1,3 +1,12 @@
+import { AggregatedResult } from '@jest/test-result'
+
+import type { AsyncSeriesHook } from 'tapable'
+import type { Logger } from 'winston'
+
+export type EnhancedAggregatedResult = AggregatedResult & {
+    screenshots: ReportScreenshots
+}
+
 export interface ClientConfiguration {
     testDir: string
     include?: string
@@ -69,4 +78,27 @@ export type InvokePayload = {
     testVariables: TestVariables
     retryCount: number
     executionId: string
+}
+
+export interface TestMetadata {
+    Description?: string
+    Runbook?: string
+}
+
+export type OnTestCompleteContext<M extends TestMetadata> = {
+    getSecretValue<R = any>(secretKey: string): Promise<R | null>
+    logger: Logger
+
+    testMetadata: M
+    testVariables: TestVariables
+    results: InvokeResponsePayload
+    runId: string
+    testDisplayName: string
+    testFilename: string
+    failureMessage?: string | undefined
+}
+
+export interface PluginHooks {
+    onTestFailure: AsyncSeriesHook<[OnTestCompleteContext<any>], void>
+    onTestSuccess: AsyncSeriesHook<[OnTestCompleteContext<any>], void>
 }

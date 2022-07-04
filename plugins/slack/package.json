@@ -1,7 +1,7 @@
 {
-    "name": "@tophat/sanity-runner-types",
-    "version": "0.0.2-rc.0",
-    "description": "Sanity runner typescript types",
+    "name": "@tophat/sanity-runner-plugin-slack",
+    "version": "0.0.1",
+    "description": "Sanity runner plugin for slack alerts",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "main": "src/index.ts",
@@ -13,9 +13,8 @@
         "url": "https://github.com/tophat/sanity-runner.git"
     },
     "dependencies": {
-        "@jest/test-result": "^28.1.1",
-        "tapable": "^2.2.1",
-        "winston": "^3.8.1"
+        "@slack/web-api": "^6.7.0",
+        "@tophat/sanity-runner-types": "workspace:*"
     },
     "devDependencies": {
         "@types/node": "^16.11.36",

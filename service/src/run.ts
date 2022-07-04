@@ -1,10 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 
-import type { InvokeResponsePayload } from '@tophat/sanity-runner-types'
+import type { EnhancedAggregatedResult, InvokeResponsePayload } from '@tophat/sanity-runner-types'
 
 import paths from './paths'
-import { EnhancedAggregatedResult } from './types'
 
 import type { Config } from '@jest/types'
 
