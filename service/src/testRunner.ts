@@ -9,6 +9,7 @@ import type {
     InvokeResponsePayload,
     OnTestCompleteContext,
     PluginHooks,
+    SanityRunnerTestGlobals,
     TestMetadata,
     TestVariables,
 } from '@tophat/sanity-runner-types'
@@ -18,6 +19,11 @@ import Run from './run'
 import { getSecretValue } from './secrets'
 
 import type { Config } from '@jest/types'
+
+declare let global: typeof globalThis & {
+    /** Only for internal use. */
+    _sanityRunnerTestGlobals?: SanityRunnerTestGlobals
+}
 
 const runJest = async function ({
     config,
@@ -87,9 +93,22 @@ export default class TestRunner {
         const run = new Run(testVariables)
         try {
             await run.writeSuites(testFiles)
+
+            // We'll inject hooks into the global object so it can be accessed
+            // from within the jest test hook files. Note that this depends on jest
+            // running "in band" (not as a separate process).
+            global._sanityRunnerTestGlobals = {
+                sanityRunnerHooks: { beforeBrowserCleanup: hooks.beforeBrowserCleanup },
+                runId: run.id,
+                testVariables,
+                testMetadata,
+            }
+
             const results = await retry(
                 async () => {
-                    const { results: jestResults } = await runJest({ config: run.jestConfig() })
+                    const { results: jestResults } = await runJest({
+                        config: run.jestConfig(),
+                    })
                     // force retry if test was unsuccesfull
                     // if last retry, return as normal
                     if (!jestResults.success) {
@@ -106,6 +125,10 @@ export default class TestRunner {
                     },
                 },
             )
+
+            // Cleanup exposed globals
+            delete global._sanityRunnerTestGlobals
+
             logResults(results, testVariables, retryCount, run.id, executionId)
 
             const response = await run.format(results)

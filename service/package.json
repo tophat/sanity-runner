@@ -15,6 +15,7 @@
     "url": "https://github.com/tophat/sanity-runner/issues",
     "homepage": "https://github.com/tophat/sanity-runner#readme",
     "devDependencies": {
+        "@tophat/sanity-runner-plugin-fullstory": "workspace:*",
         "@tophat/sanity-runner-plugin-pagerduty": "workspace:*",
         "@tophat/sanity-runner-plugin-slack": "workspace:*",
         "@tophat/sanity-runner-types": "workspace:*",

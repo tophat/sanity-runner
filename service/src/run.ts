@@ -67,9 +67,6 @@ export default class Run {
             globalSetup: path.resolve(__dirname, 'testHooks/globalSetup.js'),
             globalTeardown: path.resolve(__dirname, 'testHooks/globalTeardown.js'),
             globals: {
-                lambdaContext: {
-                    sanityRequestId: this.id,
-                },
                 SANITY_VARIABLES: this.variables || {},
                 SCREENSHOT_OUTPUT: paths.results(this.id),
             },

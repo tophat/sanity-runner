@@ -3697,6 +3697,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tophat/sanity-runner-plugin-fullstory@workspace:*, @tophat/sanity-runner-plugin-fullstory@workspace:plugins/fullstory":
+  version: 0.0.0-use.local
+  resolution: "@tophat/sanity-runner-plugin-fullstory@workspace:plugins/fullstory"
+  dependencies:
+    "@tophat/sanity-runner-types": "workspace:*"
+    "@types/node": ^16.11.36
+    esbuild: ^0.14.48
+    typescript: 4.7.4
+  languageName: unknown
+  linkType: soft
+
 "@tophat/sanity-runner-plugin-pagerduty@workspace:*, @tophat/sanity-runner-plugin-pagerduty@workspace:plugins/pagerduty":
   version: 0.0.0-use.local
   resolution: "@tophat/sanity-runner-plugin-pagerduty@workspace:plugins/pagerduty"
@@ -3728,6 +3739,7 @@ __metadata:
     "@jest/test-result": ^28.1.1
     "@types/node": ^16.11.36
     esbuild: ^0.14.48
+    puppeteer-core: ^14.1.1
     tapable: ^2.2.1
     typescript: 4.7.4
     winston: ^3.8.1
@@ -16360,6 +16372,7 @@ resolve@^2.0.0-next.3:
     "@jest/test-result": ^28.1.0
     "@jest/types": ^28.1.0
     "@sparticuz/chrome-aws-lambda": ^14.1.0
+    "@tophat/sanity-runner-plugin-fullstory": "workspace:*"
     "@tophat/sanity-runner-plugin-pagerduty": "workspace:*"
     "@tophat/sanity-runner-plugin-slack": "workspace:*"
     "@tophat/sanity-runner-types": "workspace:*"
