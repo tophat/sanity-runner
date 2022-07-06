@@ -2,6 +2,19 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [4.1.0-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@4.0.1-rc.0...sanity-runner-service@4.1.0-rc.0) "sanity-runner-service" (2022-07-06)<a name="4.1.0-rc.0"></a>
+
+### Bug Fixes
+
+* parse junit in the service rather than client ([5b41f3b](https://github.com/tophat/sanity-runner/commits/5b41f3b))
+
+### Features
+
+* extract fullstory to plugin ([f1e9505](https://github.com/tophat/sanity-runner/commits/f1e9505))
+
+
+
+
 ## [4.0.1-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@4.0.0...sanity-runner-service@4.0.1-rc.0) "sanity-runner-service" (2022-07-03)<a name="4.0.1-rc.0"></a>
 
 ### Bug Fixes

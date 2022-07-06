@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [4.1.0-rc.3](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@4.1.0-rc.2...sanity-runner-client@4.1.0-rc.3) "sanity-runner-client" (2022-07-06)<a name="4.1.0-rc.3"></a>
+
+### Bug Fixes
+
+* parse junit in the service rather than client ([5b41f3b](https://github.com/tophat/sanity-runner/commits/5b41f3b))
+
+
+
+
 ## [4.1.0-rc.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@4.1.0-rc.1...sanity-runner-client@4.1.0-rc.2) "sanity-runner-client" (2022-07-04)<a name="4.1.0-rc.2"></a>
 
 ### Bug Fixes
