@@ -3697,6 +3697,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tophat/sanity-runner-plugin-fullstory@workspace:*, @tophat/sanity-runner-plugin-fullstory@workspace:plugins/fullstory":
+  version: 0.0.0-use.local
+  resolution: "@tophat/sanity-runner-plugin-fullstory@workspace:plugins/fullstory"
+  dependencies:
+    "@tophat/sanity-runner-types": "workspace:*"
+    "@types/node": ^16.11.36
+    esbuild: ^0.14.48
+    typescript: 4.7.4
+  languageName: unknown
+  linkType: soft
+
 "@tophat/sanity-runner-plugin-pagerduty@workspace:*, @tophat/sanity-runner-plugin-pagerduty@workspace:plugins/pagerduty":
   version: 0.0.0-use.local
   resolution: "@tophat/sanity-runner-plugin-pagerduty@workspace:plugins/pagerduty"
@@ -3728,6 +3739,7 @@ __metadata:
     "@jest/test-result": ^28.1.1
     "@types/node": ^16.11.36
     esbuild: ^0.14.48
+    puppeteer-core: ^14.1.1
     tapable: ^2.2.1
     typescript: 4.7.4
     winston: ^3.8.1
@@ -16332,7 +16344,6 @@ resolve@^2.0.0-next.3:
     "@types/glob": ^7.2.0
     "@types/lodash": ^4.14.182
     "@types/node": ^16.11.36
-    "@types/xml2js": ^0.4.11
     chalk: ^4.1.2
     cli-progress: ^3.11.2
     clipanion: ^3.2.0-rc.11
@@ -16344,7 +16355,6 @@ resolve@^2.0.0-next.3:
     typanion: ^3.9.0
     typescript: 4.7.4
     winston: ^3.7.2
-    xml2js: ^0.4.23
   bin:
     sanity-runner: ./src/index.ts
   languageName: unknown
@@ -16362,6 +16372,7 @@ resolve@^2.0.0-next.3:
     "@jest/test-result": ^28.1.0
     "@jest/types": ^28.1.0
     "@sparticuz/chrome-aws-lambda": ^14.1.0
+    "@tophat/sanity-runner-plugin-fullstory": "workspace:*"
     "@tophat/sanity-runner-plugin-pagerduty": "workspace:*"
     "@tophat/sanity-runner-plugin-slack": "workspace:*"
     "@tophat/sanity-runner-types": "workspace:*"
@@ -16373,6 +16384,7 @@ resolve@^2.0.0-next.3:
     "@types/node": ^16.11.36
     "@types/puppeteer": ^5.4.5
     "@types/uuid": ^8.3.4
+    "@types/xml2js": ^0.4.11
     async-retry: ^1.3.3
     esbuild: ^0.14.48
     expect-puppeteer: ^6.1.0
@@ -16385,6 +16397,7 @@ resolve@^2.0.0-next.3:
     typescript: 4.7.4
     uuid: ^8.3.2
     winston: ^3.8.1
+    xml2js: ^0.4.23
   languageName: unknown
   linkType: soft
 

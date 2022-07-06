@@ -1,5 +1,6 @@
 import { AggregatedResult } from '@jest/test-result'
 
+import type { Browser, Page } from 'puppeteer-core'
 import type { AsyncSeriesHook } from 'tapable'
 import type { Logger } from 'winston'
 
@@ -68,7 +69,7 @@ export type InvokeResponsePayload = {
         message: string
         name?: { name: string }
     }>
-    testResults: Record<JUnitReportFilename, StringifiedJUnitReport | JUnitReport>
+    testResults: Record<JUnitReportFilename, JUnitReport>
 }
 
 export type TestVariables = Partial<Record<string, string>>
@@ -85,20 +86,39 @@ export interface TestMetadata {
     Runbook?: string
 }
 
-export type OnTestCompleteContext<M extends TestMetadata> = {
-    getSecretValue<R = any>(secretKey: string): Promise<R | null>
+interface HookContext<M extends TestMetadata> {
     logger: Logger
-
     testMetadata: M
     testVariables: TestVariables
-    results: InvokeResponsePayload
     runId: string
+}
+
+export interface OnTestCompleteContext<M extends TestMetadata = TestMetadata>
+    extends HookContext<M> {
+    getSecretValue<R = any>(secretKey: string): Promise<R | null>
+    results: InvokeResponsePayload
+
     testDisplayName: string
     testFilename: string
     failureMessage?: string | undefined
 }
 
+export interface BeforeBrowserCleanupContext<M extends TestMetadata = TestMetadata>
+    extends HookContext<M> {
+    page: Page
+    browser: Browser
+}
+
 export interface PluginHooks {
     onTestFailure: AsyncSeriesHook<[OnTestCompleteContext<any>], void>
     onTestSuccess: AsyncSeriesHook<[OnTestCompleteContext<any>], void>
+    beforeBrowserCleanup: AsyncSeriesHook<[BeforeBrowserCleanupContext<any>], void>
+}
+
+/** Only for internal use. */
+export interface SanityRunnerTestGlobals {
+    sanityRunnerHooks: Pick<PluginHooks, 'beforeBrowserCleanup'>
+    runId: string
+    testVariables: TestVariables
+    testMetadata: TestMetadata
 }

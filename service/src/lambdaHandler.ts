@@ -3,6 +3,7 @@ import childProcess from 'child_process'
 import { parse } from 'jest-docblock'
 import { AsyncSeriesHook } from 'tapable'
 
+import FullStoryPlugin, { getFullStoryUrl } from '@tophat/sanity-runner-plugin-fullstory'
 import PagerDutyPlugin from '@tophat/sanity-runner-plugin-pagerduty'
 import SlackPlugin from '@tophat/sanity-runner-plugin-slack'
 import type {
@@ -12,7 +13,6 @@ import type {
     TestMetadata,
 } from '@tophat/sanity-runner-types'
 
-import { getFullStoryUrl } from './fullstory'
 import TestRunner from './testRunner'
 
 import type { APIGatewayProxyResultV2, Context } from 'aws-lambda'
@@ -28,15 +28,16 @@ export async function handler(
     const hooks: PluginHooks = {
         onTestFailure: new AsyncSeriesHook(['context']),
         onTestSuccess: new AsyncSeriesHook(['context']),
+        beforeBrowserCleanup: new AsyncSeriesHook(['context']),
     }
 
     // In a future version of the sanity runner, these plugins will be dynamically loaded.
+    FullStoryPlugin(hooks)
     SlackPlugin(hooks, {
         linkFactory: async () => {
-            const fullstoryUrl =
-                event.testVariables?.FULLSTORY_ENABLED === 'true'
-                    ? await getFullStoryUrl()
-                    : undefined
+            // TODO: Explore alternative way of integrating 2 plugins (fullstory + slack)
+            // Perhaps we create some concept of "shared context"?
+            const fullstoryUrl = await getFullStoryUrl()
             return fullstoryUrl ? [{ name: 'Fullstory Session', url: fullstoryUrl }] : []
         },
     })
