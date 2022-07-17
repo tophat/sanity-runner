@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-      "target": "ES2020",
+      "target": "ES2021",
       "module": "commonjs",
       "strict": true,
       "esModuleInterop": true,
@@ -8,11 +8,13 @@
       "forceConsistentCasingInFileNames": true,
       "noImplicitAny": true,
       "emitDeclarationOnly": false,
+      "declaration": true,
       "allowSyntheticDefaultImports": true,
       "resolveJsonModule": true,
       "allowJs": true,
       "jsx": "preserve",
-      "lib": ["ES2020"]
+      "lib": ["ES2021"]
   },
-  "include": ["./service", "./client", "./website"]
+  "include": ["./service", "./client", "./website"],
+  "exclude": ["./**/dist"]
 }

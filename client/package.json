@@ -1,15 +1,36 @@
 {
     "name": "sanity-runner-client",
-    "version": "4.1.0-rc.3",
+    "version": "4.1.0-rc.2",
     "description": "Sanity cli client",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "files": [
-        "src"
+        "dist"
     ],
     "repository": {
         "type": "git",
         "url": "https://github.com/tophat/sanity-runner.git"
+    },
+    "main": "./src/index.ts",
+    "bin": {
+        "sanity-runner": "./src/index.ts"
+    },
+    "publishConfig": {
+        "bin": "./dist/index.js",
+        "main": "./dist/index.js"
+    },
+    "scripts": {
+        "clean": "rm -rf dist && mkdir -p dist",
+        "lint:typecheck": "run -T tsc -p tsconfig.json --noEmit",
+        "build": "run -T tsc -p .",
+        "prepack": "run clean && run build",
+        "docker:pre": "mkdir -p artifacts && yarn pack -o artifacts/%s.tgz",
+        "docker:build": "run docker:pre && docker build . -f client.Dockerfile -t ghcr.io/tophat/sanity-runner-client",
+        "docker:tag": "docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:$(cat package.json | jq -r '.version')",
+        "docker:tag:prerelease": "docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:next",
+        "docker:push": "docker push ghcr.io/tophat/sanity-runner-client:$(cat package.json | jq -r '.version')",
+        "docker:push:latest": "docker push ghcr.io/tophat/sanity-runner-client:latest",
+        "docker:push:prerelease": "docker push ghcr.io/tophat/sanity-runner-client:next"
     },
     "dependencies": {
         "@aws-sdk/client-lambda": "^3.121.0",
@@ -28,12 +49,6 @@
         "@types/cli-progress": "^3",
         "@types/glob": "^7.2.0",
         "@types/lodash": "^4.14.182",
-        "@types/node": "^16.11.36",
-        "esbuild": "^0.14.48",
-        "pkg": "^5.7.0",
-        "typescript": "4.7.4"
-    },
-    "bin": {
-        "sanity-runner": "./src/index.ts"
+        "@types/node": "^16.11.36"
     }
 }

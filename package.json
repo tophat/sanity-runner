@@ -7,13 +7,23 @@
         "url": "https://github.com/tophat/sanity-runner.git"
     },
     "scripts": {
-        "commit": "yarn dlx git-cz"
+        "commit": "dlx git-cz",
+        "eslint": "eslint --max-warnings 0",
+        "lint:fix": "run eslint --fix .",
+        "lint": "run eslint .",
+        "release:dry": "monodeploy --config-file monodeploy.config.js --log-level 0 --force-write-change-files --changelog-filename artifacts/CHANGELOG.md --dry-run",
+        "prerelease:dry": "run release:dry --prerelease",
+        "release": "monodeploy --config-file monodeploy.config.js --log-level 0 --push --auto-commit --plugins @monodeploy/plugin-github",
+        "prerelease": "run release --prerelease",
+        "build": "yarn workspaces foreach -vpt --no-private --topological-dev run prepack",
+        "dev": "yarn ts-node --transpile-only $(yarn workspace sanity-runner-client bin sanity-runner) --local --output-dir output"
     },
     "workspaces": [
         "client",
         "service",
         "website",
         "types",
+        "terraform",
         "plugins/*"
     ],
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
@@ -30,6 +40,7 @@
         "@typescript-eslint/eslint-plugin": "^5.30.4",
         "@typescript-eslint/parser": "^5.30.4",
         "all-contributors-cli": "^6.20.0",
+        "esbuild": "^0.14.48",
         "eslint": "^8.19.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-import-resolver-node": "^0.3.6",

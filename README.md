@@ -38,7 +38,7 @@ locals {
 }
 
 module "sanity-runner" {
-  source                      = "git@github.com:tophat/sanity-runner.git//service/terraform?ref=v0.11.1"
+  source                      = "git@github.com:tophat/sanity-runner.git//terraform?ref=sanity-runner-terraform@1.0.0"
   function_name               = local.function_name
   container_version           = "latest"
   vpc_subnet_ids              = var.vpc_subnet_ids
@@ -61,13 +61,13 @@ Open 2 terminals, one for the service and one for the client.
 In the service terminal execute:
 
 ```sh
-make -C service package && docker run -p 9000:8080 ghcr.io/tophat/sanity-runner-service:latest
+yarn workspace sanity-runner-service dev
 ```
 
 One the service is up and running, execute:
 
 ```sh
-yarn ts-node --transpile-only $(yarn workspace sanity-runner-client bin sanity-runner) --test-dir example/repo/sanities/ --local --output-dir output --include google-fail-example -vv
+yarn dev --test-dir example/repo/sanities/ --include google-fail-example -vv
 ```
 
 For more information about the [Client](./client/README.md) and [Service](./service/README.md), see the respective READMEs.

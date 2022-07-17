@@ -1,8 +1,7 @@
 import winston from 'winston'
 
-import { version } from '../package.json'
-
 import { LogFormat, LogLevel } from './types'
+import { version } from './version'
 
 export function logLevelByVerbosity(verbosity: number | undefined): keyof typeof LogLevel {
     verbosity = Math.min(Math.max(3, (verbosity ?? 0) + 3), 6)
