@@ -38,7 +38,7 @@ locals {
 }
 
 module "sanity-runner" {
-  source                      = "git@github.com:tophat/sanity-runner.git//service/terraform?ref=v0.11.1"
+  source                      = "git@github.com:tophat/sanity-runner.git//terraform?ref=sanity-runner-terraform@1.0.0"
   function_name               = local.function_name
   container_version           = "latest"
   vpc_subnet_ids              = var.vpc_subnet_ids

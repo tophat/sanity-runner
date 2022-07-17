@@ -10,5 +10,8 @@ module.exports = {
         'sanity-runner-service': {
             registryMode: 'manifest',
         },
+        'sanity-runner-terraform': {
+            registryMode: 'manifest',
+        },
     },
 }

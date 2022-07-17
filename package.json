@@ -23,6 +23,7 @@
         "service",
         "website",
         "types",
+        "terraform",
         "plugins/*"
     ],
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
