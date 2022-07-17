@@ -9,8 +9,6 @@ import * as t from 'typanion'
 
 import type { ClientConfiguration } from '@tophat/sanity-runner-types'
 
-import { version } from '../package.json'
-
 import {
     DEFAULT_FUNCTION_NAME,
     DEFAULT_LOCAL_PORT,
@@ -21,6 +19,7 @@ import {
 } from './defaults'
 import { configureLogger, logLevelByVerbosity } from './logger'
 import { runTests } from './runTests'
+import { version } from './version'
 
 import type { ExecutionContext, LogFormat } from './types'
 

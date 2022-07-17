@@ -5,9 +5,19 @@
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "main": "src/index.ts",
+    "publishConfig": {
+        "main": "dist/index.js",
+        "types": "dist/index.d.ts"
+    },
     "files": [
-        "src"
+        "dist"
     ],
+    "scripts": {
+        "clean": "rm -rf dist && mkdir -p dist",
+        "lint:typecheck": "run -T tsc -p tsconfig.json --noEmit",
+        "build": "run -T tsc -p tsconfig.json",
+        "prepack": "run clean && run build"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/tophat/sanity-runner.git"

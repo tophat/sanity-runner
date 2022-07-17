@@ -1,11 +1,11 @@
 FROM node:16.15-slim
 
 RUN apt-get update && \
-    apt-get install -yq python-pip jq git unzip && \
-    pip install awscli
+    apt-get install -yq jq git unzip && \
+    corepack enable
+
+COPY ./artifacts/sanity-runner-client.tgz sanity-runner-client.tgz
+RUN tar -xvzf sanity-runner-client.tgz
 
 COPY config.json /config.json
-COPY bin/sanity-runner-client-linux /usr/local/bin/sanity-runner
-RUN chmod 777 /usr/local/bin/sanity-runner
-
-CMD sanity-runner --config config.json
+CMD yarn dlx sanity-runner-client@file:./sanity-runner-client --config config.json

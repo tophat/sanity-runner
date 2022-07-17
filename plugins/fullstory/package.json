@@ -1,23 +1,31 @@
 {
     "name": "@tophat/sanity-runner-plugin-fullstory",
-    "version": "0.1.0-rc.0",
+    "version": "0.0.1",
     "description": "Sanity runner plugin for fullstory",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "main": "src/index.ts",
+    "publishConfig": {
+        "main": "dist/index.js",
+        "types": "dist/index.d.ts"
+    },
     "files": [
-        "src"
+        "dist"
     ],
+    "scripts": {
+        "clean": "rm -rf dist && mkdir -p dist",
+        "lint:typecheck": "run -T tsc -p tsconfig.json --noEmit",
+        "build": "run -T tsc -p tsconfig.json",
+        "prepack": "run clean && run build"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/tophat/sanity-runner.git"
     },
     "dependencies": {
-        "@tophat/sanity-runner-types": "workspace:^0.1.0-rc.0"
+        "@tophat/sanity-runner-types": "workspace:*"
     },
     "devDependencies": {
-        "@types/node": "^16.11.36",
-        "esbuild": "^0.14.48",
-        "typescript": "4.7.4"
+        "@types/node": "^16.11.36"
     }
 }
