@@ -1,0 +1,12 @@
+{
+    "name": "sanity-runner-terraform",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tophat/sanity-runner.git",
+        "directory": "terraform"
+    },
+    "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
+    "license": "Apache-2.0",
+    "url": "https://github.com/tophat/sanity-runner/issues",
+    "homepage": "https://github.com/tophat/sanity-runner#readme"
+}

@@ -4,12 +4,26 @@ import { runCLI } from '@jest/core'
 import { AggregatedResult } from '@jest/test-result'
 import retry from 'async-retry'
 
-import { alertOnResult } from './alerts'
+import type {
+    EnhancedAggregatedResult,
+    InvokeResponsePayload,
+    OnTestCompleteContext,
+    PluginHooks,
+    SanityRunnerTestGlobals,
+    TestMetadata,
+    TestVariables,
+} from '@tophat/sanity-runner-types'
+
 import { logger } from './logger'
 import Run from './run'
-import { type EnhancedAggregatedResult } from './types'
+import { getSecretValue } from './secrets'
 
 import type { Config } from '@jest/types'
+
+declare let global: typeof globalThis & {
+    /** Only for internal use. */
+    _sanityRunnerTestGlobals?: SanityRunnerTestGlobals
+}
 
 const runJest = async function ({
     config,
@@ -60,19 +74,41 @@ const logResults = function (
 }
 
 export default class TestRunner {
-    async runTests(
-        testFiles: Record<string, string>,
-        testVariables: Partial<Record<string, string>>,
-        maxRetryCount: number,
-        executionId: string,
-    ) {
+    async runTests({
+        testFiles,
+        testVariables,
+        maxRetryCount,
+        executionId,
+        hooks,
+        testMetadata,
+    }: {
+        testFiles: Record<string, string>
+        testVariables: TestVariables
+        maxRetryCount: number
+        executionId: string
+        hooks: PluginHooks
+        testMetadata: TestMetadata
+    }): Promise<InvokeResponsePayload> {
         let retryCount = 0
         const run = new Run(testVariables)
         try {
             await run.writeSuites(testFiles)
+
+            // We'll inject hooks into the global object so it can be accessed
+            // from within the jest test hook files. Note that this depends on jest
+            // running "in band" (not as a separate process).
+            global._sanityRunnerTestGlobals = {
+                sanityRunnerHooks: { beforeBrowserCleanup: hooks.beforeBrowserCleanup },
+                runId: run.id,
+                testVariables,
+                testMetadata,
+            }
+
             const results = await retry(
                 async () => {
-                    const { results: jestResults } = await runJest({ config: run.jestConfig() })
+                    const { results: jestResults } = await runJest({
+                        config: run.jestConfig(),
+                    })
                     // force retry if test was unsuccesfull
                     // if last retry, return as normal
                     if (!jestResults.success) {
@@ -89,9 +125,33 @@ export default class TestRunner {
                     },
                 },
             )
+
+            // Cleanup exposed globals
+            delete global._sanityRunnerTestGlobals
+
             logResults(results, testVariables, retryCount, run.id, executionId)
-            await alertOnResult({ testFiles, results, testVariables, runId: run.id })
-            return await run.format(results)
+
+            const response = await run.format(results)
+
+            const context: OnTestCompleteContext<TestMetadata> = {
+                logger,
+                getSecretValue,
+                results: response,
+                testMetadata,
+                testVariables,
+                runId: run.id,
+                testDisplayName: results.testResults[0].displayName?.name ?? 'Unknown',
+                testFilename: Object.keys(testFiles)[0] ?? 'Unknown',
+                failureMessage: results.testResults[0]?.failureMessage ?? undefined,
+            }
+
+            if (response.passed) {
+                await hooks.onTestSuccess.promise(context)
+            } else {
+                await hooks.onTestFailure.promise(context)
+            }
+
+            return response
         } finally {
             await run.cleanup()
         }

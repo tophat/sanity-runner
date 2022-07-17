@@ -1,22 +1,10 @@
-import { AggregatedResult } from '@jest/test-result'
-
-export type EnhancedAggregatedResult = AggregatedResult & {
-    screenshots: Partial<Record<string, string>>
-}
-
-export type TestMetadata = {
-    Description?: string
-    Runbook?: string
-    Pagerduty?: string
-    Slack?: string
-    SlackHandler?: string
-}
+import type { TestVariables } from '@tophat/sanity-runner-types'
 
 export type AlertContext = {
     testName: string
     message: string
     errorMessage: string | null | undefined
-    variables: Partial<Record<string, string>>
+    variables: TestVariables
     manualSteps: string
     runBook: string
     fullstoryUrl: string | null | undefined

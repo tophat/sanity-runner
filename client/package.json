@@ -1,33 +1,55 @@
 {
     "name": "sanity-runner-client",
-    "version": "4.0.0",
+    "version": "4.1.0-rc.2",
     "description": "Sanity cli client",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "files": [
-        "src"
+        "dist"
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/tophat/sanity-runner.git"
+        "url": "https://github.com/tophat/sanity-runner.git",
+        "directory": "client"
+    },
+    "main": "./src/index.ts",
+    "bin": {
+        "sanity-runner": "./src/index.ts"
+    },
+    "publishConfig": {
+        "bin": "./dist/index.js",
+        "main": "./dist/index.js"
+    },
+    "scripts": {
+        "clean": "rm -rf dist && mkdir -p dist",
+        "lint:typecheck": "run -T tsc -p tsconfig.json --noEmit",
+        "build": "run -T tsc -p .",
+        "prepack": "run clean && run build",
+        "docker:pre": "mkdir -p artifacts && yarn pack -o artifacts/%s.tgz",
+        "docker:build": "run docker:pre && docker build . -f client.Dockerfile -t ghcr.io/tophat/sanity-runner-client",
+        "docker:tag": "docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:$(cat package.json | jq -r '.version')",
+        "docker:tag:prerelease": "docker tag ghcr.io/tophat/sanity-runner-client:latest ghcr.io/tophat/sanity-runner-client:next",
+        "docker:push": "docker push ghcr.io/tophat/sanity-runner-client:$(cat package.json | jq -r '.version')",
+        "docker:push:latest": "docker push ghcr.io/tophat/sanity-runner-client:latest",
+        "docker:push:prerelease": "docker push ghcr.io/tophat/sanity-runner-client:next"
     },
     "dependencies": {
-        "aws-sdk": "^2.1099.0",
+        "@aws-sdk/client-lambda": "^3.121.0",
+        "@aws-sdk/node-http-handler": "^3.118.1",
         "chalk": "^4.1.2",
-        "commander": "^2.15.1",
-        "fs-extra": "^8.0.0",
+        "cli-progress": "^3.11.2",
+        "clipanion": "^3.2.0-rc.11",
         "glob": "^7.2.0",
         "lodash": "^4.17.21",
-        "pkg": "^5.5.2",
-        "xml2js": "^0.4.23"
+        "p-limit": "^3.0.0",
+        "typanion": "^3.9.0",
+        "winston": "^3.7.2"
     },
     "devDependencies": {
+        "@tophat/sanity-runner-types": "workspace:*",
+        "@types/cli-progress": "^3",
+        "@types/glob": "^7.2.0",
+        "@types/lodash": "^4.14.182",
         "@types/node": "^16.11.36"
-    },
-    "bin": {
-        "sanity-runner": "./src/cli.js"
-    },
-    "pkg": {
-        "scripts": "./src/*.js"
     }
 }

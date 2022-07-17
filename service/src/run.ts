@@ -1,13 +1,33 @@
 import fs from 'fs'
 import path from 'path'
 
+import xml2js from 'xml2js'
+
+import type {
+    EnhancedAggregatedResult,
+    InvokeResponsePayload,
+    JUnitReport,
+} from '@tophat/sanity-runner-types'
+
 import paths from './paths'
-import { EnhancedAggregatedResult } from './types'
 
 import type { Config } from '@jest/types'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { v4: uuidv4 } = require('uuid')
+
+async function parseJUnitReport(
+    reportFilename: string,
+    report: string | JUnitReport,
+): Promise<JUnitReport> {
+    if (typeof report === 'string') {
+        if (reportFilename.endsWith('.xml')) {
+            return await xml2js.parseStringPromise(report)
+        }
+        return JSON.parse(report)
+    }
+    return report
+}
 
 /*
  * Runtime initialization errors are not currently reported by junit reporter
@@ -44,12 +64,9 @@ export default class Run {
     jestConfig(): Config.InitialOptions {
         return {
             bail: false,
-            globalSetup: path.resolve(__dirname, 'jestConfig/puppeteerSetup.js'),
-            globalTeardown: path.resolve(__dirname, 'jestConfig/puppeteerTeardown.js'),
+            globalSetup: path.resolve(__dirname, 'testHooks/globalSetup.js'),
+            globalTeardown: path.resolve(__dirname, 'testHooks/globalTeardown.js'),
             globals: {
-                lambdaContext: {
-                    sanityRequestId: this.id,
-                },
                 SANITY_VARIABLES: this.variables || {},
                 SCREENSHOT_OUTPUT: paths.results(this.id),
             },
@@ -64,7 +81,7 @@ export default class Run {
                     },
                 ],
                 [
-                    path.resolve(__dirname, 'jestConfig/screenshotReporter.js'),
+                    path.resolve(__dirname, 'testHooks/screenshotReporter.js'),
                     {
                         output: paths.results(this.id),
                         urlExpirySeconds: 30 * 24 * 3600,
@@ -76,8 +93,8 @@ export default class Run {
             resetModules: false,
             roots: [paths.suite(this.id)],
             rootDir: process.cwd(),
-            setupFilesAfterEnv: [path.resolve(__dirname, 'jestConfig/e2eFrameworkSetup.js')],
-            testEnvironment: path.resolve(__dirname, 'jestConfig/puppeteerEnvironment.js'),
+            setupFilesAfterEnv: [path.resolve(__dirname, 'testHooks/setupFilesAfterEnv.js')],
+            testEnvironment: path.resolve(__dirname, 'testHooks/testEnvironment.js'),
             fakeTimers: {
                 enableGlobally: false,
             },
@@ -100,14 +117,16 @@ export default class Run {
         )
     }
 
-    async format(results: EnhancedAggregatedResult) {
-        const junitContents = await fs.promises.readFile(paths.junit(this.id), 'utf-8')
+    async format(results: EnhancedAggregatedResult): Promise<InvokeResponsePayload> {
+        const reportFilename = paths.junit(this.id)
+        const junitContents = await fs.promises.readFile(reportFilename, 'utf-8')
+        const report = await parseJUnitReport(reportFilename, junitContents)
         return {
             passed: results.success,
             screenshots: results.screenshots,
             errors: extractRuntimeErrors(results),
             testResults: {
-                [paths.junitFileName(this.id)]: junitContents,
+                [path.basename(reportFilename)]: report,
             },
         }
     }
