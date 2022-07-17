@@ -161,10 +161,9 @@ jobs:
         run: yarn workspace sanity-runner-website build
       - name: Deploy Website
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
-          GITHUB_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: ./website/build/sanity-runner
-          CLEAN: true
-          COMMIT_MESSAGE: 'docs: deploying website [skip ci]'
+          branch: gh-pages
+          folder: ./website/build/sanity-runner
+          clean: true
+          commit-message: 'docs: deploying website [skip ci]'
