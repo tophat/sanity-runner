@@ -33,19 +33,14 @@ jobs:
       - uses: ./.github/actions/setup-env
       - name: Build Packages
         run: yarn workspaces foreach -vpt --no-private --topological-dev run prepack
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker Images
         run: yarn workspaces foreach -vpt --no-private --topological-dev run docker:build
-      - name: Save Docker Images
-        run: |
-          mkdir -p artifacts/docker
-          docker save -o artifacts/docker/sanity-runner-client.tar ghcr.io/tophat/sanity-runner-client:latest
-          docker save -o artifacts/docker/sanity-runner-service.tar ghcr.io/tophat/sanity-runner-service:latest
-      - name: Cache Docker Images
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: docker-images
-          path: artifacts/docker
-          retention-days: 1
   dry_release:
     name: Dry Release
     if: github.event_name == 'pull_request' && !contains(github.event.head_commit.message, '[skip ci]')
@@ -57,15 +52,6 @@ jobs:
           token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
           fetch-depth: 0
       - uses: ./.github/actions/setup-env
-      - name: Download Prebuilt Docker Images
-        uses: actions/download-artifact@v3.0.0
-        with:
-          name: docker-images
-          path: artifacts/docker
-      - name: Load Prebuilt Docker Images
-        run: |
-          docker load < artifacts/docker/sanity-runner-client.tar
-          docker load < artifacts/docker/sanity-runner-service.tar
       - name: Prerelease (Dry)
         if: github.base_ref == 'next'
         run: yarn prerelease:dry --git-base-branch origin/${{ github.base_ref }}
@@ -104,7 +90,7 @@ jobs:
             ${{ steps.dry-release.outputs.changelog }}
   prerelease:
     name: "Prerelease"
-    if: github.ref == 'refs/heads/next' && !contains(github.event.head_commit.message, '[skip ci]')
+    if: github.event_name == 'push' && github.ref == 'refs/heads/next' && !contains(github.event.head_commit.message, '[skip ci]')
     runs-on: ubuntu-latest
     needs: [build]
     steps:
@@ -112,33 +98,28 @@ jobs:
         with:
           token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
           fetch-depth: 0
+      - uses: ./.github/actions/setup-env
+      - name: Prerelease
+        run: yarn prerelease
+        env:
+          GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
+          NPM_PUBLISH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: ./.github/actions/setup-env
-      - name: Download Prebuilt Docker Images
-        uses: actions/download-artifact@v3.0.0
-        with:
-          name: docker-images
-          path: artifacts/docker
-      - name: Load Prebuilt Docker Images
-        run: |
-          docker load < artifacts/docker/sanity-runner-client.tar
-          docker load < artifacts/docker/sanity-runner-service.tar
-      - name: Prerelease
-        run: yarn prerelease
-        env:
-          GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
-          NPM_PUBLISH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+      - name: Build Docker Images
+        run: yarn workspaces foreach -vpt --no-private --topological-dev run docker:build
+      - name: Tag Docker Images
+        run: yarn workspaces foreach -vp run docker:tag
+      - name: Tag Docker Images (Prerelease)
+        run: yarn workspaces foreach -vp run docker:tag:prerelease
       - name: Publish Docker Images
-        run: |
-          yarn workspaces foreach -vp run docker:tag
-          yarn workspaces foreach -vp run docker:tag:prerelease
-          yarn workspaces foreach -vp run docker:push
-          yarn workspaces foreach -vp run docker:push:prerelease
+        run: yarn workspaces foreach -vp run docker:push
+      - name: Publish Docker Images (Prerelease)
+        run: yarn workspaces foreach -vp run docker:push:prerelease
   release:
     name: Release
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, '[skip ci]')
@@ -149,32 +130,26 @@ jobs:
         with:
           token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
           fetch-depth: 0
+      - uses: ./.github/actions/setup-env
+      - name: Release
+        run: yarn release
+        env:
+          GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
+          NPM_PUBLISH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: ./.github/actions/setup-env
-      - name: Download Prebuilt Docker Images
-        uses: actions/download-artifact@v3.0.0
-        with:
-          name: docker-images
-          path: artifacts/docker
-      - name: Load Prebuilt Docker Images
-        run: |
-          docker load < artifacts/docker/sanity-runner-client.tar
-          docker load < artifacts/docker/sanity-runner-service.tar
-      - name: Release
-        run: yarn release
-        env:
-          GH_TOKEN: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
-          NPM_PUBLISH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+      - name: Build Docker Images
+        run: yarn workspaces foreach -vpt --no-private --topological-dev run docker:build
+      - name: Tag Docker Images
+        run: yarn workspaces foreach -vp run docker:tag
       - name: Publish Docker Images
-        run: |
-          yarn workspaces foreach -vp run docker:tag
-          yarn workspaces foreach -vp run docker:push
-          yarn workspaces foreach -vp run docker:push:latest
+        run: yarn workspaces foreach -vp run docker:push
+      - name: Publish Docker Images (Latest)
+        run: yarn workspaces foreach -vp run docker:push:latest
   website:
     name: Deploy Website
     runs-on: ubuntu-latest
