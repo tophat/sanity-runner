@@ -22,7 +22,8 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/tophat/sanity-runner.git"
+        "url": "https://github.com/tophat/sanity-runner.git",
+        "directory": "service"
     },
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",

@@ -20,7 +20,8 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/tophat/sanity-runner.git"
+        "url": "https://github.com/tophat/sanity-runner.git",
+        "directory": "plugins/pagerduty"
     },
     "dependencies": {
         "@tophat/sanity-runner-types": "workspace:*",
