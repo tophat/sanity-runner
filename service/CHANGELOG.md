@@ -2,6 +2,27 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [5.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@4.1.0-rc.0...sanity-runner-service@5.0.0) "sanity-runner-service" (2022-07-18)<a name="5.0.0"></a>
+
+### Breaking Changes
+
+* The terraform module now resides in its own workspace. See the README for the new path. ([54d3bba](https://github.com/tophat/sanity-runner/commits/54d3bba))
+* Large refactor of Sanity Runner. Please read the changelog carefully. ([6cddfd1](https://github.com/tophat/sanity-runner/commits/6cddfd1))
+
+### Bug Fixes
+
+* update aws sdk to v3 ([d2fe298](https://github.com/tophat/sanity-runner/commits/d2fe298))
+* parse junit in the service rather than client ([5b41f3b](https://github.com/tophat/sanity-runner/commits/5b41f3b))
+
+### Features
+
+* extract fullstory to plugin ([f1e9505](https://github.com/tophat/sanity-runner/commits/f1e9505))
+* publish client as npm package instead of binary ([c2053d0](https://github.com/tophat/sanity-runner/commits/c2053d0))
+* extract terraform to its own workspace ([54d3bba](https://github.com/tophat/sanity-runner/commits/54d3bba))
+
+
+
+
 ## [4.1.0-rc.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@4.0.1-rc.0...sanity-runner-service@4.1.0-rc.0) "sanity-runner-service" (2022-07-06)<a name="4.1.0-rc.0"></a>
 
 ### Bug Fixes

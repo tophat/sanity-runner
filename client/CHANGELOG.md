@@ -2,6 +2,30 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@5.0.0...sanity-runner-client@6.0.0) "sanity-runner-client" (2022-07-18)<a name="6.0.0"></a>
+
+### Breaking Changes
+
+* Large refactor of Sanity Runner. Please read the changelog carefully. ([6cddfd1](https://github.com/tophat/sanity-runner/commits/6cddfd1))
+
+### Bug Fixes
+
+* update aws sdk to v3 ([d2fe298](https://github.com/tophat/sanity-runner/commits/d2fe298))
+* use https agent for lambda invoke (#299) ([598ab31](https://github.com/tophat/sanity-runner/commits/598ab31))
+* parse junit in the service rather than client ([5b41f3b](https://github.com/tophat/sanity-runner/commits/5b41f3b))
+
+### Features
+
+* add log formatting option for structured logs ([84ea36a](https://github.com/tophat/sanity-runner/commits/84ea36a))
+* add verbosity config options ([84ea36a](https://github.com/tophat/sanity-runner/commits/84ea36a))
+* add concurrency limit config options ([84ea36a](https://github.com/tophat/sanity-runner/commits/84ea36a))
+* added progress bar option ([84ea36a](https://github.com/tophat/sanity-runner/commits/84ea36a))
+* rewrite client in TypeScript (#295) ([84ea36a](https://github.com/tophat/sanity-runner/commits/84ea36a))
+* publish client as npm package instead of binary ([c2053d0](https://github.com/tophat/sanity-runner/commits/c2053d0))
+
+
+
+
 ## [4.1.0-rc.3](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@4.1.0-rc.2...sanity-runner-client@4.1.0-rc.3) "sanity-runner-client" (2022-07-06)<a name="4.1.0-rc.3"></a>
 
 ### Bug Fixes

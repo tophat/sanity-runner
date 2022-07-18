@@ -8,5 +8,6 @@
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "url": "https://github.com/tophat/sanity-runner/issues",
-    "homepage": "https://github.com/tophat/sanity-runner#readme"
+    "homepage": "https://github.com/tophat/sanity-runner#readme",
+    "version": "1.0.0"
 }
