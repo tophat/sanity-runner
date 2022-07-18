@@ -163,6 +163,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
+          token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
           branch: gh-pages
           folder: ./website/build/sanity-runner
           clean: true

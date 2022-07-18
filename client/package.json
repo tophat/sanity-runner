@@ -17,6 +17,7 @@
         "sanity-runner": "./src/index.ts"
     },
     "publishConfig": {
+        "registry": "https://registry.npmjs.org/",
         "bin": "./dist/index.js",
         "main": "./dist/index.js"
     },
