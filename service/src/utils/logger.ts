@@ -1,6 +1,6 @@
 import winston from 'winston'
 
-import { version } from '../package.json'
+import { version } from './version'
 
 export const logger = winston.createLogger({
     level: 'info',

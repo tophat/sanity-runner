@@ -10,6 +10,6 @@ RUN yum install -y git make gcc gcc-c++ && \
 # Copy source files (rely on dockerignore to filter out unwanted files)
 ADD . .
 
-RUN yarn workspaces focus sanity-runner-service --production
+RUN yarn install
 
-CMD ["service/dist/lambdaHandler.handler"]
+CMD ["service/src/handler.handler"]

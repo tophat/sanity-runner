@@ -12,7 +12,11 @@ function formatTotal(failures: number, skipped: number, total: number): string {
     if (skipped) result.push(chalk.bold.yellow(`${skipped} skipped`))
 
     const passed = total - failures - skipped
-    result.push(chalk.bold.green(`${passed} passed`))
+    if (passed > 0) {
+        result.push(chalk.bold.green(`${passed} passed`))
+    } else {
+        result.push(chalk.bold.red(`${passed} passed`))
+    }
     result.push(`${total} total`)
     return result.join(', ')
 }

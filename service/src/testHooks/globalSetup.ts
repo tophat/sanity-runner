@@ -4,12 +4,12 @@ import path from 'path'
 
 import chromium from '@sparticuz/chrome-aws-lambda'
 
+import type { Browser } from 'puppeteer-core'
+
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
 
 declare let global: typeof globalThis & {
-    __BROWSER__: {
-        close(): void
-    }
+    __BROWSER__: Browser
 }
 
 export = async () => {

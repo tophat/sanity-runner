@@ -61,13 +61,19 @@ Open 2 terminals, one for the service and one for the client.
 In the service terminal execute:
 
 ```sh
-yarn workspace sanity-runner-service dev
+yarn ts-node --transpile-only $(yarn workspace sanity-runner-service bin)
 ```
 
 One the service is up and running, execute:
 
 ```sh
 yarn dev --test-dir example/repo/sanities/ --include google-fail-example -vv
+```
+
+If you want to run the service in the docker image, you can use:
+
+```sh
+yarn workspace sanity-runner-service run docker:run:local
 ```
 
 For more information about the [Client](./client/README.md) and [Service](./service/README.md), see the respective READMEs.

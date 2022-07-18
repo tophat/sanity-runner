@@ -64,8 +64,8 @@ export default class Run {
     jestConfig(): Config.InitialOptions {
         return {
             bail: false,
-            globalSetup: path.resolve(__dirname, 'testHooks/globalSetup.js'),
-            globalTeardown: path.resolve(__dirname, 'testHooks/globalTeardown.js'),
+            globalSetup: require.resolve('../testHooks/globalSetup'),
+            globalTeardown: require.resolve('../testHooks/globalTeardown'),
             globals: {
                 SANITY_VARIABLES: this.variables || {},
                 SCREENSHOT_OUTPUT: paths.results(this.id),
@@ -81,7 +81,7 @@ export default class Run {
                     },
                 ],
                 [
-                    path.resolve(__dirname, 'testHooks/screenshotReporter.js'),
+                    require.resolve('../testHooks/screenshotReporter'),
                     {
                         output: paths.results(this.id),
                         urlExpirySeconds: 30 * 24 * 3600,
@@ -93,8 +93,8 @@ export default class Run {
             resetModules: false,
             roots: [paths.suite(this.id)],
             rootDir: process.cwd(),
-            setupFilesAfterEnv: [path.resolve(__dirname, 'testHooks/setupFilesAfterEnv.js')],
-            testEnvironment: path.resolve(__dirname, 'testHooks/testEnvironment.js'),
+            setupFilesAfterEnv: [require.resolve('../testHooks/setupFilesAfterEnv')],
+            testEnvironment: require.resolve('../testHooks/testEnvironment'),
             fakeTimers: {
                 enableGlobally: false,
             },
