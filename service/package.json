@@ -7,7 +7,7 @@
         "clean": "rm -rf dist .cache && mkdir -p dist",
         "lint:typecheck": "run -T tsc -p tsconfig.json --noEmit",
         "build:testhooks": "run -T esbuild src/testHooks/* --platform=node --target=node16 --outdir=dist/testHooks --external:../node_modules/\\* --bundle",
-        "build:handler": "run -T esbuild src/lambdaHandler.ts --bundle --platform=node --target=node16 --outfile=dist/lambdaHandler.js --external:../node_modules/babel\\* --external:../node_modules/jest\\* --external:../node_modules/@jest\\* --external:../node_modules/@aws-sdk\\* --external:../node_modules/@sparticuz\\* --external:../node_modules/puppeteer\\*",
+        "build:handler": "run -T esbuild src/lambdaHandler.ts --bundle --platform=node --target=node16 --outfile=dist/lambdaHandler.js --external:./testHooks/\\* --external:../node_modules/babel\\* --external:../node_modules/jest\\* --external:../node_modules/@jest\\* --external:../node_modules/@aws-sdk\\* --external:../node_modules/@sparticuz\\* --external:../node_modules/puppeteer\\*",
         "build": "run build:testhooks && run build:handler",
         "prepack": "run clean && run build",
         "docker:build": "docker build ../ -f service.Dockerfile -t ghcr.io/tophat/sanity-runner-service",
