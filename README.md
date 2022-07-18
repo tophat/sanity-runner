@@ -56,18 +56,41 @@ The client is shipped as both a binary and as a docker image. The docker image i
 
 ### Quick Start
 
+```sh
+nvm install
+corepack enable
+```
+
+Followed by:
+
+```
+yarn build
+```
+
 Open 2 terminals, one for the service and one for the client.
 
 In the service terminal execute:
 
 ```sh
-yarn workspace sanity-runner-service dev
+SANITY_RUNNER_SLOW_MO=1000 yarn dev:service
 ```
 
 One the service is up and running, execute:
 
 ```sh
-yarn dev --test-dir example/repo/sanities/ --include google-fail-example -vv
+yarn dev:client --test-dir example/repo/sanities/ --include google-fail-example -vv
+```
+
+If you want to run the service in the docker image, you can use:
+
+```sh
+yarn workspace sanity-runner-service run docker:dev
+```
+
+This mounts node_modules. To run the production image (no mounting), run:
+
+```sh
+yarn workspace sanity-runner-service run docker:prod
 ```
 
 For more information about the [Client](./client/README.md) and [Service](./service/README.md), see the respective READMEs.

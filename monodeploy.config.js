@@ -6,9 +6,6 @@ module.exports = {
 
     registryMode: 'npm',
     packageGroups: {
-        'sanity-runner-service': {
-            registryMode: 'manifest',
-        },
         'sanity-runner-terraform': {
             registryMode: 'manifest',
         },

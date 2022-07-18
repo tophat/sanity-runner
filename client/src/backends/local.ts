@@ -22,7 +22,7 @@ export class InvokeLocal implements InvokeBackend {
 
             const response = await axios.post<InvokeResponsePayload>(
                 `http://localhost:${config.localPort}/2015-03-31/functions/function/invocations`,
-                JSON.stringify(invokePayload),
+                invokePayload,
             )
 
             return {

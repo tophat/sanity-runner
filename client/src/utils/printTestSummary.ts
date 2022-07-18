@@ -39,6 +39,13 @@ export async function printTestSummary(
     > = {}
 
     for (const junitReport of Object.values(results.testResults)) {
+        if (!junitReport.testsuites.testsuite) {
+            logger.error(
+                'Missing test suite. It is likely that the service was unable to parse the test.',
+            )
+            continue
+        }
+
         allResults.push(junitReport.testsuites)
 
         for (const suite of junitReport.testsuites.testsuite) {
@@ -83,6 +90,8 @@ export async function printTestSummary(
         testTime: 0,
     }
     for (const result of allResults) {
+        if (!result.testsuite) continue
+
         counts.testTime += Number(result.$.time) || 0
 
         for (const testSuite of result.testsuite) {

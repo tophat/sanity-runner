@@ -78,7 +78,7 @@ export async function runTests({
 
     const limit = pLimit(concurrency)
     logger.verbose(
-        `# of Tests: ${testFilenames.length} / Concurrency: ${
+        `Tests: ${testFilenames.length} / Concurrency: ${
             concurrency === Infinity ? 'No Limit' : concurrency
         }`,
     )

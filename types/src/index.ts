@@ -34,7 +34,8 @@ export type JUnitReport = {
             tests: number
             time: number
         }
-        testsuite: Array<{
+        /** May be missing if jest fails to parse the test. */
+        testsuite?: Array<{
             $: {
                 failures: number
                 skipped?: number

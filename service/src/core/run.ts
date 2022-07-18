@@ -62,6 +62,8 @@ export default class Run {
     }
 
     jestConfig(): Config.InitialOptions {
+        const requiresTypeScript = require.resolve('./testHooks/globalSetup').endsWith('.ts')
+
         return {
             bail: false,
             globalSetup: require.resolve('./testHooks/globalSetup'),
@@ -99,6 +101,14 @@ export default class Run {
                 enableGlobally: false,
             },
             verbose: true,
+            watchman: false,
+            ...(requiresTypeScript
+                ? {
+                      transform: {
+                          '^.+\\.ts$': '@swc/jest',
+                      },
+                  }
+                : {}),
         }
     }
 

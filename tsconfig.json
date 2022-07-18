@@ -15,6 +15,6 @@
       "jsx": "preserve",
       "lib": ["ES2021"]
   },
-  "include": ["./service", "./client", "./website"],
+  "include": ["./service", "./client", "./website", "./plugins", "./types"],
   "exclude": ["./**/dist"]
 }
