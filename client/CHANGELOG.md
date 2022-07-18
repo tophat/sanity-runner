@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.0.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.0.0...sanity-runner-client@6.0.1) "sanity-runner-client" (2022-07-18)<a name="6.0.1"></a>
+
+### Bug Fixes
+
+* print tests results in red when no tests run ([e6a120d](https://github.com/tophat/sanity-runner/commits/e6a120d))
+
+
+
+
 ## [6.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@5.0.0...sanity-runner-client@6.0.0) "sanity-runner-client" (2022-07-18)<a name="6.0.0"></a>
 
 ### Breaking Changes

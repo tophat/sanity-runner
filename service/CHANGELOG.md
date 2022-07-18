@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [5.0.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@5.0.0...sanity-runner-service@5.0.1) "sanity-runner-service" (2022-07-18)<a name="5.0.1"></a>
+
+### Bug Fixes
+
+* let nodejs infer file extension for test hook files ([e8a9912](https://github.com/tophat/sanity-runner/commits/e8a9912))
+
+
+
+
 ## [5.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@4.1.0-rc.0...sanity-runner-service@5.0.0) "sanity-runner-service" (2022-07-18)<a name="5.0.0"></a>
 
 ### Breaking Changes
