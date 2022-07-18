@@ -150,21 +150,3 @@ jobs:
         run: yarn workspaces foreach -vp run docker:push
       - name: Publish Docker Images (Latest)
         run: yarn workspaces foreach -vp run docker:push:latest
-  website:
-    name: Deploy Website
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    steps:
-      - uses: actions/checkout@v3.0.2
-      - uses: ./.github/actions/setup-env
-      - name: Build Website
-        run: yarn workspace sanity-runner-website build
-      - name: Deploy Website
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        uses: JamesIves/github-pages-deploy-action@v4.3.4
-        with:
-          token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
-          branch: gh-pages
-          folder: ./website/build/sanity-runner
-          clean: true
-          commit-message: 'docs: deploying website [skip ci]'

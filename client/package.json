@@ -19,7 +19,8 @@
     "publishConfig": {
         "registry": "https://registry.npmjs.org/",
         "bin": "./dist/index.js",
-        "main": "./dist/index.js"
+        "main": "./dist/index.js",
+        "access": "public"
     },
     "scripts": {
         "clean": "rm -rf dist && mkdir -p dist",
