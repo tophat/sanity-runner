@@ -1,0 +1,47 @@
+{
+  "name": "sanity-runner-docs",
+  "private": true,
+  "dependencies": {
+    "path-browserify": "^1.0.1",
+    "prism-react-renderer": "^1.2.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
+    "react-markdown": "^7.1.1",
+    "remark-external-links": "^9.0.1",
+    "sanitize.css": "^13.0.0",
+    "typedoc": "^0.23.5"
+  },
+  "devDependencies": {
+    "@mdx-js/loader": "^1.6.22",
+    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
+    "@types/loader-utils": "^2.0.3",
+    "@types/mdx-js__react": "^1.5.5",
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-helmet": "^6.1.5",
+    "gatsby": "^4.12.1",
+    "gatsby-plugin-gatsby-cloud": "^4.11.1",
+    "gatsby-plugin-image": "^2.11.1",
+    "gatsby-plugin-manifest": "^4.11.1",
+    "gatsby-plugin-mdx": "^3.11.1",
+    "gatsby-plugin-offline": "^5.11.1",
+    "gatsby-plugin-react-helmet": "^5.11.0",
+    "gatsby-plugin-sharp": "^4.11.1",
+    "gatsby-remark-autolink-headers": "^5.11.1",
+    "gatsby-remark-images": "^6.11.1",
+    "gatsby-source-filesystem": "^4.11.1",
+    "gatsby-transformer-sharp": "^4.11.0",
+    "loader-utils": "^3.2.0",
+    "prop-types": "^15.8.1"
+  },
+  "scripts": {
+    "build:gatsby": "rm -rf .cache public && gatsby build --prefix-paths \"$@\" && rsync -rtuc --delete public/ ../docs/",
+    "build": "yarn build:gatsby",
+    "develop": "gatsby develop",
+    "start": "yarn run develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  }
+}

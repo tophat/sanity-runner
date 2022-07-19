@@ -1,0 +1,73 @@
+---
+path: "/getting-started"
+title: "Getting Started"
+---
+
+## Getting Started
+
+Let's start by writing a basic sanity test. Create a directory to house your sanities:
+
+```sh
+mkdir company-sanities
+```
+
+Let's add a simple test:
+
+```sh
+cat << EOF > company-sanities/google-search.test.js
+describe('Google Loads', () => {
+    test('Google Search is working', async () => {
+        await page.goto('https://www.google.com')
+        await expect(page).toFill('[title=Search]', 'Tophat\n')
+        await page.waitFor(500)
+        await expect(page.url()).toContain('search')
+    }, 30000)
+})
+EOF
+```
+
+Note that the test must be in JavaScript and cannot contain any imports. If you would like to import other files, you must bundle your tests using a tool such as webpack, esbuild, or rollup. There is also a limitation of 1 test case per file.
+
+Once we have our test, let's test it out by running the sanity runner locally.
+
+```sh
+yarn dlx sanity-runner-service
+```
+
+and in another terminal:
+
+```sh
+yarn dlx sanity-runner-client --test-dir company-sanities --local --output-dir artifacts -vv
+```
+
+The sanity should run and print success or failure. A JUnit report will be written to the output directory specified (e.g. artifacts).
+
+Running the sanity locally is great for testing, but if that's all there was to the sanity runner, we could just use Puppeteer or Playwright directly. Let's take it to the next level so we can quickly support running hundreds or even thousands of end to end browser tests.
+
+In the sanity runner repository you will find a terraform module. In your own private infrastructure as code repository, add:
+
+```terraform
+locals {
+    function_name = "sanity-runner"
+}
+
+module "sanity-runner" {
+  source                      = "git@github.com:tophat/sanity-runner.git//terraform?ref=sanity-runner-terraform@1.0.0"
+  function_name               = local.function_name
+  container_version           = "latest"
+  vpc_subnet_ids              = var.vpc_subnet_ids
+  vpc_sg_ids                  = var.vpc_sg_ids
+}
+```
+
+You can change the `container_version` to point to a specific version, `latest`, or `next` (for pre-releases). It is recommended to hardcode the exact version. This version corresponds to the sanity-runner-service version, which you can find in [GitHub Releases](https://github.com/tophat/sanity-runner/releases).
+
+Feel free to fork the terraform module if you'd like to customize the environment further. Most of the sanity runner logic lives in the client and service. The terraform module is maintained for convenience.
+
+After deploying the infrastructure (which is just a simple Lambda), we can re-run the sanity-runner-client command but without the "--local" flag, and with the addition of the lambda function name:
+
+```sh
+yarn dlx sanity-runner-client --test-dir company-sanities --output-dir artifacts -vv --lambdaFunction sanity-runner
+```
+
+This will invoke the lambda once per sanity test. You can specify concurrency limits for an upperbound on concurrent lambda invocations.

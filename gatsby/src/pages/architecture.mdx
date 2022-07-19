@@ -1,0 +1,16 @@
+---
+path: "/architecture"
+title: "Architecture"
+---
+
+## Architecture
+
+### Code Organization
+
+The Sanity Runner codebase is organized as a monorepo with the help of [monodeploy](https://github.com/tophat/monodeploy).
+
+The `service` directory contains the code which is ultimately packaged into the sanity-runner-service docker image, while the `client` directory contains the code which powers `yarn dlx sanity-runner-client` (and is also shipped as a docker image).
+
+### Test Orchestration
+
+![Architecture Diagram](../images/architecture.png)

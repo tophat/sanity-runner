@@ -15,12 +15,7 @@ import type {
 
 import TestRunner from './testRunner'
 
-import type { APIGatewayProxyResultV2, Context } from 'aws-lambda'
-
-export async function handler(
-    event: InvokePayload,
-    _context: Context,
-): Promise<APIGatewayProxyResultV2<InvokeResponsePayload>> {
+export async function service(event: InvokePayload): Promise<InvokeResponsePayload> {
     if (process.env.DEBUG?.includes('sanity-runner')) {
         childProcess.execSync('find /tmp', { encoding: 'utf-8', stdio: 'inherit' })
     }

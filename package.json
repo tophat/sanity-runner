@@ -16,7 +16,10 @@
         "release": "monodeploy --config-file monodeploy.config.js --log-level 0 --push --auto-commit --plugins @monodeploy/plugin-github",
         "prerelease": "run release --prerelease",
         "build": "yarn workspaces foreach -vpt --no-private --topological-dev run prepack",
-        "dev": "yarn ts-node --transpile-only $(yarn workspace sanity-runner-client bin sanity-runner) --local --output-dir output"
+        "dev:client": "yarn ts-node --transpile-only $(yarn workspace sanity-runner-client bin sanity-runner) --local --output-dir output",
+        "dev:service": "yarn ts-node --transpile-only $(yarn workspace sanity-runner-service bin sanity-runner-service)",
+        "docs": "yarn workspace sanity-runner-docs build",
+        "docs:dev": "yarn workspace sanity-runner-docs develop"
     },
     "workspaces": [
         "client",
@@ -24,6 +27,7 @@
         "website",
         "types",
         "terraform",
+        "gatsby",
         "plugins/*"
     ],
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
@@ -53,7 +57,7 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "monodeploy": "^3.1.0",
         "prettier": "^2.7.1",
-        "ts-node": "^10.8.1",
+        "ts-node": "^10.9.1",
         "typescript": "4.7.4"
     },
     "private": true,

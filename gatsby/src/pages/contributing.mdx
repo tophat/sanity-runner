@@ -1,0 +1,62 @@
+---
+path: "/contributing"
+title: "Contributing"
+---
+
+## Contributing to Sanity Runner
+
+### Getting Started
+
+Optionally install nvm to ensure you're using the correct version of node. You can find the node version in the `.nvmrc` file. Once you have the right version of node selected, you'll want to enable [corepack](https://github.com/nodejs/corepack) via `corepack enable`.
+
+Install dependencies.
+
+```sh
+yarn
+```
+
+and then install the git hooks:
+
+```sh
+yarn husky install
+```
+
+This project uses [Typescript](https://www.typescriptlang.org/) and [Yarn Berry](https://yarnpkg.com/).
+
+### Build
+
+You can execute `yarn build` to generate the build assets that ultimately gets uploaded to the NPM registry. It will also leave the intermediate `dist` artifacts, which contain the transpiled code.
+
+### Running Local Tests
+
+Followed by:
+
+```sh
+yarn build
+```
+
+Open 2 terminals, one for the service and one for the client.
+
+In the service terminal execute:
+
+```sh
+SANITY_RUNNER_SLOW_MO=1000 yarn dev:service
+```
+
+One the service is up and running, execute:
+
+```sh
+yarn dev:client --test-dir example/repo/sanities/ --include google-fail-example -vv
+```
+
+If you want to run the service in the docker image, you can use:
+
+```sh
+yarn workspace sanity-runner-service run docker:dev
+```
+
+This mounts node_modules. To run the production image (no mounting), run:
+
+```sh
+yarn workspace sanity-runner-service run docker:prod
+```
