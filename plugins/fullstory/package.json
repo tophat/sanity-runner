@@ -2,6 +2,7 @@
     "name": "@tophat/sanity-runner-plugin-fullstory",
     "version": "1.1.0",
     "description": "Sanity runner plugin for fullstory",
+    "group": "sanity-runner",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "main": "src/index.ts",

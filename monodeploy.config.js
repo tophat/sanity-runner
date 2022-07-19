@@ -1,9 +1,10 @@
 module.exports = {
     conventionalChangelogConfig: '@tophat/conventional-changelog-config',
-    changelogFilename: '<packageDir>/CHANGELOG.md',
+    changelogFilename: 'CHANGELOG.md',
     persistVersions: true,
     autoCommitMessage: 'chore: release sanity runner [skip ci]',
 
+    packageGroupManifestField: 'group',
     registryMode: 'npm',
     packageGroups: {
         'sanity-runner-terraform': {

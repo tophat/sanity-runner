@@ -2,6 +2,7 @@
     "name": "sanity-runner-client",
     "version": "6.1.0",
     "description": "Sanity cli client",
+    "group": "sanity-runner",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "files": [
