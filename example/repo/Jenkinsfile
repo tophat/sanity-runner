@@ -5,8 +5,8 @@ pipeline {
             steps {
                 sh 'rm -rf artifacts'
                 sh 'bash bootstrap.sh -p .'
-                // Insert AWS Creds 
-                sh './sanity-runner --test-dir dist --output-dir artifacts'            
+                // Insert AWS Creds
+                sh './sanity-runner --test-dir dist --output-dir artifacts'
             }
         }
     }

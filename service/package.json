@@ -5,25 +5,29 @@
     "group": "sanity-runner",
     "main": "src/handler.ts",
     "bin": "src/local.ts",
+    "files": [
+        "lib"
+    ],
     "publishConfig": {
         "registry": "https://registry.npmjs.org/",
-        "main": "dist/handler.js",
+        "main": "lib/handler.js",
         "bin": {
-            "sanity-runner-service": "dist/local.js"
+            "sanity-runner-service": "lib/local.js"
         },
         "access": "public"
     },
     "scripts": {
-        "clean": "rm -rf dist .cache && mkdir -p dist",
+        "clean": "rm -rf lib bundle .cache && mkdir -p lib && mkdir -p bundle",
         "lint:typecheck": "run -T tsc -p tsconfig.json --noEmit",
-        "build:testhooks": "run -T esbuild src/core/testHooks/* --platform=node --target=node16 --outdir=dist/testHooks --external:../node_modules/\\* --bundle",
-        "build:handler": "run -T esbuild src/handler.ts --bundle --platform=node --target=node16 --outfile=dist/handler.js --external:./testHooks/\\* --external:../node_modules/babel\\* --external:../node_modules/jest\\* --external:../node_modules/@jest\\* --external:../node_modules/@aws-sdk\\* --external:../node_modules/@sparticuz\\* --external:../node_modules/puppeteer\\*",
-        "build": "run build:testhooks && run build:handler",
-        "prepack": "run clean && run build",
+        "build:testhooks": "run -T esbuild src/core/testHooks/* --platform=node --target=node16 --outdir=bundle/testHooks --external:../node_modules/\\* --bundle",
+        "build:handler": "run -T esbuild src/handler.ts --bundle --platform=node --target=node16 --outfile=bundle/handler.js --external:./testHooks/\\* --external:../node_modules/babel\\* --external:../node_modules/jest\\* --external:../node_modules/@jest\\* --external:../node_modules/@aws-sdk\\* --external:../node_modules/@sparticuz\\* --external:../node_modules/puppeteer\\*",
+        "build:bundle": "run build:testhooks && run build:handler",
+        "build:lib": "run -T tsc -p .",
+        "prepack": "run clean && run build:bundle && run build:lib",
         "docker:build": "docker build ../ -f service.Dockerfile -t ghcr.io/tophat/sanity-runner-service",
         "docker:build:local": "docker build ../ -f service-local.Dockerfile -t ghcr.io/tophat/sanity-runner-service",
         "docker:prod": "run docker:build && docker run -p 9000:8080 ghcr.io/tophat/sanity-runner-service:latest",
-        "docker:run:local": "docker run -p 9000:8080 --mount type=bind,source=$(abspath ../node_modules 2>/dev/null || realpath ../node_modules),target=/var/task/node_modules,readonly --mount type=bind,source=$(abspath ./dist 2>/dev/null || realpath ./dist),target=/var/task/service/dist,readonly ghcr.io/tophat/sanity-runner-service:latest",
+        "docker:run:local": "docker run -p 9000:8080 --mount type=bind,source=$(abspath ../node_modules 2>/dev/null || realpath ../node_modules),target=/var/task/node_modules,readonly --mount type=bind,source=$(abspath ./bundle 2>/dev/null || realpath ./bundle),target=/var/task/service/bundle,readonly ghcr.io/tophat/sanity-runner-service:latest",
         "docker:dev": "run build && run docker:build:local && run docker:run:local",
         "docker:tag": "docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:$(cat package.json | jq -r '.version')",
         "docker:tag:prerelease": "docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:next",

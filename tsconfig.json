@@ -16,5 +16,5 @@
       "lib": ["ES2021"]
   },
   "include": ["./service", "./client", "./website", "./plugins", "./types", "./declarations"],
-  "exclude": ["./**/dist"]
+  "exclude": ["./**/lib"]
 }

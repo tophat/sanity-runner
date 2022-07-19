@@ -6,7 +6,7 @@
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "files": [
-        "dist"
+        "lib"
     ],
     "repository": {
         "type": "git",
@@ -19,12 +19,12 @@
     },
     "publishConfig": {
         "registry": "https://registry.npmjs.org/",
-        "bin": "./dist/index.js",
-        "main": "./dist/index.js",
+        "bin": "./lib/index.js",
+        "main": "./lib/index.js",
         "access": "public"
     },
     "scripts": {
-        "clean": "rm -rf dist && mkdir -p dist",
+        "clean": "rm -rf lib && mkdir -p lib",
         "lint:typecheck": "run -T tsc -p tsconfig.json --noEmit",
         "build": "run -T tsc -p .",
         "prepack": "run clean && run build",
