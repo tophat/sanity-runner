@@ -19,7 +19,7 @@ const Header: React.FC<{ siteTitle: string }> = ({ siteTitle = '' }) => (
                 <Link
                     to="/"
                     style={{
-                        color: 'white',
+                        color: '#232129',
                         textDecoration: 'none',
                     }}
                 >
@@ -28,7 +28,7 @@ const Header: React.FC<{ siteTitle: string }> = ({ siteTitle = '' }) => (
             </h1>
             <a
                 href="https://github.com/tophat/sanity-runner"
-                style={{ color: '#ffffff' }}
+                style={{ color: '#232129' }}
                 rel="noreferrer"
             >
                 View GitHub Project
