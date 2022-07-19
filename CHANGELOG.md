@@ -2,6 +2,55 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.1.2](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-fullstory@6.1.1...@tophat/sanity-runner-plugin-fullstory@6.1.2) "@tophat/sanity-runner-plugin-fullstory" (2022-07-19)<a name="6.1.2"></a>
+
+### Bug Fixes
+
+* bump versions for single release (#307) ([3871a4d](https://github.com/tophat/sanity-runner/commits/3871a4d))
+
+
+## [6.1.2](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-pagerduty@6.1.1...@tophat/sanity-runner-plugin-pagerduty@6.1.2) "@tophat/sanity-runner-plugin-pagerduty" (2022-07-19)<a name="6.1.2"></a>
+
+### Bug Fixes
+
+* bump versions for single release (#307) ([3871a4d](https://github.com/tophat/sanity-runner/commits/3871a4d))
+
+
+## [6.1.2](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-slack@6.1.1...@tophat/sanity-runner-plugin-slack@6.1.2) "@tophat/sanity-runner-plugin-slack" (2022-07-19)<a name="6.1.2"></a>
+
+### Bug Fixes
+
+* bump versions for single release (#307) ([3871a4d](https://github.com/tophat/sanity-runner/commits/3871a4d))
+
+
+## [6.1.2](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.1.1...@tophat/sanity-runner-types@6.1.2) "@tophat/sanity-runner-types" (2022-07-19)<a name="6.1.2"></a>
+
+### Bug Fixes
+
+* bump versions for single release (#307) ([3871a4d](https://github.com/tophat/sanity-runner/commits/3871a4d))
+
+
+## [6.1.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.1.1...sanity-runner-client@6.1.2) "sanity-runner-client" (2022-07-19)<a name="6.1.2"></a>
+
+### Bug Fixes
+
+* bump versions for single release (#307) ([3871a4d](https://github.com/tophat/sanity-runner/commits/3871a4d))
+
+
+## [6.1.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.1.1...sanity-runner-service@6.1.2) "sanity-runner-service" (2022-07-19)<a name="6.1.2"></a>
+
+### Bug Fixes
+
+* bump versions for single release (#307) ([3871a4d](https://github.com/tophat/sanity-runner/commits/3871a4d))
+
+
+## [1.0.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@1.0.0...sanity-runner-terraform@1.0.1) "sanity-runner-terraform" (2022-07-19)<a name="1.0.1"></a>
+
+### Bug Fixes
+
+* bump versions for single release (#307) ([3871a4d](https://github.com/tophat/sanity-runner/commits/3871a4d))
+
+
 ## [6.1.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.0.1...sanity-runner-client@6.1.0) "sanity-runner-client" (2022-07-19)<a name="6.1.0"></a>
 
 ### Features
