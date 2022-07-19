@@ -1,6 +1,6 @@
 {
     "name": "sanity-runner-service",
-    "version": "6.1.3",
+    "version": "6.1.4",
     "description": "Distributed Sanity Test Suite Runner",
     "group": "sanity-runner",
     "main": "src/handler.ts",
@@ -63,9 +63,9 @@
         "puppeteer": "^14.4.1"
     },
     "peerDependencies": {
-        "@tophat/sanity-runner-plugin-fullstory": "workspace:*",
-        "@tophat/sanity-runner-plugin-pagerduty": "workspace:*",
-        "@tophat/sanity-runner-plugin-slack": "workspace:*",
+        "@tophat/sanity-runner-plugin-fullstory": "workspace:^6.1.3",
+        "@tophat/sanity-runner-plugin-pagerduty": "workspace:^6.1.3",
+        "@tophat/sanity-runner-plugin-slack": "workspace:^6.1.3",
         "puppeteer": "^14.4.1"
     },
     "dependencies": {
