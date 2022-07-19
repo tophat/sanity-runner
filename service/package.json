@@ -1,6 +1,6 @@
 {
     "name": "sanity-runner-service",
-    "version": "5.0.1",
+    "version": "5.1.0",
     "description": "Distributed Sanity Test Suite Runner",
     "main": "src/handler.ts",
     "bin": "src/local.ts",

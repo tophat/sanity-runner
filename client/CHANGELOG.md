@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.1.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.0.1...sanity-runner-client@6.1.0) "sanity-runner-client" (2022-07-19)<a name="6.1.0"></a>
+
+### Features
+
+* support locally running sanity runner service ([1f65f6d](https://github.com/tophat/sanity-runner/commits/1f65f6d))
+
+
+
+
 ## [6.0.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.0.0...sanity-runner-client@6.0.1) "sanity-runner-client" (2022-07-18)<a name="6.0.1"></a>
 
 ### Bug Fixes
