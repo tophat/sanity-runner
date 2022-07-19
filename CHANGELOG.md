@@ -2,6 +2,22 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.1.7](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.1.6...sanity-runner-client@6.1.7) "sanity-runner-client" (2022-07-19)<a name="6.1.7"></a>
+
+### Bug Fixes
+
+* typo in sanity runner client bin name ([f7ab4ba](https://github.com/tophat/sanity-runner/commits/f7ab4ba))
+
+
+## [6.1.7](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.1.6...sanity-runner-service@6.1.7) "sanity-runner-service" (2022-07-19)<a name="6.1.7"></a>
+
+### Bug Fixes
+
+* mark plugins as peer dependencies (#309) ([977f339](https://github.com/tophat/sanity-runner/commits/977f339))
+* increase local server payload limit to 10MB ([cb7f443](https://github.com/tophat/sanity-runner/commits/cb7f443))
+* force release of max size increase ([5ef9c25](https://github.com/tophat/sanity-runner/commits/5ef9c25))
+
+
 ## [6.1.4](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.1.3...sanity-runner-service@6.1.4) "sanity-runner-service" (2022-07-19)<a name="6.1.4"></a>
 
 ### Bug Fixes
