@@ -19,7 +19,9 @@
     },
     "publishConfig": {
         "registry": "https://registry.npmjs.org/",
-        "bin": "./lib/index.js",
+        "bin": {
+            "sanity-runner": "./lib/index.js"
+        },
         "main": "./lib/index.js",
         "access": "public"
     },
