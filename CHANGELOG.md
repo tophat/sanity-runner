@@ -2,6 +2,48 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.1.3](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-fullstory@6.1.2...@tophat/sanity-runner-plugin-fullstory@6.1.3) "@tophat/sanity-runner-plugin-fullstory" (2022-07-19)<a name="6.1.3"></a>
+
+### Bug Fixes
+
+* publish sanity runner service non-bundled code ([d5e5785](https://github.com/tophat/sanity-runner/commits/d5e5785))
+
+
+## [6.1.3](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-pagerduty@6.1.2...@tophat/sanity-runner-plugin-pagerduty@6.1.3) "@tophat/sanity-runner-plugin-pagerduty" (2022-07-19)<a name="6.1.3"></a>
+
+### Bug Fixes
+
+* publish sanity runner service non-bundled code ([d5e5785](https://github.com/tophat/sanity-runner/commits/d5e5785))
+
+
+## [6.1.3](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-slack@6.1.2...@tophat/sanity-runner-plugin-slack@6.1.3) "@tophat/sanity-runner-plugin-slack" (2022-07-19)<a name="6.1.3"></a>
+
+### Bug Fixes
+
+* publish sanity runner service non-bundled code ([d5e5785](https://github.com/tophat/sanity-runner/commits/d5e5785))
+
+
+## [6.1.3](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.1.2...@tophat/sanity-runner-types@6.1.3) "@tophat/sanity-runner-types" (2022-07-19)<a name="6.1.3"></a>
+
+### Bug Fixes
+
+* publish sanity runner service non-bundled code ([d5e5785](https://github.com/tophat/sanity-runner/commits/d5e5785))
+
+
+## [6.1.3](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.1.2...sanity-runner-client@6.1.3) "sanity-runner-client" (2022-07-19)<a name="6.1.3"></a>
+
+### Bug Fixes
+
+* publish sanity runner service non-bundled code ([d5e5785](https://github.com/tophat/sanity-runner/commits/d5e5785))
+
+
+## [6.1.3](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.1.2...sanity-runner-service@6.1.3) "sanity-runner-service" (2022-07-19)<a name="6.1.3"></a>
+
+### Bug Fixes
+
+* publish sanity runner service non-bundled code ([d5e5785](https://github.com/tophat/sanity-runner/commits/d5e5785))
+
+
 ## [6.1.2](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-fullstory@6.1.1...@tophat/sanity-runner-plugin-fullstory@6.1.2) "@tophat/sanity-runner-plugin-fullstory" (2022-07-19)<a name="6.1.2"></a>
 
 ### Bug Fixes
