@@ -9,14 +9,14 @@
     "publishConfig": {
         "registry": "https://registry.npmjs.org/",
         "access": "public",
-        "main": "dist/index.js",
-        "types": "dist/index.d.ts"
+        "main": "lib/index.js",
+        "types": "lib/index.d.ts"
     },
     "files": [
-        "dist"
+        "lib"
     ],
     "scripts": {
-        "clean": "rm -rf dist && mkdir -p dist",
+        "clean": "rm -rf lib && mkdir -p lib",
         "lint:typecheck": "run -T tsc -p tsconfig.json --noEmit",
         "build": "run -T tsc -p tsconfig.json",
         "prepack": "run clean && run build"

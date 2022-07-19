@@ -12,4 +12,4 @@ ADD . .
 
 RUN yarn workspaces focus sanity-runner-service --production
 
-CMD ["service/dist/handler.handler"]
+CMD ["service/bundle/handler.handler"]

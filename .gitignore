@@ -5,12 +5,28 @@
 # OS
 .DS_Store
 
-.serverless/
+# Build Artifacts
+lib/
+dist/
+bundle/
 artifacts/
+output
+
+# Dependency Management
 node_modules/
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/versions
+!.yarn/sdks
+.pnp.*
+
+# Logs / Transient Files
+.serverless/
 yarn-error.log
 npm-debug.log
-dist/
+
 example/repo/yarn.lock
 example/repo/node_modules/
 example/repo/output/
@@ -20,20 +36,9 @@ client/bin
 
 # service
 .cache
-
 serverless_chromium.zip
 headless-chromium
 release-archive
 
 .terraform/
 .terraform.lock.hcl
-
-.yarn/*
-!.yarn/patches
-!.yarn/releases
-!.yarn/plugins
-!.yarn/versions
-!.yarn/sdks
-.pnp.*
-
-output
