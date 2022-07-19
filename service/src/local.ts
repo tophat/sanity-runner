@@ -7,7 +7,7 @@ import type { InvokePayload, InvokeResponsePayload } from '@tophat/sanity-runner
 import { service } from './core'
 
 const app = express()
-app.use(express.json())
+app.use(express.json({ limit: '10MB' }))
 app.use(morgan('dev'))
 
 app.post<unknown, InvokeResponsePayload, InvokePayload>(
