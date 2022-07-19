@@ -63,6 +63,9 @@
         "puppeteer": "^14.4.1"
     },
     "peerDependencies": {
+        "@tophat/sanity-runner-plugin-fullstory": "workspace:*",
+        "@tophat/sanity-runner-plugin-pagerduty": "workspace:*",
+        "@tophat/sanity-runner-plugin-slack": "workspace:*",
         "puppeteer": "^14.4.1"
     },
     "dependencies": {
