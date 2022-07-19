@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+
+html, body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+a.anchor.before {
+    margin-right: 0.2em;
+}
+
+table {
+    color: #ffffff;
+    padding: 20px;
+    background: #803ed7;
+    text-align: left;
+    font-size: 1.05em;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+table th {
+    font-size: 1.4em;
+    padding: 0.4em 1em 0.4em 0.6em;
+    white-space: nowrap;
+}
+
+table tbody .name {
+    color: inherit;
+    text-decoration: none;
+}
+table tbody .name:hover {
+    text-decoration: underline;
+}
+table tbody .name.deprecated {
+    color: inherit;
+    text-decoration: line-through;
+}
+
+table tbody .type {
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+table tbody tr {
+    background: #1E1E1E;
+}
+
+table tbody tr:nth-child(2n+1) {
+    background: #383838;
+}
+
+table tbody tr.schema-option.deprecated {
+    background: repeating-linear-gradient(
+        45deg,
+        #1e1e1e,
+        #383838 10px,
+        #1e1e1e 10px,
+        #383838 20px
+    );
+}
+
+table tbody .description a {
+    color: inherit;
+}
+
+table tbody .description p {
+    margin: 0.2em 0 0.6em 0;
+}
+
+table td {
+    padding: 0.4em 1em 0.4em;
+    line-height: 1.5;
+}
+
+table td:first-child {
+    white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+    table tr {
+        display: flex;
+        flex-direction: column;
+    }
+
+    table tbody .description {
+        margin-top: 0.1em;
+        padding-top: 0.2em;
+    }
+}
+
+nav.header-nav {
+    display: block;
+    width: 100%;
+    background: #783bc7;
+}
+nav.header-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+}
+nav.header-nav a:hover {
+    text-decoration: underline;
+    transform: scale(1.1);
+}
+nav.header-nav a.active {
+    text-decoration: underline;
+}
+nav.header-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 1000px;
+}
+nav.header-nav li {
+    padding: 0;
+    flex-grow: 1;
+    text-align: center;
+    white-space: nowrap;
+    padding: 0.75em 1.5em;
+}

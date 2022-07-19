@@ -17,7 +17,9 @@
         "prerelease": "run release --prerelease",
         "build": "yarn workspaces foreach -vpt --no-private --topological-dev run prepack",
         "dev:client": "yarn ts-node --transpile-only $(yarn workspace sanity-runner-client bin sanity-runner) --local --output-dir output",
-        "dev:service": "yarn ts-node --transpile-only $(yarn workspace sanity-runner-service bin sanity-runner-service)"
+        "dev:service": "yarn ts-node --transpile-only $(yarn workspace sanity-runner-service bin sanity-runner-service)",
+        "docs": "yarn workspace sanity-runner-docs build",
+        "docs:dev": "yarn workspace sanity-runner-docs develop"
     },
     "workspaces": [
         "client",
@@ -25,6 +27,7 @@
         "website",
         "types",
         "terraform",
+        "gatsby",
         "plugins/*"
     ],
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
