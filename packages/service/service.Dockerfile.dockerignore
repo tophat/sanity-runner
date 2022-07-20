@@ -1,0 +1,7 @@
+/*
+!/packages/service/bundle/*
+!/packages/service/package.json
+!/.yarnrc.yml
+!/.yarn
+!/package.json
+!/yarn.lock

@@ -7,4 +7,4 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 RUN yum install -y git make gcc gcc-c++ && \
     corepack enable
 
-CMD ["service/bundle/handler.handler"]
+CMD ["packages/service/bundle/handler.handler"]

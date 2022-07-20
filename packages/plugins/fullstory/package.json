@@ -1,9 +1,9 @@
 {
-    "name": "@tophat/sanity-runner-plugin-slack",
+    "name": "@tophat/sanity-runner-plugin-fullstory",
     "version": "6.1.3",
-    "description": "Sanity runner plugin for slack alerts",
-    "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
+    "description": "Sanity runner plugin for fullstory",
     "group": "sanity-runner",
+    "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "main": "src/index.ts",
     "publishConfig": {
@@ -24,10 +24,9 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/tophat/sanity-runner.git",
-        "directory": "plugins/slack"
+        "directory": "packages/plugins/fullstory"
     },
     "dependencies": {
-        "@slack/web-api": "^6.7.0",
         "@tophat/sanity-runner-types": "workspace:^6.1.3"
     },
     "devDependencies": {

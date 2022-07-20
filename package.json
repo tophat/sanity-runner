@@ -22,13 +22,9 @@
         "docs:dev": "yarn workspace sanity-runner-docs develop"
     },
     "workspaces": [
-        "client",
-        "service",
-        "website",
-        "types",
         "terraform",
         "gatsby",
-        "plugins/*"
+        "packages/**"
     ],
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",

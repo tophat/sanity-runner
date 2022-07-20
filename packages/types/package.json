@@ -1,16 +1,16 @@
 {
-    "name": "@tophat/sanity-runner-plugin-fullstory",
+    "name": "@tophat/sanity-runner-types",
     "version": "6.1.3",
-    "description": "Sanity runner plugin for fullstory",
+    "description": "Sanity runner typescript types",
     "group": "sanity-runner",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
     "main": "src/index.ts",
     "publishConfig": {
         "registry": "https://registry.npmjs.org/",
-        "access": "public",
         "main": "lib/index.js",
-        "types": "lib/index.d.ts"
+        "types": "lib/index.d.ts",
+        "access": "public"
     },
     "files": [
         "lib"
@@ -24,12 +24,17 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/tophat/sanity-runner.git",
-        "directory": "plugins/fullstory"
+        "directory": "packages/types"
     },
     "dependencies": {
-        "@tophat/sanity-runner-types": "workspace:^6.1.3"
+        "@jest/test-result": "^28.1.1",
+        "puppeteer-core": "^14.1.1",
+        "tapable": "^2.2.1",
+        "winston": "^3.8.1"
     },
     "devDependencies": {
-        "@types/node": "^16.11.36"
+        "@types/node": "^16.11.36",
+        "esbuild": "^0.14.48",
+        "typescript": "4.7.4"
     }
 }

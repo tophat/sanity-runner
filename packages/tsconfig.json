@@ -15,6 +15,6 @@
       "jsx": "preserve",
       "lib": ["ES2021"]
   },
-  "include": ["./packages", "./declarations"],
+  "include": ["./", "../declarations"],
   "exclude": ["./**/lib"]
 }
