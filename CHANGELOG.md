@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.1.8](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.1.7...sanity-runner-service@6.1.8) "sanity-runner-service" (2022-07-20)<a name="6.1.8"></a>
+
+### Bug Fixes
+
+* install production dependencies in docker image ([d52631d](https://github.com/tophat/sanity-runner/commits/d52631d))
+
+
 ## [6.1.7](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.1.6...sanity-runner-client@6.1.7) "sanity-runner-client" (2022-07-19)<a name="6.1.7"></a>
 
 ### Bug Fixes

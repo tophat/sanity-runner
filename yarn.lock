@@ -5954,7 +5954,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tophat/sanity-runner-plugin-fullstory@*, @tophat/sanity-runner-plugin-fullstory@workspace:packages/plugins/fullstory":
+"@tophat/sanity-runner-plugin-fullstory@^6.1.3, @tophat/sanity-runner-plugin-fullstory@workspace:packages/plugins/fullstory":
   version: 0.0.0-use.local
   resolution: "@tophat/sanity-runner-plugin-fullstory@workspace:packages/plugins/fullstory"
   dependencies:
@@ -5963,7 +5963,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tophat/sanity-runner-plugin-pagerduty@*, @tophat/sanity-runner-plugin-pagerduty@workspace:packages/plugins/pagerduty":
+"@tophat/sanity-runner-plugin-pagerduty@^6.1.3, @tophat/sanity-runner-plugin-pagerduty@workspace:packages/plugins/pagerduty":
   version: 0.0.0-use.local
   resolution: "@tophat/sanity-runner-plugin-pagerduty@workspace:packages/plugins/pagerduty"
   dependencies:
@@ -5973,7 +5973,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@tophat/sanity-runner-plugin-slack@*, @tophat/sanity-runner-plugin-slack@workspace:packages/plugins/slack":
+"@tophat/sanity-runner-plugin-slack@^6.1.3, @tophat/sanity-runner-plugin-slack@workspace:packages/plugins/slack":
   version: 0.0.0-use.local
   resolution: "@tophat/sanity-runner-plugin-slack@workspace:packages/plugins/slack"
   dependencies:
@@ -22002,9 +22002,9 @@ resolve@^2.0.0-next.3:
     "@sparticuz/chrome-aws-lambda": ^14.4.1
     "@swc/core": ^1.2.218
     "@swc/jest": ^0.2.22
-    "@tophat/sanity-runner-plugin-fullstory": "*"
-    "@tophat/sanity-runner-plugin-pagerduty": "*"
-    "@tophat/sanity-runner-plugin-slack": "*"
+    "@tophat/sanity-runner-plugin-fullstory": ^6.1.3
+    "@tophat/sanity-runner-plugin-pagerduty": ^6.1.3
+    "@tophat/sanity-runner-plugin-slack": ^6.1.3
     "@tophat/sanity-runner-types": "workspace:*"
     "@types/async-retry": ^1.4.4
     "@types/aws-lambda": ^8.10.93
