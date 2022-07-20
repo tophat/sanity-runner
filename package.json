@@ -22,13 +22,9 @@
         "docs:dev": "yarn workspace sanity-runner-docs develop"
     },
     "workspaces": [
-        "client",
-        "service",
-        "website",
-        "types",
         "terraform",
         "gatsby",
-        "plugins/*"
+        "packages/**"
     ],
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
@@ -55,6 +51,7 @@
         "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-react": "^7.30.1",
         "eslint-plugin-react-hooks": "^4.6.0",
+        "glob": "^7.2.0",
         "monodeploy": "^3.1.0",
         "prettier": "^2.7.1",
         "ts-node": "^10.9.1",

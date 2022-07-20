@@ -1,6 +1,6 @@
 module.exports = {
     root: true,
-    extends: ['@tophat/eslint-config/base', '@tophat/eslint-config/jest'],
+    extends: ['@tophat/eslint-config/base'],
     rules: {
         'prettier/prettier': [
             'error',

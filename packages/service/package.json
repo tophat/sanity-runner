@@ -3,32 +3,31 @@
     "version": "6.1.7",
     "description": "Distributed Sanity Test Suite Runner.",
     "group": "sanity-runner",
-    "main": "src/handler.ts",
+    "main": "bundle/handler.js",
     "bin": "src/local.ts",
     "files": [
-        "lib"
+        "lib",
+        "bundle"
     ],
     "publishConfig": {
         "registry": "https://registry.npmjs.org/",
-        "main": "lib/handler.js",
         "bin": {
             "sanity-runner-service": "lib/local.js"
         },
         "access": "public"
     },
+    "installConfig": {
+        "hoistingLimits": "workspaces"
+    },
     "scripts": {
         "clean": "rm -rf lib bundle .cache && mkdir -p lib && mkdir -p bundle",
         "lint:typecheck": "run -T tsc -p tsconfig.json --noEmit",
-        "build:testhooks": "run -T esbuild src/core/testHooks/* --platform=node --target=node16 --outdir=bundle/testHooks --external:../node_modules/\\* --bundle",
-        "build:handler": "run -T esbuild src/handler.ts --bundle --platform=node --target=node16 --outfile=bundle/handler.js --external:./testHooks/\\* --external:../node_modules/babel\\* --external:../node_modules/jest\\* --external:../node_modules/@jest\\* --external:../node_modules/@aws-sdk\\* --external:../node_modules/@sparticuz\\* --external:../node_modules/puppeteer\\*",
-        "build:bundle": "run build:testhooks && run build:handler",
+        "build:bundle": "run -T ts-node --transpile-only build.ts",
         "build:lib": "run -T tsc -p .",
         "prepack": "run clean && run build:bundle && run build:lib",
-        "docker:build": "docker build ../ -f service.Dockerfile -t ghcr.io/tophat/sanity-runner-service",
-        "docker:build:local": "docker build ../ -f service-local.Dockerfile -t ghcr.io/tophat/sanity-runner-service",
+        "docker:pre": "mkdir -p artifacts && yarn pack -o artifacts/%s.tgz",
+        "docker:build": "run docker:pre && docker build . -f service.Dockerfile -t ghcr.io/tophat/sanity-runner-service",
         "docker:prod": "run docker:build && docker run -p 9000:8080 ghcr.io/tophat/sanity-runner-service:latest",
-        "docker:run:local": "docker run -p 9000:8080 --mount type=bind,source=$(abspath ../node_modules 2>/dev/null || realpath ../node_modules),target=/var/task/node_modules,readonly --mount type=bind,source=$(abspath ./bundle 2>/dev/null || realpath ./bundle),target=/var/task/service/bundle,readonly ghcr.io/tophat/sanity-runner-service:latest",
-        "docker:dev": "run build && run docker:build:local && run docker:run:local",
         "docker:tag": "docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:$(cat package.json | jq -r '.version')",
         "docker:tag:prerelease": "docker tag ghcr.io/tophat/sanity-runner-service:latest ghcr.io/tophat/sanity-runner-service:next",
         "docker:push": "docker push ghcr.io/tophat/sanity-runner-service:$(cat package.json | jq -r '.version')",
@@ -38,7 +37,7 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/tophat/sanity-runner.git",
-        "directory": "service"
+        "directory": "packages/service"
     },
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "license": "Apache-2.0",
@@ -47,9 +46,6 @@
     "devDependencies": {
         "@swc/core": "^1.2.218",
         "@swc/jest": "^0.2.22",
-        "@tophat/sanity-runner-plugin-fullstory": "workspace:*",
-        "@tophat/sanity-runner-plugin-pagerduty": "workspace:*",
-        "@tophat/sanity-runner-plugin-slack": "workspace:*",
         "@tophat/sanity-runner-types": "workspace:*",
         "@types/async-retry": "^1.4.4",
         "@types/expect-puppeteer": "^4.4.7",
@@ -63,9 +59,6 @@
         "puppeteer": "^14.4.1"
     },
     "peerDependencies": {
-        "@tophat/sanity-runner-plugin-fullstory": "workspace:^6.1.3",
-        "@tophat/sanity-runner-plugin-pagerduty": "workspace:^6.1.3",
-        "@tophat/sanity-runner-plugin-slack": "workspace:^6.1.3",
         "puppeteer": "^14.4.1"
     },
     "dependencies": {
@@ -77,6 +70,9 @@
         "@jest/test-result": "^28.1.0",
         "@jest/types": "^28.1.0",
         "@sparticuz/chrome-aws-lambda": "^14.4.1",
+        "@tophat/sanity-runner-plugin-fullstory": "*",
+        "@tophat/sanity-runner-plugin-pagerduty": "*",
+        "@tophat/sanity-runner-plugin-slack": "*",
         "@types/aws-lambda": "^8.10.93",
         "@types/puppeteer": "^5.4.6",
         "async-retry": "^1.3.3",

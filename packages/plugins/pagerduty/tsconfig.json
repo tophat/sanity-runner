@@ -4,6 +4,6 @@
         "declarationDir": "./lib",
         "outDir": "./lib"
     },
-    "include": ["./src", "../../declarations"],
+    "include": ["./src", "../../../declarations"],
     "exclude": ["./lib"]
   }
