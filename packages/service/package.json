@@ -16,9 +16,6 @@
         },
         "access": "public"
     },
-    "installConfig": {
-        "hoistingLimits": "workspaces"
-    },
     "scripts": {
         "clean": "rm -rf lib bundle .cache && mkdir -p lib && mkdir -p bundle",
         "lint:typecheck": "run -T tsc -p tsconfig.json --noEmit",

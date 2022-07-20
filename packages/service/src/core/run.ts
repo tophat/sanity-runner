@@ -76,7 +76,7 @@ export default class Run {
             reporters: [
                 'default',
                 [
-                    'jest-junit',
+                    require.resolve('jest-junit'),
                     {
                         outputDirectory: paths.results(this.id),
                         outputName: paths.junitFileName(this.id),
