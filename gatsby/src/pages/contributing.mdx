@@ -43,13 +43,7 @@ One the service is up and running, execute:
 yarn dev:client --test-dir example/repo/sanities/ --include google-fail-example -vv
 ```
 
-If you want to run the service in the docker image, you can use:
-
-```sh
-yarn workspace sanity-runner-service run docker:dev
-```
-
-This mounts node_modules. To run the production image (no mounting), run:
+To run the production image (no mounting), run:
 
 ```sh
 yarn workspace sanity-runner-service run docker:prod
