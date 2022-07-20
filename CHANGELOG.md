@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.1.9](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.1.8...sanity-runner-service@6.1.9) "sanity-runner-service" (2022-07-20)<a name="6.1.9"></a>
+
+### Bug Fixes
+
+* resolve jest-junit reporter ([937961c](https://github.com/tophat/sanity-runner/commits/937961c))
+
+
 ## [6.1.8](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.1.7...sanity-runner-service@6.1.8) "sanity-runner-service" (2022-07-20)<a name="6.1.8"></a>
 
 ### Bug Fixes
