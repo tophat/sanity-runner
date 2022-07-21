@@ -2,6 +2,27 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.2.0](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.1.3...@tophat/sanity-runner-types@6.2.0) "@tophat/sanity-runner-types" (2022-07-21)<a name="6.2.0"></a>
+
+### Features
+
+* add default viewport options (#311) ([9c585e6](https://github.com/tophat/sanity-runner/commits/9c585e6))
+
+
+## [6.2.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.1.7...sanity-runner-client@6.2.0) "sanity-runner-client" (2022-07-21)<a name="6.2.0"></a>
+
+### Features
+
+* add default viewport options (#311) ([9c585e6](https://github.com/tophat/sanity-runner/commits/9c585e6))
+
+
+## [6.2.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.1.9...sanity-runner-service@6.2.0) "sanity-runner-service" (2022-07-21)<a name="6.2.0"></a>
+
+### Features
+
+* add default viewport options (#311) ([9c585e6](https://github.com/tophat/sanity-runner/commits/9c585e6))
+
+
 ## [6.1.9](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.1.8...sanity-runner-service@6.1.9) "sanity-runner-service" (2022-07-20)<a name="6.1.9"></a>
 
 ### Bug Fixes
