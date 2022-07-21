@@ -1,5 +1,6 @@
 import crypto from 'crypto'
 import fs from 'fs'
+import https from 'https'
 import path from 'path'
 
 import chalk from 'chalk'
@@ -88,10 +89,15 @@ export async function runTests({
         clearOnComplete: true,
     })
 
+    const httpsAgent = new https.Agent({
+        keepAlive: true,
+        timeout: config.timeout,
+    })
+
     const tasks = testFilenames.map((filename) => async (): Promise<[string, TestRunResult]> => {
         try {
             const code = testFiles[filename]
-            const result = await runTest({ filename, code, config, executionId })
+            const result = await runTest({ filename, code, config, executionId, httpsAgent })
             if (result.error) {
                 // We know it's a lambda failure. May be worth a retry or some other handling.
             }

@@ -1,5 +1,3 @@
-import https from 'https'
-
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
 import { NodeHttpHandler } from '@aws-sdk/node-http-handler'
 
@@ -9,16 +7,18 @@ import { formatFailedTestResult } from './utils'
 
 import type { InvokeBackend, TaskPayload, TestRunResult } from '../types'
 
-const httpsAgent = new https.Agent({
-    keepAlive: true,
-})
-
 export class InvokeLambda implements InvokeBackend {
     BackendName = 'Lambda'
 
     constructor() {}
 
-    async invoke({ config, filename, code, executionId }: TaskPayload): Promise<TestRunResult> {
+    async invoke({
+        config,
+        filename,
+        code,
+        executionId,
+        httpsAgent,
+    }: TaskPayload): Promise<TestRunResult> {
         try {
             const client = new LambdaClient({
                 apiVersion: '2015-03-31',

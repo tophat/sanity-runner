@@ -5,6 +5,7 @@ import type {
 } from '@tophat/sanity-runner-types'
 
 import type { BaseContext } from 'clipanion'
+import type { Agent } from 'https'
 
 export type LogFormat = 'structured' | 'terminal'
 
@@ -39,6 +40,7 @@ export interface TaskPayload {
     filename: TestFilename
     code: string
     executionId: string
+    httpsAgent?: Agent
 }
 
 export interface InvokeBackendConstructor {
