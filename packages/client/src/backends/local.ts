@@ -18,6 +18,7 @@ export class InvokeLocal implements InvokeBackend {
                 testVariables: config.vars,
                 retryCount: config.retryCount,
                 executionId,
+                defaultViewport: config.defaultViewport,
             }
 
             const response = await axios.post<InvokeResponsePayload>(

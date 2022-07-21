@@ -33,6 +33,7 @@ export class InvokeLambda implements InvokeBackend {
                 testVariables: config.vars,
                 retryCount: config.retryCount,
                 executionId,
+                defaultViewport: config.defaultViewport,
             }
 
             const response = await client.send(

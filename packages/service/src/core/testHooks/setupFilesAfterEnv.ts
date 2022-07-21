@@ -25,6 +25,9 @@ declare let global: typeof globalThis & {
 
 beforeEach(async () => {
     global.page = await global.browser.newPage()
+    if (global._sanityRunnerTestGlobals?.defaultViewport) {
+        global.page.setViewport(global._sanityRunnerTestGlobals.defaultViewport)
+    }
     try {
         const testName = expect.getState().currentTestName
         await global.page.setUserAgent('TophatSanityRunner')

@@ -24,6 +24,7 @@ export interface ClientConfiguration {
     logLevel: 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly'
     progress: boolean
     concurrency: number
+    defaultViewport?: Partial<DefaultViewport>
 }
 
 export type JUnitReport = {
@@ -80,6 +81,7 @@ export type InvokePayload = {
     testVariables: TestVariables
     retryCount: number
     executionId: string
+    defaultViewport?: Partial<DefaultViewport>
 }
 
 export interface TestMetadata {
@@ -116,10 +118,17 @@ export interface PluginHooks {
     beforeBrowserCleanup: AsyncSeriesHook<[BeforeBrowserCleanupContext<any>], void>
 }
 
+export interface DefaultViewport {
+    width: number
+    height: number
+}
+
 /** Only for internal use. */
 export interface SanityRunnerTestGlobals {
     sanityRunnerHooks: Pick<PluginHooks, 'beforeBrowserCleanup'>
     runId: string
     testVariables: TestVariables
     testMetadata: TestMetadata
+
+    defaultViewport?: DefaultViewport
 }
