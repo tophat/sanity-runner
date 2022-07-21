@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.2.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.2.0...sanity-runner-client@6.2.1) "sanity-runner-client" (2022-07-21)<a name="6.2.1"></a>
+
+### Bug Fixes
+
+* timeouts weren't being respected (#312) ([260009d](https://github.com/tophat/sanity-runner/commits/260009d))
+
+
 ## [6.2.0](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.1.3...@tophat/sanity-runner-types@6.2.0) "@tophat/sanity-runner-types" (2022-07-21)<a name="6.2.0"></a>
 
 ### Features
