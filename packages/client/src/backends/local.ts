@@ -11,7 +11,13 @@ export class InvokeLocal implements InvokeBackend {
 
     constructor() {}
 
-    async invoke({ config, filename, code, executionId }: TaskPayload): Promise<TestRunResult> {
+    async invoke({
+        config,
+        filename,
+        code,
+        executionId,
+        httpsAgent,
+    }: TaskPayload): Promise<TestRunResult> {
         try {
             const invokePayload: InvokePayload = {
                 testFiles: { [filename]: code },
@@ -24,6 +30,7 @@ export class InvokeLocal implements InvokeBackend {
             const response = await axios.post<InvokeResponsePayload>(
                 `http://localhost:${config.localPort}/2015-03-31/functions/function/invocations`,
                 invokePayload,
+                { httpsAgent },
             )
 
             return {
