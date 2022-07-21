@@ -5,6 +5,7 @@ import { AggregatedResult } from '@jest/test-result'
 import retry from 'async-retry'
 
 import type {
+    DefaultViewport,
     EnhancedAggregatedResult,
     InvokeResponsePayload,
     OnTestCompleteContext,
@@ -81,6 +82,7 @@ export default class TestRunner {
         executionId,
         hooks,
         testMetadata,
+        defaultViewport,
     }: {
         testFiles: Record<string, string>
         testVariables: TestVariables
@@ -88,6 +90,7 @@ export default class TestRunner {
         executionId: string
         hooks: PluginHooks
         testMetadata: TestMetadata
+        defaultViewport: DefaultViewport
     }): Promise<InvokeResponsePayload> {
         let retryCount = 0
         const run = new Run(testVariables)
@@ -102,6 +105,7 @@ export default class TestRunner {
                 runId: run.id,
                 testVariables,
                 testMetadata,
+                defaultViewport,
             }
 
             const results = await retry(

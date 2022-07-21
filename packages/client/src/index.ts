@@ -86,6 +86,14 @@ class BaseCommand extends Command<ExecutionContext> {
     progress = Option.Boolean('--progress', false, {
         description: 'Show test progress.',
     })
+    viewportWidth = Option.String('--viewport-width', {
+        description: 'Default viewport width',
+        validator: t.isNumber(),
+    })
+    viewportHeight = Option.String('--viewport-height', {
+        description: 'Default viewport height',
+        validator: t.isNumber(),
+    })
 
     testPathPatterns = Option.Rest()
 
@@ -130,6 +138,10 @@ class BaseCommand extends Command<ExecutionContext> {
             testPathPatterns: this.testPathPatterns ?? [],
             progress: this.progress,
             concurrency: this.concurrency ?? baseConfig.concurrency ?? Infinity,
+            defaultViewport: {
+                width: this.viewportWidth ?? baseConfig.defaultViewport?.width,
+                height: this.viewportHeight ?? baseConfig.defaultViewport?.height,
+            },
         }
     }
 

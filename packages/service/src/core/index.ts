@@ -48,6 +48,10 @@ export async function service(event: InvokePayload): Promise<InvokeResponsePaylo
         executionId: event.executionId,
         hooks,
         testMetadata,
+        defaultViewport: {
+            width: event.defaultViewport?.width ?? 1920,
+            height: event.defaultViewport?.height ?? 1080,
+        },
     })
     return testResults
 }
