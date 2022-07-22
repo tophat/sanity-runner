@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [1.1.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@1.1.1...sanity-runner-terraform@1.1.2) "sanity-runner-terraform" (2022-07-22)<a name="1.1.2"></a>
+
+### Bug Fixes
+
+* write to local file ([2c46b66](https://github.com/tophat/sanity-runner/commits/2c46b66))
+
+
 ## [1.1.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@1.1.0...sanity-runner-terraform@1.1.1) "sanity-runner-terraform" (2022-07-22)<a name="1.1.1"></a>
 
 ### Bug Fixes
