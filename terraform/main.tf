@@ -7,7 +7,8 @@ data "aws_caller_identity" "current" {}
 ###
 
 locals {
-    public_url = "ghcr.io/tophat/sanity-runner-service"
+    source_image_uri = var.image_uri != "" ? var.image_uri : "ghcr.io/tophat/sanity-runner-service:${var.container_version}"
+    image_uri = "${aws_ecr_repository.this.repository_url}:${var.container_version}"
 }
 
 ###
@@ -18,13 +19,28 @@ resource "aws_ecr_repository" "this" {
   name = var.function_name
 }
 
+data "template_file" "build_push_docker" {
+    template = file("${path.module}/publish.sh")
+    vars = {
+        tf_image_uri = local.image_uri
+        tf_source_image_uri = local.source_image_uri
+    }
+}
+
 resource "null_resource" "push_image_to_ecr" {
   triggers = {
-    container_version = var.container_version
+    source_image_uri = local.source_image_uri
+    image_uri = local.image_uri
     function_name = var.function_name
   }
+
+  provisioner "file" {
+    destination = "${path.module}/tmp/build-publish.sh"
+    content = data.template_file.build_push_docker.rendered
+  }
+
   provisioner "local-exec" {
-    command     = "${path.module}/publish.sh ${aws_ecr_repository.this.repository_url} ${var.container_version} ${local.public_url}"
+    command     = "${path.module}/tmp/build-publish.sh"
     interpreter = ["bash", "-c"]
   }
 }
@@ -67,7 +83,7 @@ resource "random_string" "suffix" {
 resource "aws_iam_role" "sanity_runner_role" {
   assume_role_policy = data.aws_iam_policy_document.sanity_runner_policy_document.json
   name_prefix = "sanity-runner-role-"
-  
+
   inline_policy {
     name = "sanity-runner-role-${resource.random_string.suffix.result}"
     policy = jsonencode({
@@ -90,7 +106,7 @@ resource "aws_iam_role" "sanity_runner_role" {
         }
       ]
     })
-  }  
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "vpc-policy" {
@@ -101,7 +117,7 @@ resource "aws_iam_role_policy_attachment" "vpc-policy" {
 
 ###
 # Lambda
-### 
+###
 
 resource "aws_lambda_function" "sanity_runner" {
   depends_on = [null_resource.push_image_to_ecr]
@@ -109,7 +125,7 @@ resource "aws_lambda_function" "sanity_runner" {
   function_name = var.function_name
   role          = aws_iam_role.sanity_runner_role.arn
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.this.repository_url}:${var.container_version}"
+  image_uri     = local.image_uri
 
   memory_size   = var.memory_size
   timeout       = var.timeout
@@ -120,10 +136,11 @@ resource "aws_lambda_function" "sanity_runner" {
   }
 
   environment {
-      variables = {
+      variables = merge({
           S3_BUCKET = aws_s3_bucket.s3_bucket.id
           SCREENSHOT_BUCKET = "${aws_s3_bucket.s3_bucket.id}/screenshots"
-      }
+          DD_LAMBDA_HANDLER = "node_modules/sanity-runner-service/bundle/handler.handler"
+          DD_ENV = var.function_name
+      }, var.environment)
   }
 }
-

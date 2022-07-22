@@ -25,6 +25,8 @@ for a list of CLI options. Most options can also be passed in via a config file.
 | `vpc_subnet_ids`              | []                                                    | Subnet Ids to associate with the lambda. Enables VPC mode. If used, requites vpc_sg_ids to also be set |
 | `memory_size`                 | 2048                                                  | Memory_size for lambda  |
 | `timeout`                     | 600                                                   | Sets Default timeout for lambda invocation |
+| `environment`                 | {}                                                    | Sets additional env vars for the lambda |
+| `image_uri`                   | ""                                                    | Lets you set a custom image for the lambda |
 
 ### Alerting
 
