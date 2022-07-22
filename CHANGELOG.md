@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [1.1.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@1.1.0...sanity-runner-terraform@1.1.1) "sanity-runner-terraform" (2022-07-22)<a name="1.1.1"></a>
+
+### Bug Fixes
+
+* env should be map type (#314) ([68f34fd](https://github.com/tophat/sanity-runner/commits/68f34fd))
+
+
 ## [6.3.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.2.0...sanity-runner-service@6.3.0) "sanity-runner-service" (2022-07-22)<a name="6.3.0"></a>
 
 ### Features
