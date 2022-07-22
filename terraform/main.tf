@@ -8,7 +8,7 @@ data "aws_caller_identity" "current" {}
 
 locals {
     source_image_uri = var.image_uri != "" ? var.image_uri : "ghcr.io/tophat/sanity-runner-service:${var.container_version}"
-    image_uri = "${aws_ecr_repository.this.repository_url}:${var.container_version}"
+    image_uri = var.image_uri != "" ? "${aws_ecr_repository.this.repository_url}:${sha256(var.image_uri)}" : "${aws_ecr_repository.this.repository_url}:${var.container_version}"
 }
 
 ###
@@ -27,16 +27,16 @@ data "template_file" "build_push_docker" {
     }
 }
 
+resource "local_file" "build_push_docker" {
+    filename = "${path.module}/tmp/build-publish.sh"
+    content = data.template_file.build_push_docker.rendered
+}
+
 resource "null_resource" "push_image_to_ecr" {
   triggers = {
     source_image_uri = local.source_image_uri
     image_uri = local.image_uri
     function_name = var.function_name
-  }
-
-  provisioner "file" {
-    destination = "${path.module}/tmp/build-publish.sh"
-    content = data.template_file.build_push_docker.rendered
   }
 
   provisioner "local-exec" {
