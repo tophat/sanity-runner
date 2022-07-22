@@ -29,7 +29,7 @@ variable "timeout" {
 }
 
 variable "environment" {
-  type = object
+  type = map(string)
   default = {}
 }
 
