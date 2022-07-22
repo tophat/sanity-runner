@@ -139,7 +139,6 @@ resource "aws_lambda_function" "sanity_runner" {
       variables = merge({
           S3_BUCKET = aws_s3_bucket.s3_bucket.id
           SCREENSHOT_BUCKET = "${aws_s3_bucket.s3_bucket.id}/screenshots"
-          DD_LAMBDA_HANDLER = "node_modules/sanity-runner-service/bundle/handler.handler"
           DD_ENV = var.function_name
       }, var.environment)
   }
