@@ -2,6 +2,25 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.3.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.2.0...sanity-runner-service@6.3.0) "sanity-runner-service" (2022-07-22)<a name="6.3.0"></a>
+
+### Features
+
+* build datadog image ([a8d99fc](https://github.com/tophat/sanity-runner/commits/a8d99fc))
+
+
+## [1.1.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@1.0.1...sanity-runner-terraform@1.1.0) "sanity-runner-terraform" (2022-07-22)<a name="1.1.0"></a>
+
+### Bug Fixes
+
+* do not push latest tag to private registry ([06de578](https://github.com/tophat/sanity-runner/commits/06de578))
+
+### Features
+
+* support custom image ([1a53765](https://github.com/tophat/sanity-runner/commits/1a53765))
+* build datadog image ([a8d99fc](https://github.com/tophat/sanity-runner/commits/a8d99fc))
+
+
 ## [6.2.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.2.0...sanity-runner-client@6.2.1) "sanity-runner-client" (2022-07-21)<a name="6.2.1"></a>
 
 ### Bug Fixes
