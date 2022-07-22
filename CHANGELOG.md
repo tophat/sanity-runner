@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [1.1.3](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@1.1.2...sanity-runner-terraform@1.1.3) "sanity-runner-terraform" (2022-07-22)<a name="1.1.3"></a>
+
+### Bug Fixes
+
+* pass service name ([d592875](https://github.com/tophat/sanity-runner/commits/d592875))
+
+
 ## [1.1.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@1.1.1...sanity-runner-terraform@1.1.2) "sanity-runner-terraform" (2022-07-22)<a name="1.1.2"></a>
 
 ### Bug Fixes
