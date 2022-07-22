@@ -27,3 +27,13 @@ variable "timeout" {
     type = number
     default = 660
 }
+
+variable "environment" {
+  type = object
+  default = {}
+}
+
+variable "image_uri" {
+  type = string
+  default = ""
+}
