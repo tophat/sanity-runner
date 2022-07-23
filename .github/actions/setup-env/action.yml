@@ -18,13 +18,14 @@ runs:
     - name: Enable Corepack
       run: corepack enable
       shell: bash
-    - name: Restore Node Modules Cache
-      id: node-modules-cache
+    - name: Write Default .yarnrc.yml
+      run: yarn config set -H enableGlobalCache false
+      shell: bash
+    - name: Restore Yarn Cache
+      id: yarn-cache
       uses: actions/cache@v3.0.5
       with:
-        path: |
-          ./node_modules
-          packages/*/node_modules
+        path: .yarn/cache
         key: ${{ steps.detect-node.outputs.version }}-${{ hashFiles('yarn.lock') }}
     - name: Install Yarn Project
       run: yarn install --immutable
