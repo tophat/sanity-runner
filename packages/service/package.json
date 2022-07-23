@@ -63,9 +63,12 @@
         "@types/node": "^16.11.36",
         "@types/uuid": "^8.3.4",
         "@types/xml2js": "^0.4.11",
+        "dd-trace": "2.11.0",
         "puppeteer": "^14.4.1"
     },
     "peerDependencies": {
+        "datadog-lambda-js": "6.81.0",
+        "dd-trace": "2.11.0",
         "puppeteer": "^14.4.1"
     },
     "dependencies": {
@@ -96,5 +99,16 @@
         "uuid": "^8.3.2",
         "winston": "^3.8.1",
         "xml2js": "^0.4.23"
+    },
+    "peerDependenciesMeta": {
+        "datadog-lambda-js": {
+            "optional": true
+        },
+        "dd-trace": {
+            "optional": true
+        },
+        "puppeteer": {
+            "optional": true
+        }
     }
 }
