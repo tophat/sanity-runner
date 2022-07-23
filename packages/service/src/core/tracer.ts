@@ -9,7 +9,7 @@ export const tracer: Tracer | null = (() => {
 })()
 
 export const trace =
-    tracer?.trace ??
+    tracer?.trace.bind(tracer) ??
     function trace<T>(
         _name: string,
         fn: (span?: Span | undefined, fn?: ((error?: Error | undefined) => any) | undefined) => T,
