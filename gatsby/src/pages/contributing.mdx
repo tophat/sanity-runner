@@ -17,6 +17,25 @@ yarn
 
 This project uses [Typescript](https://www.typescriptlang.org/) and [Yarn Berry](https://yarnpkg.com/).
 
+### Linting
+
+TypeScript is linted with ESLint, while Terraform is linted with tflint.
+
+
+To run ESLint:
+
+```sh
+yarn lint
+yarn lint:fix
+```
+
+and for Terraform:
+
+```sh
+yarn workspace sanity-runner-terraform lint
+yarn workspace sanity-runner-terraform lint:fix
+```
+
 ### Build
 
 You can execute `yarn build` to generate the build assets that ultimately gets uploaded to the NPM registry. It will also leave the intermediate `lib` artifacts, which contain the transpiled code.
