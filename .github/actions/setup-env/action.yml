@@ -3,6 +3,7 @@ description: Initializes environment.
 outputs:
   node-version:
     value: ${{ steps.detect-node.outputs.version }}
+    description: Detected Node version.
 runs:
   using: "composite"
   steps:
@@ -21,7 +22,9 @@ runs:
       id: node-modules-cache
       uses: actions/cache@v3.0.5
       with:
-        path: ./node_modules
+        path: |
+          ./node_modules
+          packages/*/node_modules
         key: ${{ steps.detect-node.outputs.version }}-${{ hashFiles('yarn.lock') }}
     - name: Install Yarn Project
       run: yarn install --immutable

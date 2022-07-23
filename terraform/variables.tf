@@ -1,39 +1,39 @@
 variable "function_name" {
-    default = "sanity-runner"
-    type = string
+  default = "sanity-runner"
+  type    = string
 }
 
 variable "container_version" {
-    default = "2.0.0"
-    type = string
+  default = "2.0.0"
+  type    = string
 }
 
 variable "vpc_sg_ids" {
-    type = list(string)
-    default = []
+  type    = list(string)
+  default = []
 }
 
 variable "vpc_subnet_ids" {
-    type = list(string)
-    default = []
+  type    = list(string)
+  default = []
 }
 
 variable "memory_size" {
-    type = number
-    default = 2048
+  type    = number
+  default = 2048
 }
 
 variable "timeout" {
-    type = number
-    default = 660
+  type    = number
+  default = 660
 }
 
 variable "environment" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
 variable "image_uri" {
-  type = string
+  type    = string
   default = ""
 }
