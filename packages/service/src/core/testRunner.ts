@@ -117,6 +117,7 @@ export async function runTests({
             testVariables,
             testMetadata,
             defaultViewport,
+            trace,
         }
 
         const results = await retry(
@@ -168,9 +169,13 @@ export async function runTests({
         })
 
         if (response.passed) {
-            await hooks.onTestSuccess.promise(context)
+            await trace('onTestSuccess', async () => {
+                await hooks.onTestSuccess.promise(context)
+            })
         } else {
-            await hooks.onTestFailure.promise(context)
+            await trace('onTestFailure', async () => {
+                await hooks.onTestFailure.promise(context)
+            })
         }
 
         return response

@@ -42,14 +42,15 @@ beforeEach(async () => {
 
 afterEach(async () => {
     const testName = expect.getState().currentTestName
-    const screenshotPath = path.join(global.SCREENSHOT_OUTPUT, testName, SCREENSHOT_FILENAME)
-    await fs.promises.mkdir(path.dirname(screenshotPath), { recursive: true })
-    await global.page.screenshot({
-        fullPage: true,
-        path: screenshotPath,
-    })
 
-    if (global._sanityRunnerTestGlobals?.runId) {
+    await global._sanityRunnerTestGlobals?.trace('beforeBrowserCleanup', async () => {
+        const screenshotPath = path.join(global.SCREENSHOT_OUTPUT, testName, SCREENSHOT_FILENAME)
+        await fs.promises.mkdir(path.dirname(screenshotPath), { recursive: true })
+        await global.page.screenshot({
+            fullPage: true,
+            path: screenshotPath,
+        })
+
         await global._sanityRunnerTestGlobals?.sanityRunnerHooks.beforeBrowserCleanup.promise({
             browser: global.browser,
             page: global.page,
@@ -58,7 +59,7 @@ afterEach(async () => {
             testVariables: global._sanityRunnerTestGlobals.testVariables,
             testMetadata: global._sanityRunnerTestGlobals.testMetadata,
         })
-    }
+    })
 
     // not sure why we do this, can it be removed?
     await new Promise((r) => setTimeout(r, 5000))
