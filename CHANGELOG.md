@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.0...sanity-runner-service@6.4.1) "sanity-runner-service" (2022-07-23)<a name="6.4.1"></a>
+
+### Bug Fixes
+
+* bind trace to tracer class ([3118059](https://github.com/tophat/sanity-runner/commits/3118059))
+
+
 ## [6.4.0](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.2.0...@tophat/sanity-runner-types@6.4.0) "@tophat/sanity-runner-types" (2022-07-23)<a name="6.4.0"></a>
 
 ### Bug Fixes
