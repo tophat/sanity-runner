@@ -13,7 +13,7 @@ import type {
     TestMetadata,
 } from '@tophat/sanity-runner-types'
 
-import TestRunner from './testRunner'
+import { runTests } from './testRunner'
 
 export async function service(event: InvokePayload): Promise<InvokeResponsePayload> {
     if (process.env.DEBUG?.includes('sanity-runner')) {
@@ -40,8 +40,7 @@ export async function service(event: InvokePayload): Promise<InvokeResponsePaylo
 
     const testMetadata: TestMetadata = parse(Object.values(event.testFiles)[0])
 
-    const runner = new TestRunner()
-    const testResults = await runner.runTests({
+    const testResults = await runTests({
         testFiles: event.testFiles,
         testVariables: event.testVariables,
         maxRetryCount: event.retryCount,

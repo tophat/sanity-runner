@@ -131,4 +131,8 @@ export interface SanityRunnerTestGlobals {
     testMetadata: TestMetadata
 
     defaultViewport?: DefaultViewport
+
+    // using "any" for span since I don't want to import dd-trace in this package
+    // at the moment
+    trace: <T>(name: string, fn: (span?: any) => T) => T
 }

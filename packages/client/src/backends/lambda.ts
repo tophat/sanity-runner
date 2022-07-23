@@ -19,6 +19,8 @@ export class InvokeLambda implements InvokeBackend {
         executionId,
         httpsAgent,
     }: TaskPayload): Promise<TestRunResult> {
+        let abortTimeout: ReturnType<typeof setTimeout> | undefined
+
         try {
             const client = new LambdaClient({
                 apiVersion: '2015-03-31',
@@ -36,11 +38,15 @@ export class InvokeLambda implements InvokeBackend {
                 defaultViewport: config.defaultViewport,
             }
 
+            const controller = new AbortController()
+            abortTimeout = setTimeout(() => void controller.abort(), config.timeout)
+
             const response = await client.send(
                 new InvokeCommand({
                     FunctionName: config.lambdaFunction,
                     Payload: Buffer.from(JSON.stringify(lambdaPayload)),
                 }),
+                { abortSignal: controller.signal as any },
             )
 
             if (response.FunctionError && !response.Payload) {
@@ -73,6 +79,8 @@ export class InvokeLambda implements InvokeBackend {
                     },
                 },
             }
+        } finally {
+            clearTimeout(abortTimeout)
         }
     }
 }
