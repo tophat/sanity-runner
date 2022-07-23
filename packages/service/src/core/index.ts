@@ -13,6 +13,7 @@ import type {
     TestMetadata,
 } from '@tophat/sanity-runner-types'
 
+import { logger } from './logger'
 import { runTests } from './testRunner'
 
 export async function service(event: InvokePayload): Promise<InvokeResponsePayload> {
@@ -27,6 +28,9 @@ export async function service(event: InvokePayload): Promise<InvokeResponsePaylo
     }
 
     // In a future version of the sanity runner, these plugins will be dynamically loaded.
+    logger.info('Initializing plugins: FullStory, Slack, PagerDuty.', {
+        execution_id: event.executionId,
+    })
     FullStoryPlugin(hooks)
     SlackPlugin(hooks, {
         linkFactory: async () => {
@@ -52,5 +56,10 @@ export async function service(event: InvokePayload): Promise<InvokeResponsePaylo
             height: event.defaultViewport?.height ?? 1080,
         },
     })
+
+    logger.info('Test run complete.', {
+        execution_id: event.executionId,
+    })
+
     return testResults
 }

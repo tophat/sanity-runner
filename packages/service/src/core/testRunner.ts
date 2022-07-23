@@ -122,6 +122,12 @@ export async function runTests({
 
         const results = await retry(
             async () => {
+                logger.info(`Starting test run (${retryCount + 1}/${maxRetryCount + 1}):`, {
+                    run_id: run.id,
+                    execution_id: executionId,
+                    test_file: Object.keys(testFiles)[0],
+                })
+
                 const { results: jestResults } = await runJest({
                     config: run.jestConfig(),
                 })
@@ -131,6 +137,12 @@ export async function runTests({
                     if (retryCount !== maxRetryCount) {
                         throw new Error('Test Failed!')
                     }
+
+                    logger.info('Test failed. Retrying.', {
+                        run_id: run.id,
+                        execution_id: executionId,
+                        test_file: Object.keys(testFiles)[0],
+                    })
                 }
                 return jestResults
             },

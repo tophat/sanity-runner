@@ -8957,6 +8957,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bignumber.js@npm:^9.0.1":
+  version: 9.0.2
+  resolution: "bignumber.js@npm:9.0.2"
+  checksum: 8637b71d0a99104b20413c47578953970006fec6b4df796b9dcfd9835ea9c402ea0e727eba9a5ca9f9a393c1d88b6168c5bbe0887598b708d4f8b4870ad62e1f
+  languageName: node
+  linkType: hard
+
 "bin-links@npm:^3.0.0":
   version: 3.0.1
   resolution: "bin-links@npm:3.0.1"
@@ -8975,6 +8982,15 @@ __metadata:
   version: 2.2.0
   resolution: "binary-extensions@npm:2.2.0"
   checksum: ccd267956c58d2315f5d3ea6757cf09863c5fc703e50fbeb13a7dc849b812ef76e3cf9ca8f35a0c48498776a7478d7b4a0418e1e2b8cb9cb9731f2922aaad7f8
+  languageName: node
+  linkType: hard
+
+"bindings@npm:^1.3.0":
+  version: 1.5.0
+  resolution: "bindings@npm:1.5.0"
+  dependencies:
+    file-uri-to-path: 1.0.0
+  checksum: 65b6b48095717c2e6105a021a7da4ea435aa8d3d3cd085cb9e85bcb6e5773cf318c4745c3f7c504412855940b585bdf9b918236612a1c7a7942491de176f1ae7
   languageName: node
   linkType: hard
 
@@ -10720,6 +10736,19 @@ __metadata:
   dependencies:
     assert-plus: ^1.0.0
   checksum: 3634c249570f7f34e3d34f866c93f866c5b417f0dd616275decae08147dcdf8fccfaa5947380ccfb0473998ea3a8057c0b4cd90c875740ee685d0624b2983598
+  languageName: node
+  linkType: hard
+
+"datadog-lambda-js@npm:6.81.0":
+  version: 6.81.0
+  resolution: "datadog-lambda-js@npm:6.81.0"
+  dependencies:
+    bignumber.js: ^9.0.1
+    hot-shots: 8.5.0
+    promise-retry: ^2.0.1
+    serialize-error: ^8.1.0
+    shimmer: ^1.2.1
+  checksum: 33a75147ac9c3fe0431024d64861f134c2ae4c8dc27438f7d5229ac0637ee49eda388dd389aae5ad24f6cb2200a75529509384755abee10127fab32c0f5b4f5a
   languageName: node
   linkType: hard
 
@@ -12901,6 +12930,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"file-uri-to-path@npm:1.0.0":
+  version: 1.0.0
+  resolution: "file-uri-to-path@npm:1.0.0"
+  checksum: b648580bdd893a008c92c7ecc96c3ee57a5e7b6c4c18a9a09b44fb5d36d79146f8e442578bc0e173dc027adf3987e254ba1dfd6e3ec998b7c282873010502144
+  languageName: node
+  linkType: hard
+
 "filename-reserved-regex@npm:^2.0.0":
   version: 2.0.0
   resolution: "filename-reserved-regex@npm:2.0.0"
@@ -14752,6 +14788,18 @@ __metadata:
   dependencies:
     lru-cache: ^6.0.0
   checksum: d1b2d7720398ce96a788bd38d198fbddce089a2381f63cfb01743e6c7e5aed656e5547fe74090fb9fe53b2cb785b0e8c9ebdddadff48ed26bb471dd23cd25458
+  languageName: node
+  linkType: hard
+
+"hot-shots@npm:8.5.0":
+  version: 8.5.0
+  resolution: "hot-shots@npm:8.5.0"
+  dependencies:
+    unix-dgram: 2.0.x
+  dependenciesMeta:
+    unix-dgram:
+      optional: true
+  checksum: 93bce0cf16fe1ce70fb40f4377f3493d5e5314fdb3ecb14a92e907cd997c7b6382c7798ebf5c21dfd20f0fae33d1f58b49b83ba10b7b505560ded2cb1f729051
   languageName: node
   linkType: hard
 
@@ -18702,7 +18750,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nan@npm:^2.14.0, nan@npm:^2.14.2, nan@npm:^2.15.0":
+"nan@npm:^2.13.2, nan@npm:^2.14.0, nan@npm:^2.14.2, nan@npm:^2.15.0":
   version: 2.16.0
   resolution: "nan@npm:2.16.0"
   dependencies:
@@ -22298,6 +22346,7 @@ resolve@^2.0.0-next.3:
     "@types/xml2js": ^0.4.11
     async-retry: ^1.3.3
     chalk: ^4.1.2
+    datadog-lambda-js: 6.81.0
     dd-trace: 2.11.0
     expect-puppeteer: ^6.1.0
     express: ^4.18.1
@@ -22513,6 +22562,15 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"serialize-error@npm:^8.1.0":
+  version: 8.1.0
+  resolution: "serialize-error@npm:8.1.0"
+  dependencies:
+    type-fest: ^0.20.2
+  checksum: 2eef236d50edd2d7926e602c14fb500dc3a125ee52e9f08f67033181b8e0be5d1122498bdf7c23c80683cddcad083a27974e9e7111ce23165f4d3bcdd6d65102
+  languageName: node
+  linkType: hard
+
 "serialize-javascript@npm:^5.0.1":
   version: 5.0.1
   resolution: "serialize-javascript@npm:5.0.1"
@@ -22644,6 +22702,13 @@ resolve@^2.0.0-next.3:
     vscode-oniguruma: ^1.6.1
     vscode-textmate: 5.2.0
   checksum: fb746f3cb3de7e545e3b10a6cb658d3938f840e4ccc9a3c90ceb7e69a8f89dbb432171faac1e9f02a03f103684dad88ee5e54b5c4964fa6b579fca6e8e26424d
+  languageName: node
+  linkType: hard
+
+"shimmer@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "shimmer@npm:1.2.1"
+  checksum: aa0d6252ad1c682a4fdfda69e541be987f7a265ac7b00b1208e5e48cc68dc55f293955346ea4c71a169b7324b82c70f8400b3d3d2d60b2a7519f0a3522423250
   languageName: node
   linkType: hard
 
@@ -24771,6 +24836,17 @@ resolve@^2.0.0-next.3:
   version: 2.0.0
   resolution: "universalify@npm:2.0.0"
   checksum: 2406a4edf4a8830aa6813278bab1f953a8e40f2f63a37873ffa9a3bc8f9745d06cc8e88f3572cb899b7e509013f7f6fcc3e37e8a6d914167a5381d8440518c44
+  languageName: node
+  linkType: hard
+
+"unix-dgram@npm:2.0.x":
+  version: 2.0.4
+  resolution: "unix-dgram@npm:2.0.4"
+  dependencies:
+    bindings: ^1.3.0
+    nan: ^2.13.2
+    node-gyp: latest
+  checksum: 2ff0d015687ebb3a04c25b372269a206bd627d50f62f0bdf945f7c1fb36cfca9a67b24b4b540f57f3cee1ed6243c34fdfd5eaa155121b22ae2d9e622b9bd442d
   languageName: node
   linkType: hard
 

@@ -25,7 +25,7 @@
         "docker:pre": "mkdir -p artifacts && yarn pack -o artifacts/%s.tgz",
         "docker:build": "run docker:pre && docker build . -f service.Dockerfile --target base -t ghcr.io/tophat/sanity-runner-service:latest && docker build . -f service.Dockerfile --target datadog -t ghcr.io/tophat/sanity-runner-service:latest-datadog",
         "docker:prod": "run docker:build && docker run -p 9000:8080 ghcr.io/tophat/sanity-runner-service:latest",
-        "docker:datadog:prod": "run docker:build && docker run -p 9000:8080 ghcr.io/tophat/sanity-runner-service:latest-datadog",
+        "docker:datadog:prod": "run docker:build && docker run -p 9000:8080 --env DD_LOG_LEVEL=debug --env DD_FORWARD_LOG=False --env DD_FLUSH_TO_LOG=True ghcr.io/tophat/sanity-runner-service:latest-datadog",
         "docker:tag": "run docker:base:tag && run docker:datadog:tag",
         "docker:tag:prerelease": "run docker:base:tag:prerelease && run docker:datadog:tag:prerelease",
         "docker:push": "run docker:base:push && run docker:datadog:push",
@@ -64,6 +64,7 @@
         "@types/node": "^16.11.36",
         "@types/uuid": "^8.3.4",
         "@types/xml2js": "^0.4.11",
+        "datadog-lambda-js": "6.81.0",
         "dd-trace": "2.11.0",
         "puppeteer": "^14.4.1"
     },
