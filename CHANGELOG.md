@@ -2,6 +2,17 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@1.1.3...sanity-runner-terraform@2.0.0) "sanity-runner-terraform" (2022-07-23)<a name="2.0.0"></a>
+
+### Breaking Changes
+
+* Min terraform version is now 1.2.5 and minimum AWS provider is now v4.23.0. ([05241f2](https://github.com/tophat/sanity-runner/commits/05241f2))
+
+### Features
+
+* update terraform and aws provider (#315) ([05241f2](https://github.com/tophat/sanity-runner/commits/05241f2))
+
+
 ## [1.1.3](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@1.1.2...sanity-runner-terraform@1.1.3) "sanity-runner-terraform" (2022-07-22)<a name="1.1.3"></a>
 
 ### Bug Fixes
