@@ -2,6 +2,31 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.0](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.2.0...@tophat/sanity-runner-types@6.4.0) "@tophat/sanity-runner-types" (2022-07-23)<a name="6.4.0"></a>
+
+### Bug Fixes
+
+* trace plugin hooks ([df3219c](https://github.com/tophat/sanity-runner/commits/df3219c))
+
+
+## [6.4.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.2.1...sanity-runner-client@6.4.0) "sanity-runner-client" (2022-07-23)<a name="6.4.0"></a>
+
+### Bug Fixes
+
+* ensure lambda request is aborted after timeout ([2bfb656](https://github.com/tophat/sanity-runner/commits/2bfb656))
+
+
+## [6.4.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.3.0...sanity-runner-service@6.4.0) "sanity-runner-service" (2022-07-23)<a name="6.4.0"></a>
+
+### Bug Fixes
+
+* trace plugin hooks ([df3219c](https://github.com/tophat/sanity-runner/commits/df3219c))
+
+### Features
+
+* improved datadog tracing ([bd3a5b0](https://github.com/tophat/sanity-runner/commits/bd3a5b0))
+
+
 ## [2.0.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@1.1.3...sanity-runner-terraform@2.0.0) "sanity-runner-terraform" (2022-07-23)<a name="2.0.0"></a>
 
 ### Breaking Changes

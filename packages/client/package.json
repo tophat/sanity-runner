@@ -1,6 +1,6 @@
 {
     "name": "sanity-runner-client",
-    "version": "6.2.1",
+    "version": "6.4.0",
     "description": "Sanity cli client",
     "group": "sanity-runner",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
