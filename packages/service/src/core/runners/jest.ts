@@ -1,0 +1,232 @@
+import fs from 'fs'
+import path from 'path'
+
+import { runCLI } from '@jest/core'
+import chromium from '@sparticuz/chrome-aws-lambda'
+import xml2js from 'xml2js'
+
+import type {
+    EnhancedAggregatedResult,
+    InvokeResponsePayload,
+    JUnitReport,
+} from '@tophat/sanity-runner-types'
+
+import paths from '../paths'
+import { trace } from '../tracer'
+
+import type { RunTestContext } from '../types'
+import type { Config } from '@jest/types'
+import type { Browser, PuppeteerLaunchOptions } from 'puppeteer-core'
+
+declare let global: typeof globalThis & {
+    browser?: Browser
+}
+
+async function parseJUnitReport(
+    reportFilename: string,
+    report: string | JUnitReport,
+): Promise<JUnitReport> {
+    if (typeof report === 'string') {
+        if (reportFilename.endsWith('.xml')) {
+            return await xml2js.parseStringPromise(report)
+        }
+        return JSON.parse(report)
+    }
+    return report
+}
+
+/*
+ * Runtime initialization errors are not currently reported by junit reporter
+ * https://github.com/jest-community/jest-junit/pull/47
+ */
+const extractRuntimeErrors = function (results: EnhancedAggregatedResult) {
+    const errors = []
+    if (results.numRuntimeErrorTestSuites > 0) {
+        for (const testSuite of results.testResults) {
+            if (testSuite.testExecError) {
+                errors.push({
+                    message: testSuite.testExecError.message,
+                    name: testSuite.displayName,
+                })
+            }
+        }
+    }
+    return errors
+}
+
+const runJest = async function ({
+    config,
+}: {
+    config: Config.InitialOptions
+}): Promise<{ results: EnhancedAggregatedResult }> {
+    return trace('jest', async () => {
+        const jestArgs: Config.Argv = {
+            _: [],
+            $0: 'sanity-runner',
+            json: true,
+            runInBand: true,
+            config: JSON.stringify(config),
+            watch: false,
+            watchAll: false,
+        }
+        const { results } = await runCLI(jestArgs, [process.cwd()])
+
+        // insert a newline after the Jest stderr output to make logs easier to read
+        process.stderr.write('\n')
+
+        // The AggregatedResult is converted to EnhancedAggregatedResult via a custom reporter.
+        return { results } as { results: EnhancedAggregatedResult }
+    })
+}
+
+export default class JestPuppeteerTestRunner {
+    private context: RunTestContext
+
+    static displayName = 'Jest-Puppeteer Test Runner'
+
+    constructor(context: RunTestContext) {
+        this.context = context
+    }
+
+    get name() {
+        return JestPuppeteerTestRunner.displayName
+    }
+
+    async run(): Promise<EnhancedAggregatedResult> {
+        await this.setupPuppeteer()
+        try {
+            const { results: jestResults } = await runJest({
+                config: this.jestConfig(),
+            })
+            return jestResults
+        } finally {
+            try {
+                await this.teardownPuppeteer()
+            } catch {}
+        }
+    }
+
+    private async setupPuppeteer(): Promise<void> {
+        const config: PuppeteerLaunchOptions = {
+            args: chromium.args,
+            defaultViewport: {
+                deviceScaleFactor: 1,
+                hasTouch: false,
+                isLandscape: true,
+                isMobile: false,
+                ...this.context.defaultViewport,
+            },
+            executablePath: await chromium.executablePath,
+            headless: chromium.headless,
+            ...(chromium.headless
+                ? {}
+                : {
+                      // Local dev.
+                      devtools: true,
+                      dumpio: true,
+                      slowMo: process.env.SANITY_RUNNER_SLOW_MO
+                          ? parseInt(process.env.SANITY_RUNNER_SLOW_MO, 10)
+                          : undefined,
+                  }),
+        }
+
+        global.browser = await chromium.puppeteer.launch(config)
+    }
+
+    private async teardownPuppeteer(): Promise<void> {
+        if (global.browser) {
+            // close any open pages
+            const pages = await global.browser.pages()
+            await Promise.all(pages.map((page) => page.close()))
+
+            // browser close may hang so we won't wait indefinitely
+            await Promise.race([global.browser.close(), new Promise((r) => setTimeout(r, 15000))])
+        }
+    }
+
+    private jestConfig(): Config.InitialOptions {
+        const requiresTypeScript = require.resolve('./testHooks/setupFilesAfterEnv').endsWith('.ts')
+
+        return {
+            bail: false,
+            globals: {
+                SANITY_VARIABLES: this.context.testVariables || {},
+                SCREENSHOT_OUTPUT: paths.results(this.context.runId),
+            },
+            notify: false,
+            reporters: [
+                'default',
+                [
+                    require.resolve('jest-junit'),
+                    {
+                        outputDirectory: paths.results(this.context.runId),
+                        outputName: paths.junitFileName(this.context.runId),
+                    },
+                ],
+                [
+                    require.resolve('./testHooks/screenshotReporter'),
+                    {
+                        output: paths.results(this.context.runId),
+                        urlExpirySeconds: 30 * 24 * 3600,
+                        bucket: process.env.SCREENSHOT_BUCKET,
+                    },
+                ],
+            ],
+            resetMocks: false,
+            resetModules: false,
+            roots: [paths.suite(this.context.runId)],
+            rootDir: process.cwd(),
+            setupFilesAfterEnv: [require.resolve('./testHooks/setupFilesAfterEnv')],
+            testEnvironment: require.resolve('jest-environment-node'),
+            fakeTimers: {
+                enableGlobally: false,
+            },
+            verbose: true,
+            watchman: false,
+            watch: false,
+            watchAll: false,
+            ...(requiresTypeScript
+                ? {
+                      transform: {
+                          '^.+\\.ts$': '@swc/jest',
+                      },
+                  }
+                : {}),
+        }
+    }
+
+    async writeTestCodeToDisk({
+        testFilename,
+        testCode,
+    }: {
+        testFilename: string
+        testCode: string
+    }) {
+        await fs.promises.mkdir(paths.results(this.context.runId), { recursive: true })
+
+        const destination = paths.suite(this.context.runId)
+        await fs.promises.mkdir(destination, { recursive: true })
+
+        const filepath = path.join(destination, testFilename)
+        await fs.promises.mkdir(path.dirname(filepath), { recursive: true })
+        await fs.promises.writeFile(filepath, testCode, 'utf-8')
+    }
+
+    async cleanup() {
+        await fs.promises.rm(paths.run(this.context.runId), { recursive: true })
+    }
+
+    async format(results: EnhancedAggregatedResult): Promise<InvokeResponsePayload> {
+        const reportFilename = paths.junit(this.context.runId)
+        const junitContents = await fs.promises.readFile(reportFilename, 'utf-8')
+        const report = await parseJUnitReport(reportFilename, junitContents)
+        return {
+            passed: results.success,
+            screenshots: results.screenshots,
+            errors: extractRuntimeErrors(results),
+            testResults: {
+                [path.basename(reportFilename)]: report,
+            },
+        }
+    }
+}

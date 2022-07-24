@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import fs from 'fs'
 import path from 'path'
 
@@ -14,9 +15,6 @@ import type {
     TestResult,
 } from '@jest/reporters'
 import type { AggregatedResult } from '@jest/test-result'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { v4: uuidv4 } = require('uuid')
 
 type ScreenshotReporterOptions = {
     bucket: string
@@ -47,7 +45,7 @@ export default class PuppeteerScreenshotReporter implements Reporter {
     }
 
     async uploadScreenshotToS3(screenshot: string) {
-        const screenshotObjectName = `${uuidv4()}.png`
+        const screenshotObjectName = `${crypto.randomUUID()}.png`
 
         const s3Client = new S3Client({ apiVersion: '2006-03-01' })
         await s3Client.send(

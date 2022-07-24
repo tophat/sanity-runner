@@ -62,7 +62,6 @@
         "@types/jest-environment-puppeteer": "^5.0.2",
         "@types/morgan": "^1.9.3",
         "@types/node": "^16.11.36",
-        "@types/uuid": "^8.3.4",
         "@types/xml2js": "^0.4.11",
         "datadog-lambda-js": "6.81.0",
         "dd-trace": "2.11.0",
@@ -98,7 +97,6 @@
         "morgan": "^1.10.0",
         "puppeteer-core": "^14.4.1",
         "tapable": "^2.2.1",
-        "uuid": "^8.3.2",
         "winston": "^3.8.1",
         "xml2js": "^0.4.23"
     },
