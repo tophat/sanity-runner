@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.3](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.2...sanity-runner-service@6.4.3) "sanity-runner-service" (2022-07-24)<a name="6.4.3"></a>
+
+### Bug Fixes
+
+* explicitly disable watch mode in jest ([23b2fc6](https://github.com/tophat/sanity-runner/commits/23b2fc6))
+
+
 ## [6.4.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.1...sanity-runner-service@6.4.2) "sanity-runner-service" (2022-07-24)<a name="6.4.2"></a>
 
 ### Bug Fixes
