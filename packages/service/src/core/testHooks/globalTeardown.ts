@@ -1,18 +1,18 @@
-import fs from 'fs'
-import os from 'os'
-import path from 'path'
-
-const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
+import type { Browser } from 'puppeteer-core'
 
 declare let global: typeof globalThis & {
-    __BROWSER__: {
-        close(): void
-    }
+    browser?: Browser
 }
 
 const teardownPuppeteer = async () => {
-    await global.__BROWSER__.close()
-    await fs.promises.rm(DIR, { recursive: true })
+    if (global.browser) {
+        // close any open pages
+        const pages = await global.browser.pages()
+        await Promise.all(pages.map((page) => page.close()))
+
+        // browser close may hang so we won't wait indefinitely
+        await Promise.race([global.browser.close(), new Promise((r) => setTimeout(r, 15000))])
+    }
 }
 
 module.exports = teardownPuppeteer
