@@ -1,4 +1,5 @@
 import fs from 'fs'
+import os from 'os'
 import path from 'path'
 
 import { runCLI } from '@jest/core'
@@ -81,6 +82,7 @@ const runJest = async function ({
 
 export default class JestPuppeteerTestRunner {
     private context: RunTestContext
+    private tmpDataDir?: string
 
     static displayName = 'Jest-Puppeteer Test Runner'
 
@@ -107,6 +109,10 @@ export default class JestPuppeteerTestRunner {
     }
 
     private async setupPuppeteer(): Promise<void> {
+        this.tmpDataDir = await fs.promises.mkdtemp(
+            path.join(os.tmpdir(), 'sanity-runner-puppeteer-'),
+        )
+
         const config: PuppeteerLaunchOptions = {
             args: chromium.args,
             defaultViewport: {
@@ -118,6 +124,7 @@ export default class JestPuppeteerTestRunner {
             },
             executablePath: await chromium.executablePath,
             headless: chromium.headless,
+            userDataDir: this.tmpDataDir,
             ...(chromium.headless
                 ? {}
                 : {
@@ -134,13 +141,24 @@ export default class JestPuppeteerTestRunner {
     }
 
     private async teardownPuppeteer(): Promise<void> {
-        if (global.browser) {
-            // close any open pages
-            const pages = await global.browser.pages()
-            await Promise.all(pages.map((page) => page.close()))
+        try {
+            if (global.browser) {
+                // close any open pages
+                const pages = await global.browser.pages()
+                await Promise.all(pages.map((page) => page.close()))
 
-            // browser close may hang so we won't wait indefinitely
-            await Promise.race([global.browser.close(), new Promise((r) => setTimeout(r, 15000))])
+                // browser close may hang so we won't wait indefinitely
+                await Promise.race([
+                    global.browser.close(),
+                    new Promise((r) => setTimeout(r, 15000)),
+                ])
+            }
+        } finally {
+            try {
+                if (this.tmpDataDir) {
+                    await fs.promises.rm(this.tmpDataDir, { recursive: true })
+                }
+            } catch {}
         }
     }
 
