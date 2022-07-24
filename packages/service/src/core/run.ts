@@ -96,7 +96,7 @@ export default class Run {
             roots: [paths.suite(this.id)],
             rootDir: process.cwd(),
             setupFilesAfterEnv: [require.resolve('./testHooks/setupFilesAfterEnv')],
-            testEnvironment: require.resolve('./testHooks/testEnvironment'),
+            testEnvironment: require.resolve('jest-environment-node'),
             fakeTimers: {
                 enableGlobally: false,
             },

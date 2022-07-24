@@ -15,6 +15,7 @@ jest.setTimeout(5 * 60000)
 declare let global: typeof globalThis & {
     browser: Browser
     page: Page
+
     fullStoryUrl?: string
     SANITY_VARIABLES: Partial<Record<string, string>>
     SCREENSHOT_OUTPUT: string
@@ -60,9 +61,4 @@ afterEach(async () => {
             testMetadata: global._sanityRunnerTestGlobals.testMetadata,
         })
     })
-
-    // not sure why we do this, can it be removed?
-    await new Promise((r) => setTimeout(r, 5000))
-
-    await global.browser.close()
 })

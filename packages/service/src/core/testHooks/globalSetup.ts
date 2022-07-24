@@ -1,17 +1,11 @@
-import fs from 'fs'
-import os from 'os'
-import path from 'path'
-
 import chromium from '@sparticuz/chrome-aws-lambda'
 
 import type { SanityRunnerTestGlobals } from '@tophat/sanity-runner-types'
 
 import type { Browser, PuppeteerLaunchOptions } from 'puppeteer-core'
 
-const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
-
 declare let global: typeof globalThis & {
-    __BROWSER__: Browser
+    browser: Browser
 
     /** Only for internal use. */
     _sanityRunnerTestGlobals?: SanityRunnerTestGlobals
@@ -43,8 +37,5 @@ export = async () => {
               }),
     }
 
-    const browser = await chromium.puppeteer.launch(config)
-    global.__BROWSER__ = browser
-    await fs.promises.mkdir(DIR, { recursive: true })
-    await fs.promises.writeFile(path.join(DIR, 'wsEndpoint'), browser.wsEndpoint(), 'utf8')
+    global.browser = await chromium.puppeteer.launch(config)
 }
