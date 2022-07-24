@@ -91,7 +91,9 @@ export async function runTests({
     )
 
     const testRunProgressBar = new cliProgress.SingleBar({
-        format: `Running Tests |${chalk.cyan('{bar}')}| {percentage}% || {value}/{total} Tests`,
+        format: `Running Tests |${chalk.cyan(
+            '{bar}',
+        )}| {percentage}% || {duration_formatted} || {value}/{total} Tests`,
         clearOnComplete: true,
     })
 
