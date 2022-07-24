@@ -40,6 +40,8 @@ const runJest = async function ({
             json: true,
             runInBand: true,
             config: JSON.stringify(config),
+            watch: false,
+            watchAll: false,
         }
         const { results } = await runCLI(jestArgs, [process.cwd()])
 

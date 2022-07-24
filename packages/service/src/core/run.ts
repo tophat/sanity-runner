@@ -102,6 +102,8 @@ export default class Run {
             },
             verbose: true,
             watchman: false,
+            watch: false,
+            watchAll: false,
             ...(requiresTypeScript
                 ? {
                       transform: {
