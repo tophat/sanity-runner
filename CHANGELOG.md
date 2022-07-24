@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.1...sanity-runner-service@6.4.2) "sanity-runner-service" (2022-07-24)<a name="6.4.2"></a>
+
+### Bug Fixes
+
+* improved logging ([5defc5f](https://github.com/tophat/sanity-runner/commits/5defc5f))
+
+
 ## [6.4.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.0...sanity-runner-service@6.4.1) "sanity-runner-service" (2022-07-23)<a name="6.4.1"></a>
 
 ### Bug Fixes
