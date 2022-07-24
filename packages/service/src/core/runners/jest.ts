@@ -195,19 +195,13 @@ export default class JestPuppeteerTestRunner {
         }
     }
 
-    async writeTestCodeToDisk({
-        testFilename,
-        testCode,
-    }: {
-        testFilename: string
-        testCode: string
-    }) {
+    async writeTestCodeToDisk({ testCode }: { testCode: string }) {
         await fs.promises.mkdir(paths.results(this.context.runId), { recursive: true })
 
         const destination = paths.suite(this.context.runId)
         await fs.promises.mkdir(destination, { recursive: true })
 
-        const filepath = path.join(destination, testFilename)
+        const filepath = path.join(destination, `${this.context.runId}.test.js`)
         await fs.promises.mkdir(path.dirname(filepath), { recursive: true })
         await fs.promises.writeFile(filepath, testCode, 'utf-8')
     }

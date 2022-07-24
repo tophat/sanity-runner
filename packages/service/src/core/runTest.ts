@@ -31,10 +31,7 @@ export async function runTest(runTestContext: RunTestContext): Promise<InvokeRes
 
     let retryCount = 0
     try {
-        await runner.writeTestCodeToDisk({
-            testFilename: runTestContext.testFilename,
-            testCode: runTestContext.testCode,
-        })
+        await runner.writeTestCodeToDisk({ testCode: runTestContext.testCode })
 
         // We'll inject hooks into the global object so it can be accessed
         // from within the jest test hook files. Note that this depends on jest
@@ -117,6 +114,7 @@ export async function runTest(runTestContext: RunTestContext): Promise<InvokeRes
             retryCount,
             runId: runTestContext.runId,
             executionId: runTestContext.executionId,
+            testFilename: runTestContext.testFilename,
         })
 
         if (response.passed) {

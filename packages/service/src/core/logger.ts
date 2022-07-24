@@ -1,5 +1,3 @@
-import path from 'path'
-
 import { AggregatedResult } from '@jest/test-result'
 import winston from 'winston'
 
@@ -27,17 +25,17 @@ export function printAggregatedTestResult({
     retryCount,
     runId,
     executionId,
+    testFilename,
 }: {
     results: AggregatedResult
     testVariables: Record<string, unknown>
     retryCount: number
     runId: string
     executionId: string
+    testFilename: string
 }) {
     for (const suiteResults of results.testResults) {
         for (const testCaseResults of suiteResults.testResults) {
-            const fileName = path.basename(suiteResults.testFilePath)
-            const testName = fileName.substring(0, fileName.lastIndexOf('.'))
             const formatted = {
                 variables: testVariables,
                 retryCount: retryCount,
@@ -45,7 +43,7 @@ export function printAggregatedTestResult({
                 status: suiteResults.numPendingTests > 0 ? 'skipped' : testCaseResults.status,
                 endTime: suiteResults.perfStats.end,
                 startTime: suiteResults.perfStats.start,
-                testName,
+                testFilename,
                 runId: runId,
                 executionId: executionId,
             }
