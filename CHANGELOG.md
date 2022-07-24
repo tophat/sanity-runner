@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.4](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.3...sanity-runner-service@6.4.4) "sanity-runner-service" (2022-07-24)<a name="6.4.4"></a>
+
+### Bug Fixes
+
+* remove test environment, simplify browser cleanup (#317) ([9a152d4](https://github.com/tophat/sanity-runner/commits/9a152d4))
+
+
 ## [6.4.3](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.2...sanity-runner-service@6.4.3) "sanity-runner-service" (2022-07-24)<a name="6.4.3"></a>
 
 ### Bug Fixes
