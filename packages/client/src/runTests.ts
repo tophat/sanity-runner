@@ -48,6 +48,12 @@ async function runTest({
     }
 }
 
+function baseFilename(filename: string, { cwd }: { cwd: string }) {
+    let name = path.relative(cwd, filename)
+    name = name.substring(0, name.lastIndexOf('.test')) // strip test file extension
+    return name
+}
+
 export async function runTests({
     config,
     testFilenames,
@@ -66,7 +72,7 @@ export async function runTests({
     const testFiles: Record<string, string> = Object.fromEntries(
         await Promise.all(
             testFilenames.map(async (filename) => [
-                filename,
+                baseFilename(filename, { cwd: config.testDir }),
                 await fs.promises.readFile(filename, 'utf-8'),
             ]),
         ),
@@ -85,7 +91,9 @@ export async function runTests({
     )
 
     const testRunProgressBar = new cliProgress.SingleBar({
-        format: `Running Tests |${chalk.cyan('{bar}')}| {percentage}% || {value}/{total} Tests`,
+        format: `Running Tests |${chalk.cyan(
+            '{bar}',
+        )}| {percentage}% || {duration_formatted} || {value}/{total} Tests`,
         clearOnComplete: true,
     })
 
@@ -94,18 +102,26 @@ export async function runTests({
         timeout: config.timeout,
     })
 
-    const tasks = testFilenames.map((filename) => async (): Promise<[string, TestRunResult]> => {
-        try {
-            const code = testFiles[filename]
-            const result = await runTest({ filename, code, config, executionId, httpsAgent })
-            if (result.error) {
-                // We know it's a lambda failure. May be worth a retry or some other handling.
-            }
-            return [filename, result]
-        } finally {
-            if (config.progress) testRunProgressBar.increment()
-        }
-    })
+    const tasks = Object.entries(testFiles).map(
+        ([filename, code]) =>
+            async (): Promise<[string, TestRunResult]> => {
+                try {
+                    const result = await runTest({
+                        filename,
+                        code,
+                        config,
+                        executionId,
+                        httpsAgent,
+                    })
+                    if (result.error) {
+                        // We know it's a lambda failure. May be worth a retry or some other handling.
+                    }
+                    return [filename, result]
+                } finally {
+                    if (config.progress) testRunProgressBar.increment()
+                }
+            },
+    )
 
     if (config.progress) {
         enableProgress()

@@ -1,4 +1,5 @@
 import childProcess from 'child_process'
+import crypto from 'crypto'
 
 import { parse } from 'jest-docblock'
 import { AsyncSeriesHook } from 'tapable'
@@ -14,9 +15,11 @@ import type {
 } from '@tophat/sanity-runner-types'
 
 import { logger } from './logger'
-import { runTests } from './testRunner'
+import { runTest } from './runTest'
 
 export async function service(event: InvokePayload): Promise<InvokeResponsePayload> {
+    const runId = crypto.randomUUID()
+
     if (process.env.DEBUG?.includes('sanity-runner')) {
         childProcess.execSync('find /tmp', { encoding: 'utf-8', stdio: 'inherit' })
     }
@@ -29,6 +32,7 @@ export async function service(event: InvokePayload): Promise<InvokeResponsePaylo
 
     // In a future version of the sanity runner, these plugins will be dynamically loaded.
     logger.info('Initializing plugins: FullStory, Slack, PagerDuty.', {
+        run_id: runId,
         execution_id: event.executionId,
     })
     FullStoryPlugin(hooks)
@@ -42,13 +46,17 @@ export async function service(event: InvokePayload): Promise<InvokeResponsePaylo
     })
     PagerDutyPlugin(hooks)
 
-    const testMetadata: TestMetadata = parse(Object.values(event.testFiles)[0])
+    // We only support 1 test per service invocation.
+    const [testFilename, testCode] = Object.entries(event.testFiles)[0]
+    const testMetadata: TestMetadata = parse(testFilename)
 
-    const testResults = await runTests({
-        testFiles: event.testFiles,
+    const testResults = await runTest({
+        testFilename,
+        testCode,
         testVariables: event.testVariables,
         maxRetryCount: event.retryCount,
         executionId: event.executionId,
+        runId,
         hooks,
         testMetadata,
         defaultViewport: {
@@ -58,6 +66,7 @@ export async function service(event: InvokePayload): Promise<InvokeResponsePaylo
     })
 
     logger.info('Test run complete.', {
+        run_id: runId,
         execution_id: event.executionId,
     })
 
