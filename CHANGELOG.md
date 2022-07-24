@@ -2,6 +2,24 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.5](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.0...sanity-runner-client@6.4.5) "sanity-runner-client" (2022-07-24)<a name="6.4.5"></a>
+
+### Bug Fixes
+
+* use relative filename without extension in logs ([ddcae31](https://github.com/tophat/sanity-runner/commits/ddcae31))
+* add duration to progress bar ([20617c5](https://github.com/tophat/sanity-runner/commits/20617c5))
+
+
+## [6.4.5](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.4...sanity-runner-service@6.4.5) "sanity-runner-service" (2022-07-24)<a name="6.4.5"></a>
+
+### Bug Fixes
+
+* remove uuid package in favour of crypto ([9287f67](https://github.com/tophat/sanity-runner/commits/9287f67))
+* delete global setup/teardown hooks ([9287f67](https://github.com/tophat/sanity-runner/commits/9287f67))
+* use relative filename without extension in logs ([ddcae31](https://github.com/tophat/sanity-runner/commits/ddcae31))
+* cleanup chrome data dir after run ([2e50b0a](https://github.com/tophat/sanity-runner/commits/2e50b0a))
+
+
 ## [6.4.4](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.3...sanity-runner-service@6.4.4) "sanity-runner-service" (2022-07-24)<a name="6.4.4"></a>
 
 ### Bug Fixes
