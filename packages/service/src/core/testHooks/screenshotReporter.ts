@@ -45,21 +45,23 @@ export default class PuppeteerScreenshotReporter implements Reporter {
     }
 
     async uploadScreenshotToS3(screenshot: string) {
-        const screenshotObjectName = `${crypto.randomUUID()}.png`
+        // The bucket option may contain a key prefix in the format: s3-bucket/prefix
+        const [bucket, ...prefix] = this.#options.bucket.split('/')
+        const key = [...prefix, `${crypto.randomUUID()}.png`].join('/')
 
         const s3Client = new S3Client({ apiVersion: '2006-03-01' })
         await s3Client.send(
             new PutObjectCommand({
-                Key: screenshotObjectName,
-                Bucket: this.#options.bucket,
+                Key: key,
+                Bucket: bucket,
                 Body: fs.createReadStream(screenshot),
             }),
         )
         return await getSignedUrl(
             s3Client,
             new GetObjectCommand({
-                Bucket: this.#options.bucket,
-                Key: screenshotObjectName,
+                Bucket: bucket,
+                Key: key,
             }),
             { expiresIn: this.#options.urlExpirySeconds },
         )
