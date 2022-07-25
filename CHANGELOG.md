@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.13](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.12...sanity-runner-client@6.4.13) "sanity-runner-client" (2022-07-25)<a name="6.4.13"></a>
+
+### Bug Fixes
+
+* screenshot filename ([f145847](https://github.com/tophat/sanity-runner/commits/f145847))
+
+
 ## [6.4.12](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.9...sanity-runner-client@6.4.12) "sanity-runner-client" (2022-07-25)<a name="6.4.12"></a>
 
 ### Bug Fixes
