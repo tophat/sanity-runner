@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.11](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.10...sanity-runner-service@6.4.11) "sanity-runner-service" (2022-07-25)<a name="6.4.11"></a>
+
+### Bug Fixes
+
+* expire screenshot after 7 days (aws limit) ([6855ccb](https://github.com/tophat/sanity-runner/commits/6855ccb))
+
+
 ## [6.4.10](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.8...sanity-runner-service@6.4.10) "sanity-runner-service" (2022-07-25)<a name="6.4.10"></a>
 
 ### Bug Fixes

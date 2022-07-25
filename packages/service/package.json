@@ -1,6 +1,6 @@
 {
     "name": "sanity-runner-service",
-    "version": "6.4.10",
+    "version": "6.4.11",
     "description": "Distributed Sanity Test Suite Runner.",
     "group": "sanity-runner",
     "main": "bundle/handler.js",
