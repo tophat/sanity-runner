@@ -2,6 +2,21 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.6](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.5...sanity-runner-client@6.4.6) "sanity-runner-client" (2022-07-25)<a name="6.4.6"></a>
+
+### Bug Fixes
+
+* coerce junit values to numbers, single junit report ([c1ed051](https://github.com/tophat/sanity-runner/commits/c1ed051))
+* improved reporting ([fbcf6c5](https://github.com/tophat/sanity-runner/commits/fbcf6c5))
+
+
+## [6.4.6](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.5...sanity-runner-service@6.4.6) "sanity-runner-service" (2022-07-25)<a name="6.4.6"></a>
+
+### Bug Fixes
+
+* coerce junit values to numbers, single junit report ([c1ed051](https://github.com/tophat/sanity-runner/commits/c1ed051))
+
+
 ## [6.4.5](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.0...sanity-runner-client@6.4.5) "sanity-runner-client" (2022-07-24)<a name="6.4.5"></a>
 
 ### Bug Fixes
