@@ -2,6 +2,8 @@ import path from 'path'
 
 import junitBuilder from 'junit-report-builder'
 
+import type { JUnitReport } from '@tophat/sanity-runner-types'
+
 import { TestRunResult, TestStatus } from './types'
 import { parseStatus } from './utils/status'
 
@@ -20,8 +22,10 @@ export async function writeJUnitReport({
     for (const [filename, result] of Object.entries(resultsByTest)) {
         const testCase = suite.testCase().name(filename)
 
-        const testResults = Object.values(result.result?.testResults ?? {})[0]
-        if (testResults.testsuites.$.time) {
+        const testResults: JUnitReport | undefined = Object.values(
+            result.result?.testResults ?? {},
+        )[0]
+        if (testResults?.testsuites?.$?.time) {
             testCase.time(testResults.testsuites.$.time)
         }
 
@@ -31,7 +35,7 @@ export async function writeJUnitReport({
         } else if (status === TestStatus.Error) {
             testCase.error('Error running test.', 'error', result.error?.toString() ?? '')
         } else if (status === TestStatus.Failed) {
-            const failures = testResults.testsuites.testsuite?.[0].testcase?.[0].failure
+            const failures = testResults?.testsuites?.testsuite?.[0].testcase?.[0].failure
             testCase.failure(failures ? failures.join('\n') : 'Unknown failure.', 'failure')
         }
     }
