@@ -51,3 +51,10 @@ export interface InvokeBackend {
     invoke(params: TaskPayload): Promise<TestRunResult>
     BackendName: string
 }
+
+export enum TestStatus {
+    Passed = 'passed',
+    Skipped = 'skipped',
+    Error = 'error',
+    Failed = 'failed',
+}

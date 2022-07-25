@@ -23,13 +23,47 @@ declare let global: typeof globalThis & {
     browser?: Browser
 }
 
+const asInteger = (v: any): number => (v ? parseInt(v, 10) : 0)
+
+function coerceJUnitReport(rawReport: JUnitReport): JUnitReport {
+    // xml2js parses numbers as strings. This converts it back.
+    const report: JUnitReport = {
+        testsuites: {
+            $: {
+                name: rawReport.testsuites.$.name,
+                failures: asInteger(rawReport.testsuites.$.failures),
+                tests: asInteger(rawReport.testsuites.$.tests),
+                time: Number(rawReport.testsuites.$.time),
+            },
+            testsuite: rawReport.testsuites.testsuite?.map((suite) => ({
+                $: {
+                    failures: asInteger(suite.$.failures),
+                    skipped: asInteger(suite.$.skipped),
+                    tests: asInteger(suite.$.tests),
+                    name: suite.$.name,
+                    time: Number(suite.$.time),
+                },
+                testcase: suite.testcase.map((testcase) => ({
+                    failure: testcase.failure,
+                    $: {
+                        classname: testcase.$.classname,
+                        name: testcase.$.name,
+                        time: Number(testcase.$.time),
+                    },
+                })),
+            })),
+        },
+    }
+    return report
+}
+
 async function parseJUnitReport(
     reportFilename: string,
     report: string | JUnitReport,
 ): Promise<JUnitReport> {
     if (typeof report === 'string') {
         if (reportFilename.endsWith('.xml')) {
-            return await xml2js.parseStringPromise(report)
+            return coerceJUnitReport(await xml2js.parseStringPromise(report))
         }
         return JSON.parse(report)
     }
