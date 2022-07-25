@@ -10766,6 +10766,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-format@npm:4.0.3":
+  version: 4.0.3
+  resolution: "date-format@npm:4.0.3"
+  checksum: 8ae4d9de3532010169a89bc7b079342051ba3ec88552636aa677bfb53e8eb15113af8394679aea7d41367dc8bb6e9865da17f21ac2802202180b09d6e3f2339e
+  languageName: node
+  linkType: hard
+
 "dateformat@npm:^3.0.0":
   version: 3.0.3
   resolution: "dateformat@npm:3.0.3"
@@ -16755,6 +16762,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"junit-report-builder@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "junit-report-builder@npm:3.0.1"
+  dependencies:
+    date-format: 4.0.3
+    lodash: ^4.17.21
+    make-dir: ^3.1.0
+    xmlbuilder: ^15.1.1
+  checksum: 9646a7bf2297f4c237e7d40d30cb3bfca291bf073c514c2fd0ae255a1994fac783c4755a0bf5c5a616651c3e227875b726407d3bb3c6e92b135e15fd4cc5b288
+  languageName: node
+  linkType: hard
+
 "just-diff-apply@npm:^5.2.0":
   version: 5.3.1
   resolution: "just-diff-apply@npm:5.3.1"
@@ -22261,6 +22280,7 @@ resolve@^2.0.0-next.3:
     cli-progress: ^3.11.2
     clipanion: ^3.2.0-rc.11
     glob: ^7.2.0
+    junit-report-builder: ^3.0.1
     lodash: ^4.17.21
     p-limit: ^3.0.0
     typanion: ^3.9.0
@@ -25849,6 +25869,13 @@ resolve@^2.0.0-next.3:
   version: 1.0.1
   resolution: "xml@npm:1.0.1"
   checksum: 11b5545ef3f8fec3fa29ce251f50ad7b6c97c103ed4d851306ec23366f5fa4699dd6a942262df52313a0cd1840ab26256da253c023bad3309d8ce46fe6020ca0
+  languageName: node
+  linkType: hard
+
+"xmlbuilder@npm:^15.1.1":
+  version: 15.1.1
+  resolution: "xmlbuilder@npm:15.1.1"
+  checksum: 14f7302402e28d1f32823583d121594a9dca36408d40320b33f598bd589ca5163a352d076489c9c64d2dc1da19a790926a07bf4191275330d4de2b0d85bb1843
   languageName: node
   linkType: hard
 

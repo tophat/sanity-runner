@@ -12,6 +12,7 @@ import type { ClientConfiguration } from '@tophat/sanity-runner-types'
 import { InvokeLambda } from './backends/lambda'
 import { InvokeLocal } from './backends/local'
 import { disableProgress, enableProgress, getLogger } from './logger'
+import { writeJUnitReport } from './reporter'
 import { downloadFile } from './utils/downloadFile'
 import { printTestSummary } from './utils/printTestSummary'
 
@@ -140,39 +141,42 @@ export async function runTests({
 
     const duration = Number(process.hrtime.bigint() - startTime) / 1e9
 
-    const results = Object.entries(resultsByTest).reduce(
-        (agg, [, runResult]) => ({
-            passed: Boolean(agg.passed && runResult.result?.passed),
-            testResults: { ...agg.testResults, ...runResult.result?.testResults },
-            errors: [...(agg.errors ?? []), ...(runResult.result?.errors ?? [])],
-            screenshots: { ...agg.screenshots, ...runResult.result?.screenshots },
-        }),
+    const results = Object.entries(resultsByTest).reduce<AggregatedTestRunResults>(
+        (agg, [, runResult]) => {
+            agg.passed = Boolean(agg.passed && runResult.result?.passed)
+
+            if (runResult.result) {
+                agg.testResults[runResult.filename] = Object.values(runResult.result.testResults)[0]
+                agg.errors?.push(...(runResult.result?.errors ?? []))
+                agg.screenshots ??= {}
+                if (runResult.result.screenshots) {
+                    agg.screenshots[runResult.filename] = Object.values(
+                        runResult.result.screenshots,
+                    )[0]
+                }
+            }
+
+            agg.errors = [...(agg.errors ?? [])]
+            agg.screenshots = { ...agg.screenshots, ...runResult.result?.screenshots }
+            return agg
+        },
         {
             passed: true,
             testResults: {},
             errors: [],
             screenshots: {},
-        } as AggregatedTestRunResults,
-    )
-
-    // Download test results to disk (junit reports).
-    await Promise.all(
-        Object.entries(results.testResults).map(async ([junitFilename, junitResult]) => {
-            const outputFilename = path.join(config.outputDir, junitFilename)
-            await fs.promises.mkdir(path.dirname(outputFilename), { recursive: true })
-            await fs.promises.writeFile(
-                outputFilename,
-                typeof junitResult === 'string' ? junitResult : JSON.stringify(junitResult),
-                'utf-8',
-            )
-        }),
+        },
     )
 
     try {
         // Download screenshots
         await Promise.all(
-            Object.entries(results.screenshots ?? {}).map(async ([screenshotName, url]) => {
-                const outputFilename = path.join(config.outputDir, screenshotName)
+            Object.entries(results.screenshots ?? {}).map(async ([runTestFilename, url]) => {
+                const screenshotName = runTestFilename.substring(
+                    0,
+                    runTestFilename.lastIndexOf('.test.js'),
+                )
+                const outputFilename = path.join(config.outputDir, runTestFilename)
                 try {
                     if (url) {
                         await downloadFile(outputFilename, url)
@@ -191,6 +195,13 @@ export async function runTests({
     } catch (err) {
         logger.error('Failed to download all screenshots.', err)
     }
+
+    // Write aggregated junit report
+    await writeJUnitReport({
+        resultsByTest,
+        outputDir: config.outputDir,
+        executionId,
+    })
 
     await printTestSummary(results, { config })
 

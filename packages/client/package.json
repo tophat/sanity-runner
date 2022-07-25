@@ -45,6 +45,7 @@
         "cli-progress": "^3.11.2",
         "clipanion": "^3.2.0-rc.11",
         "glob": "^7.2.0",
+        "junit-report-builder": "^3.0.1",
         "lodash": "^4.17.21",
         "p-limit": "^3.0.0",
         "typanion": "^3.9.0",

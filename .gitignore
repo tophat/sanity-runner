@@ -11,6 +11,7 @@ dist/
 bundle/
 artifacts/
 output
+outputs
 
 # Dependency Management
 node_modules/
