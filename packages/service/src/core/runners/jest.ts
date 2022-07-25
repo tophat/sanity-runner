@@ -219,7 +219,8 @@ export default class JestPuppeteerTestRunner {
                     require.resolve('./testHooks/screenshotReporter'),
                     {
                         output: paths.results(this.context.runId),
-                        urlExpirySeconds: 30 * 24 * 3600,
+                        // max expiry is 7 days (AWS limitation)
+                        urlExpirySeconds: 7 * 24 * 3600,
                         bucket: process.env.SCREENSHOT_BUCKET,
                     },
                 ],

@@ -63,7 +63,8 @@ export default class PuppeteerScreenshotReporter implements Reporter {
                 Bucket: bucket,
                 Key: key,
             }),
-            { expiresIn: this.#options.urlExpirySeconds },
+            // max expiry is 7 days (AWS limitation)
+            { expiresIn: Math.min(this.#options.urlExpirySeconds, 7 * 24 * 3600) },
         )
     }
 
