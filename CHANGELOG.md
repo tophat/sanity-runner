@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.9](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.8...sanity-runner-client@6.4.9) "sanity-runner-client" (2022-07-25)<a name="6.4.9"></a>
+
+### Bug Fixes
+
+* junit report may be empty ([480a41a](https://github.com/tophat/sanity-runner/commits/480a41a))
+
+
 ## [6.4.8](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.4.0...@tophat/sanity-runner-types@6.4.8) "@tophat/sanity-runner-types" (2022-07-25)<a name="6.4.8"></a>
 
 ### Bug Fixes
