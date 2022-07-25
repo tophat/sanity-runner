@@ -164,9 +164,6 @@ export async function runTests({
                     )[0]
                 }
             }
-
-            agg.errors = [...(agg.errors ?? [])]
-            agg.screenshots = { ...agg.screenshots, ...runResult.result?.screenshots }
             return agg
         },
         {
