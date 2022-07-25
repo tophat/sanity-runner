@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.7](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.6...sanity-runner-client@6.4.7) "sanity-runner-client" (2022-07-25)<a name="6.4.7"></a>
+
+### Bug Fixes
+
+* handle errors gracefully ([9312b37](https://github.com/tophat/sanity-runner/commits/9312b37))
+
+
 ## [6.4.6](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.5...sanity-runner-client@6.4.6) "sanity-runner-client" (2022-07-25)<a name="6.4.6"></a>
 
 ### Bug Fixes
