@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.12](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.9...sanity-runner-client@6.4.12) "sanity-runner-client" (2022-07-25)<a name="6.4.12"></a>
+
+### Bug Fixes
+
+* remove old screenshot logic ([7712851](https://github.com/tophat/sanity-runner/commits/7712851))
+
+
 ## [6.4.11](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.10...sanity-runner-service@6.4.11) "sanity-runner-service" (2022-07-25)<a name="6.4.11"></a>
 
 ### Bug Fixes
