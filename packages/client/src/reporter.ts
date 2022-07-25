@@ -2,7 +2,8 @@ import path from 'path'
 
 import junitBuilder from 'junit-report-builder'
 
-import { TestRunResult } from './types'
+import { TestRunResult, TestStatus } from './types'
+import { parseStatus } from './utils/status'
 
 export async function writeJUnitReport({
     resultsByTest,
@@ -24,18 +25,12 @@ export async function writeJUnitReport({
             testCase.time(testResults.testsuites.$.time)
         }
 
-        if (testResults.testsuites.testsuite?.[0].$.skipped) {
+        const status = parseStatus(result)
+        if (status === TestStatus.Skipped) {
             testCase.skipped()
-            continue
-        }
-
-        if (result.result?.passed) {
-            continue
-        }
-
-        if (result.error) {
-            testCase.error('Error running test.', 'error', result.error.toString())
-        } else {
+        } else if (status === TestStatus.Error) {
+            testCase.error('Error running test.', 'error', result.error?.toString() ?? '')
+        } else if (status === TestStatus.Failed) {
             const failures = testResults.testsuites.testsuite?.[0].testcase?.[0].failure
             testCase.failure(failures ? failures.join('\n') : 'Unknown failure.', 'failure')
         }

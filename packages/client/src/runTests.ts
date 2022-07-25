@@ -13,16 +13,17 @@ import { InvokeLambda } from './backends/lambda'
 import { InvokeLocal } from './backends/local'
 import { disableProgress, enableProgress, getLogger } from './logger'
 import { writeJUnitReport } from './reporter'
-import { downloadFile } from './utils/downloadFile'
-import { printTestSummary } from './utils/printTestSummary'
-
-import type {
+import {
     AggregatedTestRunResults,
     InvokeBackendConstructor,
     RunResults,
     TaskPayload,
     TestRunResult,
+    TestStatus,
 } from './types'
+import { downloadFile } from './utils/downloadFile'
+import { printTestSummary } from './utils/printTestSummary'
+import { parseStatus } from './utils/status'
 
 async function runTest({
     config,
@@ -37,14 +38,17 @@ async function runTest({
 
     const startTime = process.hrtime.bigint()
     logger.verbose(`[${invokeBackend.BackendName}] [${executionId}] Running: '${filename}'`)
+    let status: TestStatus | null = null
     try {
-        return await invokeBackend.invoke({ config, filename, code, executionId })
+        const result = await invokeBackend.invoke({ config, filename, code, executionId })
+        status = parseStatus(result)
+        return result
     } finally {
         const duration = Number(process.hrtime.bigint() - startTime) / 1e9
         logger.verbose(
-            `[${
-                invokeBackend.BackendName
-            }] [${executionId}] Finished: '${filename}' [${duration.toFixed(3)}s]`,
+            `[${invokeBackend.BackendName}] [${executionId}] Finished: '${filename}' [${
+                status ?? TestStatus.Error
+            }] [${duration.toFixed(3)}s]`,
         )
     }
 }
