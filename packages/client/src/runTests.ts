@@ -178,21 +178,17 @@ export async function runTests({
         // Download screenshots
         await Promise.all(
             Object.entries(results.screenshots ?? {}).map(async ([runTestFilename, url]) => {
-                const screenshotName = runTestFilename.substring(
-                    0,
-                    runTestFilename.lastIndexOf('.test.js'),
-                )
-                const outputFilename = path.join(config.outputDir, runTestFilename)
+                const outputFilename = path.join(config.outputDir, `${runTestFilename}.png`)
                 try {
                     if (url) {
                         await downloadFile(outputFilename, url)
                         logger.verbose(
-                            `[Screenshot] Downloaded '${screenshotName}' to ${outputFilename}`,
+                            `[Screenshot] Downloaded screenshot for '${runTestFilename}' to ${outputFilename}`,
                         )
                     }
                 } catch (err) {
                     logger.error(
-                        `[Screenshot] Failed downloading screenshot for '${screenshotName}'`,
+                        `[Screenshot] Failed downloading screenshot for '${runTestFilename}'`,
                         err,
                     )
                 }
