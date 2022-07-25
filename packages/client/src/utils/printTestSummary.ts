@@ -38,8 +38,8 @@ export async function printTestSummary(
         }
     > = {}
 
-    for (const junitReport of Object.values(results.testResults)) {
-        if (!junitReport.testsuites.testsuite) {
+    for (const junitReport of Object.values(results.testResults ?? {})) {
+        if (!junitReport.testsuites?.testsuite) {
             logger.error(
                 'Missing test suite. It is likely that the service was unable to parse the test.',
             )

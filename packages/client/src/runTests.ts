@@ -150,7 +150,12 @@ export async function runTests({
             agg.passed = Boolean(agg.passed && runResult.result?.passed)
 
             if (runResult.result) {
-                agg.testResults[runResult.filename] = Object.values(runResult.result.testResults)[0]
+                if (runResult.result.testResults) {
+                    agg.testResults ??= {}
+                    agg.testResults[runResult.filename] = Object.values(
+                        runResult.result.testResults,
+                    )[0]
+                }
                 agg.errors?.push(...(runResult.result?.errors ?? []))
                 agg.screenshots ??= {}
                 if (runResult.result.screenshots) {
