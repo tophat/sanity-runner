@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.14](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.11...sanity-runner-service@6.4.14) "sanity-runner-service" (2022-07-27)<a name="6.4.14"></a>
+
+### Bug Fixes
+
+* testHooks path for local usage ([b11d8d9](https://github.com/tophat/sanity-runner/commits/b11d8d9))
+
+
 ## [6.4.13](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.12...sanity-runner-client@6.4.13) "sanity-runner-client" (2022-07-25)<a name="6.4.13"></a>
 
 ### Bug Fixes
