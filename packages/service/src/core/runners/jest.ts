@@ -216,6 +216,7 @@ export default class JestPuppeteerTestRunner {
                     },
                 ],
                 [
+                    // Note that the testHooks path must work in both the 'lib' and in the 'bundle'
                     require.resolve('./testHooks/screenshotReporter'),
                     {
                         output: paths.results(this.context.runId),

@@ -52,7 +52,7 @@ async function main() {
     // Build testHooks
     console.log('Building Test Hooks...')
     await buildWithOutput({
-        entryPoints: await findFiles('src/core/testHooks/*', serviceDir),
+        entryPoints: await findFiles('src/core/runners/testHooks/*', serviceDir),
         platform: 'node',
         target: 'node16',
         outdir: path.resolve(serviceDir, 'bundle', 'testHooks'),
@@ -72,8 +72,11 @@ async function main() {
         plugins: [ExternalPlugin],
         absWorkingDir: serviceDir,
         external: (
-            await findFiles('src/core/testHooks/*', serviceDir)
-        ).map((name) => `./${path.relative('src/core', name.substring(0, name.lastIndexOf('.')))}`),
+            await findFiles('src/core/runners/testHooks/*', serviceDir)
+        ).map(
+            (name) =>
+                `./${path.relative('src/core/runners', name.substring(0, name.lastIndexOf('.')))}`,
+        ),
     })
 
     console.log('Build complete.')

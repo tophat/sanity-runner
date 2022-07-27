@@ -5,7 +5,7 @@ import 'expect-puppeteer'
 
 import type { SanityRunnerTestGlobals } from '@tophat/sanity-runner-types'
 
-import { logger } from '../logger'
+import { logger } from '../../logger'
 
 import type { Browser, Page } from 'puppeteer-core'
 
