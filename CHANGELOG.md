@@ -2,6 +2,20 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.15](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.4.8...@tophat/sanity-runner-types@6.4.15) "@tophat/sanity-runner-types" (2022-08-03)<a name="6.4.15"></a>
+
+### Bug Fixes
+
+* use testcase full name as display name in reports (#322) ([bd48a38](https://github.com/tophat/sanity-runner/commits/bd48a38))
+
+
+## [6.4.15](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.14...sanity-runner-service@6.4.15) "sanity-runner-service" (2022-08-03)<a name="6.4.15"></a>
+
+### Bug Fixes
+
+* use testcase full name as display name in reports (#322) ([bd48a38](https://github.com/tophat/sanity-runner/commits/bd48a38))
+
+
 ## [6.4.14](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.11...sanity-runner-service@6.4.14) "sanity-runner-service" (2022-07-27)<a name="6.4.14"></a>
 
 ### Bug Fixes
