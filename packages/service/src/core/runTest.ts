@@ -97,7 +97,8 @@ export async function runTest(runTestContext: RunTestContext): Promise<InvokeRes
             testMetadata: runTestContext.testMetadata,
             testVariables: runTestContext.testVariables,
             runId: runTestContext.runId,
-            testDisplayName: results.testResults[0].displayName?.name ?? 'Unknown',
+            testDisplayName:
+                results.testResults[0]?.testResults?.[0]?.fullName ?? runTestContext.testFilename,
             testFilename: runTestContext.testFilename,
             failureMessage: results.testResults[0]?.failureMessage ?? undefined,
         }
