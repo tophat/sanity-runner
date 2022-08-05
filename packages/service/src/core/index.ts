@@ -48,7 +48,7 @@ export async function service(event: InvokePayload): Promise<InvokeResponsePaylo
 
     // We only support 1 test per service invocation.
     const [testFilename, testCode] = Object.entries(event.testFiles)[0]
-    const testMetadata: TestMetadata = parse(testFilename)
+    const testMetadata: TestMetadata = parse(testCode)
 
     const testResults = await runTest({
         testFilename,
