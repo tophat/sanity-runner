@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.16](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.15...sanity-runner-service@6.4.16) "sanity-runner-service" (2022-08-05)<a name="6.4.16"></a>
+
+### Bug Fixes
+
+* correctly parse test metadata ([483e11d](https://github.com/tophat/sanity-runner/commits/483e11d))
+
+
 ## [6.4.15](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.4.8...@tophat/sanity-runner-types@6.4.15) "@tophat/sanity-runner-types" (2022-08-03)<a name="6.4.15"></a>
 
 ### Bug Fixes
