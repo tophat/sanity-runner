@@ -5,7 +5,7 @@ import path from 'path'
 
 import 'expect-puppeteer'
 
-import type { SanityRunnerTestGlobals } from '@tophat/sanity-runner-types'
+import type { DefaultViewport, SanityRunnerTestGlobals } from '@tophat/sanity-runner-types'
 
 import { logger } from '../../logger'
 
@@ -48,23 +48,34 @@ type ScreencastFrameEvent = {
     sessionId: number
 }
 
-const startScreenCast = async function (page: Page) {
+const startScreenCast = async function (page: Page, viewPort?: DefaultViewport) {
     const cdpSession = await page.target().createCDPSession()
     await cdpSession.send('Page.enable')
     await cdpSession.send('Page.startScreencast', {
         format: 'jpeg',
-        maxWidth: 1920,
-        maxHeight: 1080,
+        maxWidth: viewPort?.width ?? 1920,
+        maxHeight: viewPort?.height ?? 1080,
         everyNthFrame: 1,
         quality: 100,
     })
     const testResultDir = `${os.tmpdir()}/test-video-${Date.now()}`
     fs.mkdirSync(testResultDir, { recursive: true })
-    cdpSession.on('Page.screencastFrame', ({ data, sessionId }: ScreencastFrameEvent) => {
+    const durationFileName = path.join(testResultDir, 'duration.txt')
+    let lastTimestamp: number | null = null
+    cdpSession.on('Page.screencastFrame', ({ data, metadata, sessionId }: ScreencastFrameEvent) => {
         console.log(`Writing screencast frame to ${testResultDir}`)
-        const fileName = path.join(`${testResultDir}/screen-${Date.now()}.jpeg`)
-        fs.writeFileSync(fileName, data, 'base64')
+        const now = metadata.timestamp * 1000 // Convert to milliseconds
+        const fileName = `screen-${now}.jpeg`
+        fs.writeFileSync(path.join(testResultDir, fileName), data, 'base64')
+        const duration = lastTimestamp ? now - lastTimestamp : 0
+        lastTimestamp = now
         cdpSession.send('Page.screencastFrameAck', { sessionId })
+
+        const durationFileContent =
+            duration !== 0
+                ? `file ${fileName}\nduration ${duration.toFixed(3)}\n`
+                : `file ${fileName}\n`
+        fs.appendFileSync(durationFileName, durationFileContent)
     })
 
     global.cdpSession = cdpSession
@@ -79,7 +90,7 @@ const stopScreenCast = async function () {
     if (global.testResultDir) {
         try {
             execSync(
-                `ffmpeg -f image2 -framerate 24 -pattern_type glob -i "${global.testResultDir}/*.jpeg" -crf 25 -vcodec libx264 ${global.testResultDir}/video.mp4`,
+                `ffmpeg -f concat -i "${global.testResultDir}/duration.txt" -vf "settb=1/1000,setpts=PTS/1000" -vsync vfr -r 1000 -vcodec libx264 -crf 25 ${global.testResultDir}/video.mp4`,
             )
             console.log(`Output screenshot to ${global.testResultDir}/video.mp4`)
         } catch (e) {
@@ -90,10 +101,10 @@ const stopScreenCast = async function () {
 
 beforeEach(async () => {
     global.page = await global.browser.newPage()
-    await startScreenCast(global.page)
     if (global._sanityRunnerTestGlobals?.defaultViewport) {
         global.page.setViewport(global._sanityRunnerTestGlobals.defaultViewport)
     }
+    await startScreenCast(global.page, global._sanityRunnerTestGlobals?.defaultViewport)
     try {
         await global.page.setUserAgent('TophatSanityRunner')
         await global.page.setExtraHTTPHeaders({
