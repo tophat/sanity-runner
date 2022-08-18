@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.17](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.13...sanity-runner-client@6.4.17) "sanity-runner-client" (2022-08-18)<a name="6.4.17"></a>
+
+### Bug Fixes
+
+* add missing axios dependency (#327) ([fe86685](https://github.com/tophat/sanity-runner/commits/fe86685))
+
+
 ## [6.4.16](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.15...sanity-runner-service@6.4.16) "sanity-runner-service" (2022-08-05)<a name="6.4.16"></a>
 
 ### Bug Fixes
