@@ -3,6 +3,7 @@ import fs from 'fs'
 import https from 'https'
 import path from 'path'
 
+import retry from 'async-retry'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
 import pLimit from 'p-limit'
@@ -40,8 +41,32 @@ async function runTest({
     logger.verbose(`[${invokeBackend.BackendName}] [${executionId}] Running: '${filename}'`)
     let status: TestStatus | null = null
     try {
-        const result = await invokeBackend.invoke({ config, filename, code, executionId })
-        status = parseStatus(result)
+        let retryCount = 0
+        const result = await retry(
+            async () => {
+                const invokeResult = await invokeBackend.invoke({
+                    config: {
+                        ...config,
+                        retryCount: 0, // client will take care of retrying
+                    },
+                    filename,
+                    code,
+                    executionId,
+                })
+                status = parseStatus(result)
+                if (
+                    retryCount !== config.retryCount &&
+                    (status === TestStatus.Error || status === TestStatus.Failed)
+                ) {
+                    throw new Error('Test failed. Retry triggered.')
+                }
+                return invokeResult
+            },
+            {
+                retries: config.retryCount,
+                onRetry: () => void retryCount++,
+            },
+        )
         return result
     } finally {
         const duration = Number(process.hrtime.bigint() - startTime) / 1e9
