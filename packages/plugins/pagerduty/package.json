@@ -1,6 +1,6 @@
 {
     "name": "@tophat/sanity-runner-plugin-pagerduty",
-    "version": "6.4.15",
+    "version": "6.4.18",
     "description": "Sanity runner plugin for pagerduty",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "group": "sanity-runner",
@@ -27,7 +27,7 @@
         "directory": "packages/plugins/pagerduty"
     },
     "dependencies": {
-        "@tophat/sanity-runner-types": "workspace:^6.4.15",
+        "@tophat/sanity-runner-types": "workspace:^6.4.18",
         "node-pagerduty": "^1.3.6"
     },
     "devDependencies": {

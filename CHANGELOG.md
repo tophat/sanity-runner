@@ -2,6 +2,20 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.4.18](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.4.15...@tophat/sanity-runner-types@6.4.18) "@tophat/sanity-runner-types" (2022-08-19)<a name="6.4.18"></a>
+
+### Bug Fixes
+
+* update dependencies ([8b08bfe](https://github.com/tophat/sanity-runner/commits/8b08bfe))
+
+
+## [6.4.18](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.17...sanity-runner-client@6.4.18) "sanity-runner-client" (2022-08-19)<a name="6.4.18"></a>
+
+### Bug Fixes
+
+* update dependencies ([8b08bfe](https://github.com/tophat/sanity-runner/commits/8b08bfe))
+
+
 ## [6.4.17](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.13...sanity-runner-client@6.4.17) "sanity-runner-client" (2022-08-18)<a name="6.4.17"></a>
 
 ### Bug Fixes
