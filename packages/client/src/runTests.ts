@@ -3,7 +3,6 @@ import fs from 'fs'
 import https from 'https'
 import path from 'path'
 
-import retry from 'async-retry'
 import chalk from 'chalk'
 import cliProgress from 'cli-progress'
 import pLimit from 'p-limit'
@@ -26,8 +25,6 @@ import { downloadFile } from './utils/downloadFile'
 import { printTestSummary } from './utils/printTestSummary'
 import { parseStatus } from './utils/status'
 
-class RetryableError extends Error {}
-
 async function runTest({
     config,
     filename,
@@ -41,11 +38,17 @@ async function runTest({
 
     const startTime = process.hrtime.bigint()
     logger.verbose(`[${invokeBackend.BackendName}] [${executionId}] Running: '${filename}'`)
-    let status: TestStatus | null = null
+    let status: TestStatus | undefined
+    let result: TestRunResult | undefined
+    let lastError: Error | undefined
     try {
-        const { result } = await retry(
-            async (_, attempt) => {
-                const result = await invokeBackend.invoke({
+        for (let attempt = 0; attempt < config.retryCount + 1; attempt++) {
+            status = undefined
+            result = undefined
+            lastError = undefined
+
+            try {
+                result = await invokeBackend.invoke({
                     config: {
                         ...config,
                         // client will take care of retrying, so we disable retrying in the service
@@ -56,19 +59,18 @@ async function runTest({
                     executionId,
                 })
                 status = parseStatus(result)
-                if (
-                    (status === TestStatus.Error || status === TestStatus.Failed) &&
-                    attempt <= config.retryCount
-                ) {
-                    throw new RetryableError()
-                }
-                return { result, attempt }
-            },
-            {
-                retries: config.retryCount,
-            },
-        )
-        return result
+            } catch (err) {
+                result = undefined
+                status = TestStatus.Failed
+                lastError = err instanceof Error ? err : new Error(String(err))
+                continue
+            }
+
+            if (status === TestStatus.Passed || status === TestStatus.Skipped) {
+                break
+            }
+        }
+        return result ? result : { filename, error: lastError }
     } finally {
         const duration = Number(process.hrtime.bigint() - startTime) / 1e9
         logger.verbose(
