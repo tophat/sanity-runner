@@ -26,6 +26,8 @@ import { downloadFile } from './utils/downloadFile'
 import { printTestSummary } from './utils/printTestSummary'
 import { parseStatus } from './utils/status'
 
+class RetryableError extends Error {}
+
 async function runTest({
     config,
     filename,
@@ -41,13 +43,13 @@ async function runTest({
     logger.verbose(`[${invokeBackend.BackendName}] [${executionId}] Running: '${filename}'`)
     let status: TestStatus | null = null
     try {
-        let retryCount = 0
-        const result = await retry(
-            async () => {
-                const invokeResult = await invokeBackend.invoke({
+        const { result } = await retry(
+            async (_, attempt) => {
+                const result = await invokeBackend.invoke({
                     config: {
                         ...config,
-                        retryCount: 0, // client will take care of retrying
+                        // client will take care of retrying, so we disable retrying in the service
+                        retryCount: 0,
                     },
                     filename,
                     code,
@@ -55,16 +57,15 @@ async function runTest({
                 })
                 status = parseStatus(result)
                 if (
-                    retryCount !== config.retryCount &&
-                    (status === TestStatus.Error || status === TestStatus.Failed)
+                    (status === TestStatus.Error || status === TestStatus.Failed) &&
+                    attempt <= config.retryCount
                 ) {
-                    throw new Error('Test failed. Retry triggered.')
+                    throw new RetryableError()
                 }
-                return invokeResult
+                return { result, attempt }
             },
             {
                 retries: config.retryCount,
-                onRetry: () => void retryCount++,
             },
         )
         return result

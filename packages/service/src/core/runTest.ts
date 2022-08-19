@@ -29,7 +29,7 @@ export async function runTest(runTestContext: RunTestContext): Promise<InvokeRes
         'sanity_runner.max_retry_count': runTestContext.maxRetryCount,
     })
 
-    let retryCount = 0
+    const retryCount = 0
     try {
         await runner.writeTestCodeToDisk({ testCode: runTestContext.testCode })
 
@@ -46,18 +46,15 @@ export async function runTest(runTestContext: RunTestContext): Promise<InvokeRes
         }
 
         const results = await retry(
-            async () => {
-                logger.info(
-                    `Starting test run (${retryCount + 1}/${runTestContext.maxRetryCount + 1}):`,
-                    {
-                        run_id: runTestContext.runId,
-                        execution_id: runTestContext.executionId,
-                        test_file: runTestContext.testFilename,
-                    },
-                )
+            async (_, attempt) => {
+                logger.info(`Starting test run (${attempt}/${runTestContext.maxRetryCount + 1}):`, {
+                    run_id: runTestContext.runId,
+                    execution_id: runTestContext.executionId,
+                    test_file: runTestContext.testFilename,
+                })
                 const result = await trace('Test Run', async (span) => {
                     span?.addTags({
-                        'sanity_runner.attempt': retryCount + 1,
+                        'sanity_runner.attempt': attempt,
                         'sanity_runner.runner': runner.name,
                     })
                     return await runner.run()
@@ -66,7 +63,7 @@ export async function runTest(runTestContext: RunTestContext): Promise<InvokeRes
                 // force retry if test was unsuccesfull
                 // if last retry, return as normal
                 if (!result.success) {
-                    if (retryCount !== runTestContext.maxRetryCount) {
+                    if (attempt <= runTestContext.maxRetryCount) {
                         throw new Error('Test Failed!')
                     }
 
@@ -80,9 +77,6 @@ export async function runTest(runTestContext: RunTestContext): Promise<InvokeRes
             },
             {
                 retries: runTestContext.maxRetryCount,
-                onRetry: function () {
-                    retryCount++
-                },
             },
         )
 
