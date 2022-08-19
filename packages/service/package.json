@@ -23,7 +23,7 @@
         "build:lib": "run -T tsc -p .",
         "prepack": "run clean && run build:bundle && run build:lib",
         "docker:pre": "mkdir -p artifacts && yarn pack -o artifacts/%s.tgz",
-        "docker:build": "run docker:pre && docker build . -f service.Dockerfile --target base -t ghcr.io/tophat/sanity-runner-service:latest && docker build . -f service.Dockerfile --target datadog -t ghcr.io/tophat/sanity-runner-service:latest-datadog",
+        "docker:build": "run docker:pre && docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ghcr.io/tophat/sanity-runner-service . -f service.Dockerfile --target base -t ghcr.io/tophat/sanity-runner-service:latest && docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ghcr.io/tophat/sanity-runner-service . -f service.Dockerfile --target datadog -t ghcr.io/tophat/sanity-runner-service:latest-datadog",
         "docker:prod": "run docker:build && docker run -p 9000:8080 ghcr.io/tophat/sanity-runner-service:latest",
         "docker:datadog:prod": "run docker:build && docker run -p 9000:8080 --env DD_LOG_LEVEL=debug --env DD_FORWARD_LOG=False --env DD_FLUSH_TO_LOG=True ghcr.io/tophat/sanity-runner-service:latest-datadog",
         "docker:tag": "run docker:base:tag && run docker:datadog:tag",

@@ -10,6 +10,7 @@ on:
 env:
   CI: 1
   PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+  DOCKER_BUILDKIT: 1
 
 jobs:
   linting:
