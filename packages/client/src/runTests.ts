@@ -38,11 +38,44 @@ async function runTest({
 
     const startTime = process.hrtime.bigint()
     logger.verbose(`[${invokeBackend.BackendName}] [${executionId}] Running: '${filename}'`)
-    let status: TestStatus | null = null
+    let status: TestStatus | undefined
+    let result: TestRunResult | undefined
+    let lastError: Error | undefined
     try {
-        const result = await invokeBackend.invoke({ config, filename, code, executionId })
-        status = parseStatus(result)
-        return result
+        for (let attempt = 0; attempt < config.retryCount + 1; attempt++) {
+            if (attempt > 0) {
+                // TODO: Change this to an exponential backoff?
+                await new Promise((r) => setTimeout(r, 5000 + Math.round(Math.random() * 1000)))
+            }
+
+            status = undefined
+            result = undefined
+            lastError = undefined
+
+            try {
+                result = await invokeBackend.invoke({
+                    config: {
+                        ...config,
+                        // client will take care of retrying, so we disable retrying in the service
+                        retryCount: 0,
+                    },
+                    filename,
+                    code,
+                    executionId,
+                })
+                status = parseStatus(result)
+            } catch (err) {
+                result = undefined
+                status = TestStatus.Failed
+                lastError = err instanceof Error ? err : new Error(String(err))
+                continue
+            }
+
+            if (status === TestStatus.Passed || status === TestStatus.Skipped) {
+                break
+            }
+        }
+        return result ? result : { filename, error: lastError }
     } finally {
         const duration = Number(process.hrtime.bigint() - startTime) / 1e9
         logger.verbose(
