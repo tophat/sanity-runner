@@ -2,6 +2,20 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.5.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.18...sanity-runner-client@6.5.0) "sanity-runner-client" (2022-08-22)<a name="6.5.0"></a>
+
+### Features
+
+* handle retrying on the client, not service (#328) ([ae3f699](https://github.com/tophat/sanity-runner/commits/ae3f699))
+
+
+## [6.5.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.4.18...sanity-runner-service@6.5.0) "sanity-runner-service" (2022-08-22)<a name="6.5.0"></a>
+
+### Features
+
+* handle retrying on the client, not service (#328) ([ae3f699](https://github.com/tophat/sanity-runner/commits/ae3f699))
+
+
 ## [6.4.18](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.4.15...@tophat/sanity-runner-types@6.4.18) "@tophat/sanity-runner-types" (2022-08-19)<a name="6.4.18"></a>
 
 ### Bug Fixes
