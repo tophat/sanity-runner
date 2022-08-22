@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.5.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.5.0...sanity-runner-service@6.5.1) "sanity-runner-service" (2022-08-22)<a name="6.5.1"></a>
+
+### Bug Fixes
+
+* expose testName field in logs (#331) ([fe07627](https://github.com/tophat/sanity-runner/commits/fe07627))
+
+
 ## [6.5.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.4.18...sanity-runner-client@6.5.0) "sanity-runner-client" (2022-08-22)<a name="6.5.0"></a>
 
 ### Features
