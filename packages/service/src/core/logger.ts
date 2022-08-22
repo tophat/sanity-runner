@@ -44,6 +44,8 @@ export function printAggregatedTestResult({
                 endTime: suiteResults.perfStats.end,
                 startTime: suiteResults.perfStats.start,
                 testFilename,
+                // Calling this testName is a bit misleading, but we have tooling that's looking for this tag
+                testName: testFilename,
                 runId: runId,
                 executionId: executionId,
             }
