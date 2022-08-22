@@ -43,6 +43,11 @@ async function runTest({
     let lastError: Error | undefined
     try {
         for (let attempt = 0; attempt < config.retryCount + 1; attempt++) {
+            if (attempt > 0) {
+                // TODO: Change this to an exponential backoff?
+                await new Promise((r) => setTimeout(r, 5000 + Math.round(Math.random() * 1000)))
+            }
+
             status = undefined
             result = undefined
             lastError = undefined
