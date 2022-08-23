@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.5.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.5.1...sanity-runner-service@6.5.2) "sanity-runner-service" (2022-08-23)<a name="6.5.2"></a>
+
+### Bug Fixes
+
+* log test duration in nanoseconds (#334) ([2923928](https://github.com/tophat/sanity-runner/commits/2923928))
+
+
 ## [6.5.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.5.0...sanity-runner-service@6.5.1) "sanity-runner-service" (2022-08-22)<a name="6.5.1"></a>
 
 ### Bug Fixes
