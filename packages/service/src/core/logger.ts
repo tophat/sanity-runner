@@ -39,7 +39,8 @@ export function printAggregatedTestResult({
             const formatted = {
                 variables: testVariables,
                 retryCount: retryCount,
-                duration: testCaseResults.duration ? testCaseResults.duration / 1000 : null,
+                // in nanoseconds
+                duration: testCaseResults.duration ? testCaseResults.duration * 1e6 : null,
                 status: suiteResults.numPendingTests > 0 ? 'skipped' : testCaseResults.status,
                 endTime: suiteResults.perfStats.end,
                 startTime: suiteResults.perfStats.start,
