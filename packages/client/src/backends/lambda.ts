@@ -18,6 +18,8 @@ export class InvokeLambda implements InvokeBackend {
         code,
         executionId,
         httpsAgent,
+        attempt,
+        maxAttempts,
     }: TaskPayload): Promise<TestRunResult> {
         let abortTimeout: ReturnType<typeof setTimeout> | undefined
 
@@ -36,6 +38,8 @@ export class InvokeLambda implements InvokeBackend {
                 retryCount: config.retryCount,
                 executionId,
                 defaultViewport: config.defaultViewport,
+                attempt,
+                maxAttempts,
             }
 
             const controller = new AbortController()

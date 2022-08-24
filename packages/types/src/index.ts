@@ -79,9 +79,13 @@ export type TestVariables = Partial<Record<string, string>>
 export type InvokePayload = {
     testFiles: Record<string, string>
     testVariables: TestVariables
-    retryCount: number
+    /** @deprecated Retries have moved to the client. */
+    retryCount?: number
     executionId: string
     defaultViewport?: Partial<DefaultViewport>
+
+    attempt?: number
+    maxAttempts?: number
 }
 
 export interface TestMetadata {
@@ -104,6 +108,9 @@ export interface OnTestCompleteContext<M extends TestMetadata = TestMetadata>
     testDisplayName: string
     testFilename: string
     failureMessage?: string | undefined
+
+    attempt: number
+    maxAttempts: number
 }
 
 export interface BeforeBrowserCleanupContext<M extends TestMetadata = TestMetadata>

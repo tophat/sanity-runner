@@ -40,6 +40,8 @@ export interface TaskPayload {
     filename: TestFilename
     code: string
     executionId: string
+    attempt: number
+    maxAttempts: number
     httpsAgent?: Agent
 }
 

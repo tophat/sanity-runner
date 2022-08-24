@@ -14,6 +14,8 @@ export const PluginInternals = async ({
     testVariables,
     failureMessage,
     results,
+    attempt,
+    maxAttempts,
 }: OnTestCompleteContext<PagerDutyTestMetadata>): Promise<void> => {
     if (!testVariables.PAGERDUTY_ALERT) return
 
@@ -103,6 +105,11 @@ export const PluginInternals = async ({
     if (results.passed) {
         await resolvePagerDutyAlert()
     } else {
+        if (attempt + 1 < maxAttempts) {
+            // There's still another attempt.
+            return
+        }
+
         await sendPagerDutyAlert()
     }
 }

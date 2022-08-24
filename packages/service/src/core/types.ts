@@ -21,7 +21,6 @@ export type RunTestContext = {
     testFilename: string
     testCode: string
     testVariables: TestVariables
-    maxRetryCount: number
     /**
      * Uniquely identifies a single invocation of the service for a single test.
      */
@@ -35,4 +34,14 @@ export type RunTestContext = {
     hooks: PluginHooks
     testMetadata: TestMetadata
     defaultViewport: DefaultViewport
+    /** @deprecated Retries now occur on the client. */
+    maxRetryCount?: number
+    /** The current attempt, 0-index based. */
+    attempt: number
+    /**
+     * The maximum number of attempts. The service only runs the test once,
+     * but if maxAttempts > attempt, then on failure we know that the client
+     * will retry.
+     */
+    maxAttempts: number
 }
