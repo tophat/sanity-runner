@@ -2,6 +2,41 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.5.3](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-pagerduty@6.4.18...@tophat/sanity-runner-plugin-pagerduty@6.5.3) "@tophat/sanity-runner-plugin-pagerduty" (2022-08-24)<a name="6.5.3"></a>
+
+### Bug Fixes
+
+* silence notifications when there are more attempts (#335) ([a94e01a](https://github.com/tophat/sanity-runner/commits/a94e01a))
+
+
+## [6.5.3](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-slack@6.4.18...@tophat/sanity-runner-plugin-slack@6.5.3) "@tophat/sanity-runner-plugin-slack" (2022-08-24)<a name="6.5.3"></a>
+
+### Bug Fixes
+
+* silence notifications when there are more attempts (#335) ([a94e01a](https://github.com/tophat/sanity-runner/commits/a94e01a))
+
+
+## [6.5.3](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.4.18...@tophat/sanity-runner-types@6.5.3) "@tophat/sanity-runner-types" (2022-08-24)<a name="6.5.3"></a>
+
+### Bug Fixes
+
+* silence notifications when there are more attempts (#335) ([a94e01a](https://github.com/tophat/sanity-runner/commits/a94e01a))
+
+
+## [6.5.3](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.5.0...sanity-runner-client@6.5.3) "sanity-runner-client" (2022-08-24)<a name="6.5.3"></a>
+
+### Bug Fixes
+
+* silence notifications when there are more attempts (#335) ([a94e01a](https://github.com/tophat/sanity-runner/commits/a94e01a))
+
+
+## [6.5.3](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.5.2...sanity-runner-service@6.5.3) "sanity-runner-service" (2022-08-24)<a name="6.5.3"></a>
+
+### Bug Fixes
+
+* silence notifications when there are more attempts (#335) ([a94e01a](https://github.com/tophat/sanity-runner/commits/a94e01a))
+
+
 ## [6.5.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.5.1...sanity-runner-service@6.5.2) "sanity-runner-service" (2022-08-23)<a name="6.5.2"></a>
 
 ### Bug Fixes
