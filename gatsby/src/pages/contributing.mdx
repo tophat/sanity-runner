@@ -67,3 +67,9 @@ To run the production image (no mounting), run:
 ```sh
 yarn workspace sanity-runner-service run docker:prod
 ```
+
+In tests, some globals are exposed, such as `browser`, `page`, and `pause` (used for debugging). To add a breakpoint when using the local service:
+
+```ts
+await global.pause()
+```

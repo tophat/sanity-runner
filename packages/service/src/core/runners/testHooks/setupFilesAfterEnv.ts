@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import readline from 'readline'
 
 import 'expect-puppeteer'
 
@@ -15,6 +16,7 @@ jest.setTimeout(5 * 60000)
 declare let global: typeof globalThis & {
     browser: Browser
     page: Page
+    pause?: () => Promise<void>
 
     fullStoryUrl?: string
     SANITY_VARIABLES: Partial<Record<string, string>>
@@ -24,6 +26,27 @@ declare let global: typeof globalThis & {
     _sanityRunnerTestGlobals?: SanityRunnerTestGlobals
 }
 
+async function pause() {
+    jest.setTimeout(345600000) // use arbitrarily large timeout
+    await global.page?.evaluate(() => {
+        // eslint-disable-next-line no-debugger
+        debugger
+    })
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    })
+    console.log('\n\n A debug statement has been reached. Press <Enter> to resume.')
+    await new Promise<void>((resolve) => {
+        const handler = () => {
+            rl.close()
+            resolve()
+        }
+        rl.on('line', handler)
+        rl.on('SIGINT', handler)
+    })
+}
+
 function getCurrentTestName() {
     // Note that this is the "display name" of the test and not the filename.
     // Nothing guarantees this name is unique across all sanity tests.
@@ -31,6 +54,7 @@ function getCurrentTestName() {
 }
 
 beforeEach(async () => {
+    global.pause = pause
     global.page = await global.browser.newPage()
     if (global._sanityRunnerTestGlobals?.defaultViewport) {
         global.page.setViewport(global._sanityRunnerTestGlobals.defaultViewport)
