@@ -54,7 +54,6 @@ export async function service(event: InvokePayload): Promise<InvokeResponsePaylo
         testFilename,
         testCode,
         testVariables: event.testVariables,
-        maxRetryCount: event.retryCount,
         executionId: event.executionId,
         runId,
         hooks,
@@ -63,6 +62,8 @@ export async function service(event: InvokePayload): Promise<InvokeResponsePaylo
             width: event.defaultViewport?.width ?? 1920,
             height: event.defaultViewport?.height ?? 1080,
         },
+        attempt: event.attempt ?? 0,
+        maxAttempts: event.maxAttempts ?? 1,
     })
 
     logger.info('Test run complete.', {

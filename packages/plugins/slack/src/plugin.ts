@@ -23,6 +23,8 @@ export const createPluginInternals =
         runId,
         failureMessage,
         results,
+        attempt,
+        maxAttempts,
     }: OnTestCompleteContext<SlackTestMetadata>): Promise<void> => {
         const appEnv = testVariables.APP_ENV
         const additionalChannels = testVariables.SLACK_CHANNELS?.split(/[ ,]+/) ?? []
@@ -35,6 +37,11 @@ export const createPluginInternals =
 
         if (!(testVariables.SLACK_ALERT && !testVariables.ALERT)) {
             // Skip alert
+            return
+        }
+
+        if (attempt + 1 < maxAttempts) {
+            // There's still another attempt.
             return
         }
 

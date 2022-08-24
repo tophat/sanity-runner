@@ -1,5 +1,3 @@
-import retry from 'async-retry'
-
 import type {
     InvokeResponsePayload,
     OnTestCompleteContext,
@@ -22,14 +20,16 @@ declare let global: typeof globalThis & {
 export async function runTest(runTestContext: RunTestContext): Promise<InvokeResponsePayload> {
     const runner = new JestPuppeteerTestRunner(runTestContext)
 
-    tracer?.scope().active()?.addTags({
-        'sanity_runner.version': version,
-        'sanity_runner.run_id': runTestContext.runId,
-        'sanity_runner.execution_id': runTestContext.executionId,
-        'sanity_runner.max_retry_count': runTestContext.maxRetryCount,
-    })
+    tracer
+        ?.scope()
+        .active()
+        ?.addTags({
+            'sanity_runner.version': version,
+            'sanity_runner.run_id': runTestContext.runId,
+            'sanity_runner.execution_id': runTestContext.executionId,
+            'sanity_runner.max_retry_count': (runTestContext.maxAttempts ?? 1) - 1,
+        })
 
-    const retryCount = 0
     try {
         await runner.writeTestCodeToDisk({ testCode: runTestContext.testCode })
 
@@ -45,40 +45,21 @@ export async function runTest(runTestContext: RunTestContext): Promise<InvokeRes
             trace,
         }
 
-        const results = await retry(
-            async (_, attempt) => {
-                logger.info(`Starting test run (${attempt}/${runTestContext.maxRetryCount + 1}):`, {
-                    run_id: runTestContext.runId,
-                    execution_id: runTestContext.executionId,
-                    test_file: runTestContext.testFilename,
-                })
-                const result = await trace('Test Run', async (span) => {
-                    span?.addTags({
-                        'sanity_runner.attempt': attempt,
-                        'sanity_runner.runner': runner.name,
-                    })
-                    return await runner.run()
-                })
-
-                // force retry if test was unsuccesfull
-                // if last retry, return as normal
-                if (!result.success) {
-                    if (attempt <= runTestContext.maxRetryCount) {
-                        throw new Error('Test Failed!')
-                    }
-
-                    logger.info('Test failed. Retrying.', {
-                        run_id: runTestContext.runId,
-                        execution_id: runTestContext.executionId,
-                        test_file: runTestContext.testFilename,
-                    })
-                }
-                return result
-            },
+        logger.info(
+            `Starting test run (${runTestContext.attempt + 1}/${runTestContext.maxAttempts}):`,
             {
-                retries: runTestContext.maxRetryCount,
+                run_id: runTestContext.runId,
+                execution_id: runTestContext.executionId,
+                test_file: runTestContext.testFilename,
             },
         )
+        const results = await trace('Test Run', async (span) => {
+            span?.addTags({
+                'sanity_runner.attempt': runTestContext.attempt,
+                'sanity_runner.runner': runner.name,
+            })
+            return await runner.run()
+        })
 
         // Cleanup exposed globals
         delete global._sanityRunnerTestGlobals
@@ -95,18 +76,21 @@ export async function runTest(runTestContext: RunTestContext): Promise<InvokeRes
                 results.testResults[0]?.testResults?.[0]?.fullName ?? runTestContext.testFilename,
             testFilename: runTestContext.testFilename,
             failureMessage: results.testResults[0]?.failureMessage ?? undefined,
+
+            attempt: runTestContext.attempt,
+            maxAttempts: runTestContext.maxAttempts,
         }
 
         tracer?.scope().active()?.addTags({
             'sanity_runner.passed': response.passed,
             'sanity_runner.test_name': context.testDisplayName,
             'sanity_runner.test_filename': context.testFilename,
-            'sanity_runner.total_retries': retryCount,
+            'sanity_runner.total_retries': runTestContext.attempt,
         })
         printAggregatedTestResult({
             results,
             testVariables: runTestContext.testVariables,
-            retryCount,
+            retryCount: runTestContext.attempt,
             runId: runTestContext.runId,
             executionId: runTestContext.executionId,
             testFilename: runTestContext.testFilename,

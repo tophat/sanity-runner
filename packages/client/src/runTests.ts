@@ -30,7 +30,8 @@ async function runTest({
     filename,
     code,
     executionId,
-}: TaskPayload): Promise<TestRunResult> {
+    maxAttempts,
+}: Omit<TaskPayload, 'attempt'>): Promise<TestRunResult> {
     const logger = getLogger()
 
     const InvokeBackendClass: InvokeBackendConstructor = config.local ? InvokeLocal : InvokeLambda
@@ -42,7 +43,7 @@ async function runTest({
     let result: TestRunResult | undefined
     let lastError: Error | undefined
     try {
-        for (let attempt = 0; attempt < config.retryCount + 1; attempt++) {
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
             if (attempt > 0) {
                 // TODO: Change this to an exponential backoff?
                 await new Promise((r) => setTimeout(r, 5000 + Math.round(Math.random() * 1000)))
@@ -62,6 +63,8 @@ async function runTest({
                     filename,
                     code,
                     executionId,
+                    attempt,
+                    maxAttempts,
                 })
                 status = parseStatus(result)
             } catch (err) {
@@ -150,6 +153,7 @@ export async function runTests({
                         config,
                         executionId,
                         httpsAgent,
+                        maxAttempts: config.retryCount + 1,
                     })
                     if (result.error) {
                         // We know it's a lambda failure. May be worth a retry or some other handling.

@@ -17,6 +17,8 @@ export class InvokeLocal implements InvokeBackend {
         code,
         executionId,
         httpsAgent,
+        attempt,
+        maxAttempts,
     }: TaskPayload): Promise<TestRunResult> {
         try {
             const invokePayload: InvokePayload = {
@@ -25,6 +27,8 @@ export class InvokeLocal implements InvokeBackend {
                 retryCount: config.retryCount,
                 executionId,
                 defaultViewport: config.defaultViewport,
+                attempt,
+                maxAttempts,
             }
 
             const response = await axios.post<InvokeResponsePayload>(
