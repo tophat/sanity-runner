@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.6.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.5.3...sanity-runner-service@6.6.0) "sanity-runner-service" (2022-08-24)<a name="6.6.0"></a>
+
+### Features
+
+* add global pause method (#336) ([9d708fa](https://github.com/tophat/sanity-runner/commits/9d708fa))
+
+
 ## [6.5.3](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-pagerduty@6.4.18...@tophat/sanity-runner-plugin-pagerduty@6.5.3) "@tophat/sanity-runner-plugin-pagerduty" (2022-08-24)<a name="6.5.3"></a>
 
 ### Bug Fixes
