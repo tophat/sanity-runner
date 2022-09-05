@@ -72,6 +72,7 @@ export type InvokeResponsePayload = {
         name?: { name: string }
     }>
     testResults?: Record<JUnitReportFilename, JUnitReport>
+    pluginOutputs?: Record<string, any>
 }
 
 export type TestVariables = Partial<Record<string, string>>
@@ -111,6 +112,7 @@ export interface OnTestCompleteContext<M extends TestMetadata = TestMetadata>
 
     attempt: number
     maxAttempts: number
+    setPluginOutput: (outputName: string, outputValue: any) => void
 }
 
 export interface BeforeBrowserCleanupContext<M extends TestMetadata = TestMetadata>

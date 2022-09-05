@@ -1,6 +1,11 @@
-import type { BeforeBrowserCleanupContext, PluginHooks } from '@tophat/sanity-runner-types'
+import type {
+    BeforeBrowserCleanupContext,
+    OnTestCompleteContext,
+    PluginHooks,
+} from '@tophat/sanity-runner-types'
 
 const PluginName = 'FullStory Plugin'
+const PluginOutputKey = 'fullstory'
 
 let state: string | null = null
 
@@ -22,8 +27,19 @@ async function onBeforeBrowserCleanup(context: BeforeBrowserCleanupContext): Pro
     }
 }
 
+async function onTestComplete(context: OnTestCompleteContext): Promise<void> {
+    if (context.testVariables.FULLSTORY_ENABLED !== 'true') return
+    if (state) {
+        context.setPluginOutput(PluginOutputKey, {
+            url: state,
+        })
+    }
+}
+
 export default function FullStoryPlugin({
     beforeBrowserCleanup,
-}: Pick<PluginHooks, 'beforeBrowserCleanup'>): void {
+    onTestFailure,
+}: Pick<PluginHooks, 'beforeBrowserCleanup' | 'onTestFailure'>): void {
     beforeBrowserCleanup.tapPromise(PluginName, onBeforeBrowserCleanup)
+    onTestFailure.tapPromise(PluginName, onTestComplete)
 }
