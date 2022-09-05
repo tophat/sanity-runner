@@ -4,7 +4,7 @@ import { PluginInternals } from './plugin'
 
 const PluginName = 'PagerDuty Plugin'
 
-export default function SlackPlugin({
+export default function PagerDutyPlugin({
     onTestFailure,
     onTestSuccess,
 }: Pick<PluginHooks, 'onTestFailure' | 'onTestSuccess'>): void {
