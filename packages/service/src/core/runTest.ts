@@ -65,7 +65,6 @@ export async function runTest(runTestContext: RunTestContext): Promise<InvokeRes
         delete global._sanityRunnerTestGlobals
 
         const response = await runner.format(results)
-        response.pluginOutputs = {}
         const setPluginOutput = (name: string, outputValue: any) => {
             if (response.pluginOutputs) {
                 response.pluginOutputs[name] = outputValue

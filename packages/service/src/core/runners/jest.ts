@@ -275,6 +275,7 @@ export default class JestPuppeteerTestRunner {
             testResults: {
                 [path.basename(reportFilename)]: report,
             },
+            pluginOutputs: {},
         }
     }
 }

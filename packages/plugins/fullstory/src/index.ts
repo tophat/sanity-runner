@@ -28,7 +28,6 @@ async function onBeforeBrowserCleanup(context: BeforeBrowserCleanupContext): Pro
 }
 
 async function onTestComplete(context: OnTestCompleteContext): Promise<void> {
-    if (context.testVariables.FULLSTORY_ENABLED !== 'true') return
     if (state) {
         context.setPluginOutput(PluginOutputKey, {
             url: state,
@@ -39,7 +38,9 @@ async function onTestComplete(context: OnTestCompleteContext): Promise<void> {
 export default function FullStoryPlugin({
     beforeBrowserCleanup,
     onTestFailure,
-}: Pick<PluginHooks, 'beforeBrowserCleanup' | 'onTestFailure'>): void {
+    onTestSuccess,
+}: Pick<PluginHooks, 'beforeBrowserCleanup' | 'onTestFailure' | 'onTestSuccess'>): void {
     beforeBrowserCleanup.tapPromise(PluginName, onBeforeBrowserCleanup)
     onTestFailure.tapPromise(PluginName, onTestComplete)
+    onTestSuccess.tapPromise(PluginName, onTestComplete)
 }
