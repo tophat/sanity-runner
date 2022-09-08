@@ -45,6 +45,7 @@ resource "null_resource" "push_image_to_ecr" {
  */
 resource "aws_s3_bucket" "s3_bucket" {
   bucket_prefix = "sanity-runner-bucket-"
+  force_destroy = true
 }
 
 
