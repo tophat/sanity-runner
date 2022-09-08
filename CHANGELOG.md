@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [2.1.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@2.0.0...sanity-runner-terraform@2.1.0) "sanity-runner-terraform" (2022-09-08)<a name="2.1.0"></a>
+
+### Features
+
+* allow force deletion of screenshot s3 bucket (#324) ([a6bed24](https://github.com/tophat/sanity-runner/commits/a6bed24))
+
+
 ## [6.6.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.5.3...sanity-runner-service@6.6.0) "sanity-runner-service" (2022-08-24)<a name="6.6.0"></a>
 
 ### Features
