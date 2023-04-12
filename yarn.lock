@@ -6192,10 +6192,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/aws-lambda@npm:^8.10.93":
-  version: 8.10.101
-  resolution: "@types/aws-lambda@npm:8.10.101"
-  checksum: 7e81bab6b1bfd45404b19ffbfafc70a27f6a5975c20d288be354a83c48a8d31054e8a0986c4b8547df278034832492f86de9cbd74b337158c26d88d7e356c3c6
+"@types/aws-lambda@npm:^8.10.114":
+  version: 8.10.114
+  resolution: "@types/aws-lambda@npm:8.10.114"
+  checksum: 9657d06ac8116f0454e465eb298c08af0eb3c2d6715a2faed6a3acebe31062e5ae70a64d4ce269141ad302545781d7df1bd637c70f0fe660f940e919dcdae794
   languageName: node
   linkType: hard
 
@@ -22347,7 +22347,7 @@ resolve@^2.0.0-next.3:
     "@tophat/sanity-runner-plugin-pagerduty": ^6.5.3
     "@tophat/sanity-runner-plugin-slack": ^6.5.3
     "@tophat/sanity-runner-types": "workspace:*"
-    "@types/aws-lambda": ^8.10.93
+    "@types/aws-lambda": ^8.10.114
     "@types/expect-puppeteer": ^4.4.7
     "@types/express": ^4.17.13
     "@types/jest": ^28.1.6
