@@ -2,6 +2,13 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.6.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.6.0...sanity-runner-service@6.6.1) "sanity-runner-service" (2023-04-12)<a name="6.6.1"></a>
+
+### Dependencies
+
+* update dependency @swc/jest to ^0.2.24 (#342) ([11c6a9e](https://github.com/tophat/sanity-runner/commits/11c6a9e))
+
+
 ## [2.1.0](https://github.com/tophat/sanity-runner/compare/sanity-runner-terraform@2.0.0...sanity-runner-terraform@2.1.0) "sanity-runner-terraform" (2022-09-08)<a name="2.1.0"></a>
 
 ### Features
