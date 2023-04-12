@@ -53,7 +53,7 @@
     "homepage": "https://github.com/tophat/sanity-runner#readme",
     "devDependencies": {
         "@swc/core": "^1.2.218",
-        "@swc/jest": "^0.2.22",
+        "@swc/jest": "^0.2.24",
         "@tophat/sanity-runner-types": "workspace:*",
         "@types/expect-puppeteer": "^4.4.7",
         "@types/express": "^4.17.13",
