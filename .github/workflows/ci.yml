@@ -62,6 +62,7 @@ jobs:
         if: github.base_ref != 'next'
         run: yarn release:dry --git-base-branch origin/${{ github.base_ref }}
       - name: Parse Changelog
+        continue-on-error: true
         run: |
           changelog_body=$(cat artifacts/CHANGELOG.md)
           changelog_body="${changelog_body//'%'/'%25'}"
@@ -72,7 +73,7 @@ jobs:
       - name: Check for Changelog Comment
         uses: peter-evans/find-comment@v1
         id: found-comment
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.dry-release.outcome == 'success'
         with:
           token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
@@ -80,7 +81,7 @@ jobs:
           body-includes: <!-- MONODEPLOY_CHANGELOG_PREVIEW -->
       - name: Post Changelog to PR
         uses: peter-evans/create-or-update-comment@v1
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.dry-release.outcome == 'success'
         with:
           token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
           comment-id: ${{ steps.found-comment.outputs.comment-id }}
