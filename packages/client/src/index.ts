@@ -164,8 +164,8 @@ class BaseCommand extends Command<ExecutionContext> {
                 pattern = config.testPathPatterns[0]
             }
             glob(pattern, { cwd: config.testDir }, (err, matches) => {
-                if (err) return reject(err)
-                return resolve(matches.map((name) => path.resolve(config.testDir, name)))
+                if (err) return void reject(err)
+                return void resolve(matches.map((name) => path.resolve(config.testDir, name)))
             })
         })
 
@@ -178,10 +178,7 @@ class BaseCommand extends Command<ExecutionContext> {
         const exclude = config.exclude ? new RegExp(config.exclude) : null
 
         testFilenames = testFilenames
-            .filter(
-                (filename) =>
-                    (!include || include.test(filename)) && (!exclude || !exclude.test(filename)),
-            )
+            .filter((filename) => (!include || include.test(filename)) && !exclude?.test(filename))
             .sort()
 
         if (!testFilenames.length) {

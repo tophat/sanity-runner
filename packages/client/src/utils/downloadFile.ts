@@ -9,10 +9,10 @@ export async function downloadFile(destination: string, url: string): Promise<vo
     })
 
     await new Promise<void>((resolve, reject) => {
-        stream.on('finish', () => resolve())
-        stream.on('error', (err) => reject(err))
+        stream.on('finish', () => void resolve())
+        stream.on('error', (err) => void reject(err))
         https.get(url, { timeout: 10000 }, (res) => {
-            res.on('error', (err) => reject(err))
+            res.on('error', (err) => void reject(err))
             res.pipe(stream)
         })
     })

@@ -3,6 +3,8 @@ path: "/configuration"
 title: "Configuration"
 ---
 
+export { Layout as default } from '../components/Layout'
+
 ## Configuring the Sanity Runner
 
 For the client, you can run:
@@ -17,16 +19,57 @@ for a list of CLI options. Most options can also be passed in via a config file.
 
 ## Input Variables
 
-| Variable                      | Default Value                                         | Description   |
-| :----------------------------- |:-----------------------------------------------------  |:----------------|
-| `function_name`               | "sanity-runner"                                       | Name for the lambda function deploys |
-| `container_version`           | "2.0.0"                                               | Version of Service Container to deploy to the lambda (ghcr.io/tophat/sanity-runner-service) |
-| `vpc_sg_ids`                  | []                                                    | Security Group IDs to associate with lambda. Enables VPC mode. If used, requites vpc_subnet_ids to also be set  |
-| `vpc_subnet_ids`              | []                                                    | Subnet Ids to associate with the lambda. Enables VPC mode. If used, requites vpc_sg_ids to also be set |
-| `memory_size`                 | 2048                                                  | Memory_size for lambda  |
-| `timeout`                     | 600                                                   | Sets Default timeout for lambda invocation |
-| `environment`                 | {}                                                    | Sets additional env vars for the lambda |
-| `image_uri`                   | ""                                                    | Lets you set a custom image for the lambda |
+<table>
+    <thead>
+        <tr>
+            <th>Variable</th>
+            <th>Default Value</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>function_name</code></td>
+            <td>&quot;sanity-runner&quot;</td>
+            <td>Name for the lambda function deploys</td>
+        </tr>
+        <tr>
+            <td><code>container_version</code></td>
+            <td>&quot;2.0.0&quot;</td>
+            <td>Version of Service Container to deploy to the lambda (ghcr.io/tophat/sanity-runner-service)</td>
+        </tr>
+        <tr>
+            <td><code>vpc_sg_ids</code></td>
+            <td>[]</td>
+            <td>Security Group IDs to associate with lambda. Enables VPC mode. If used, requites vpc_subnet_ids to also be set</td>
+        </tr>
+        <tr>
+            <td><code>vpc_subnet_ids</code></td>
+            <td>[]</td>
+            <td>Subnet Ids to associate with the lambda. Enables VPC mode. If used, requites vpc_sg_ids to also be set</td>
+        </tr>
+        <tr>
+            <td><code>memory_size</code></td>
+            <td>2048</td>
+            <td>Memory_size for lambda</td>
+        </tr>
+        <tr>
+            <td><code>timeout</code></td>
+            <td>600</td>
+            <td>Sets Default timeout for lambda invocation</td>
+        </tr>
+        <tr>
+            <td><code>environment</code></td>
+            <td>{}</td>
+            <td>Sets additional env vars for the lambda</td>
+        </tr>
+        <tr>
+            <td><code>image_uri</code></td>
+            <td>&quot;&quot;</td>
+            <td>Lets you set a custom image for the lambda</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Alerting
 

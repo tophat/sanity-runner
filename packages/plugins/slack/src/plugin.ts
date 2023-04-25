@@ -1,4 +1,4 @@
-import { KnownBlock, WebClient } from '@slack/web-api'
+import { type KnownBlock, WebClient } from '@slack/web-api'
 
 import type { OnTestCompleteContext, TestMetadata } from '@tophat/sanity-runner-types'
 

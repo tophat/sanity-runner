@@ -1,5 +1,10 @@
 name: setup-env
 description: Initializes environment.
+inputs:
+  node-version:
+    description: Override Node Version
+    required: false
+    default: ''
 outputs:
   node-version:
     value: ${{ steps.detect-node.outputs.version }}
@@ -9,10 +14,15 @@ runs:
   steps:
     - name: Detect Node Version
       id: detect-node
-      run: echo "::set-output name=version::$(cat .nvmrc | tr -d '\n')"
+      run: |
+        if [[ -z "${{ inputs.node-version }}" ]]; then
+          echo "version=$(cat .nvmrc | tr -d '\n')" >> $GITHUB_OUTPUT
+        else
+          echo "version=${{ inputs.node-version }}" >> $GITHUB_OUTPUT
+        fi
       shell: bash
     - name: Install NodeJS
-      uses: actions/setup-node@v3.0.0
+      uses: actions/setup-node@v3.6.0
       with:
         node-version: ${{ steps.detect-node.outputs.version }}
     - name: Enable Corepack
@@ -37,5 +47,5 @@ runs:
       run: |
         git config --global user.name tophat-opensource-bot
         git config --global user.email opensource-leads+bot@tophatmonocle.com
-        git config --global init.defaultBranch master
+        git config --global init.defaultBranch main
       shell: bash

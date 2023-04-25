@@ -1,4 +1,4 @@
-import { AggregatedResult } from '@jest/test-result'
+import { type AggregatedResult } from '@jest/test-result'
 
 import type { Browser, Page } from 'puppeteer-core'
 import type { AsyncSeriesHook } from 'tapable'

@@ -14,11 +14,11 @@ import { InvokeLocal } from './backends/local'
 import { disableProgress, enableProgress, getLogger } from './logger'
 import { writeJUnitReport } from './reporter'
 import {
-    AggregatedTestRunResults,
-    InvokeBackendConstructor,
-    RunResults,
-    TaskPayload,
-    TestRunResult,
+    type AggregatedTestRunResults,
+    type InvokeBackendConstructor,
+    type RunResults,
+    type TaskPayload,
+    type TestRunResult,
     TestStatus,
 } from './types'
 import { downloadFile } from './utils/downloadFile'
