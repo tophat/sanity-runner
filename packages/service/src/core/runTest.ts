@@ -9,7 +9,7 @@ import { logger, printAggregatedTestResult } from './logger'
 import JestPuppeteerTestRunner from './runners/jest'
 import { getSecretValue } from './secrets'
 import { trace, tracer } from './tracer'
-import { RunTestContext } from './types'
+import { type RunTestContext } from './types'
 import { version } from './version'
 
 declare let global: typeof globalThis & {

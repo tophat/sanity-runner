@@ -12,8 +12,8 @@ const serviceDir = path.resolve(__dirname)
 async function findFiles(pattern: string, cwd: string): Promise<Array<string>> {
     return new Promise((resolve, reject) => {
         glob(pattern, { cwd }, (err, matches) => {
-            if (err) return reject(err)
-            return resolve(matches.map((name) => path.relative(cwd, name)))
+            if (err) return void reject(err)
+            return void resolve(matches.map((name) => path.relative(cwd, name)))
         })
     })
 }

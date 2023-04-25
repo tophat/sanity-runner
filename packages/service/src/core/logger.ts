@@ -1,4 +1,4 @@
-import { AggregatedResult } from '@jest/test-result'
+import { type AggregatedResult } from '@jest/test-result'
 import winston from 'winston'
 
 import { version } from './version'

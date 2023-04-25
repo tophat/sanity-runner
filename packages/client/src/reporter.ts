@@ -4,7 +4,7 @@ import junitBuilder from 'junit-report-builder'
 
 import type { JUnitReport } from '@tophat/sanity-runner-types'
 
-import { TestRunResult, TestStatus } from './types'
+import { type TestRunResult, TestStatus } from './types'
 import { parseStatus } from './utils/status'
 
 export async function writeJUnitReport({

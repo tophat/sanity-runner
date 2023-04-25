@@ -15,7 +15,7 @@
       "jsx": "preserve",
       "lib": ["ES2021"]
   },
-  "include": ["./packages", "./declarations", "monodeploy.config.ts"],
+  "include": ["./gatsby", "./packages", "./declarations", "monodeploy.config.ts", "**/*.eslintrc.js"],
   "exclude": ["./**/lib"],
   "ts-node": {
     "transpileOnly": true,

@@ -1,6 +1,6 @@
 import winston from 'winston'
 
-import { LogFormat, LogLevel } from './types'
+import { type LogFormat, LogLevel } from './types'
 import { version } from './version'
 
 export function logLevelByVerbosity(verbosity: number | undefined): keyof typeof LogLevel {
