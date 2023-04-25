@@ -19,9 +19,9 @@ interface PageContext {
     }
 }
 
-const Layout: React.FC<{
-    children: React.ReactNode
-    pageContext: PageContext
+export const Layout: React.FC<{
+    children?: React.ReactNode
+    pageContext?: PageContext
 }> = ({ children, pageContext }) => {
     const data = useStaticQuery(graphql`
         query SiteTitleQuery {
@@ -35,7 +35,7 @@ const Layout: React.FC<{
 
     return (
         <MDXProvider components={components}>
-            <Seo title={pageContext?.frontmatter?.title} />
+            <Seo title={pageContext?.frontmatter?.title || 'Sanity Runner'} />
             <Header siteTitle={data.site.siteMetadata?.title} />
             <div
                 style={{
