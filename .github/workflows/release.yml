@@ -43,7 +43,7 @@ jobs:
         run: yarn workspaces foreach -vp run docker:push:prerelease
   release:
     name: Release
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: [build]
     steps:

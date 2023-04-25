@@ -107,10 +107,10 @@ jobs:
         if: "github.event_name == 'pull_request'"
         run: yarn docs
       - name: Build & Deploy Website
-        if: "github.event_name == 'push' && github.ref == 'refs/heads/master'"
+        if: "github.event_name == 'push' && github.ref == 'refs/heads/main'"
         run: |
           git checkout gh-pages
-          git reset --hard master
+          git reset --hard main
           yarn docs
           git add docs
           git commit -m "chore: update website" -n
