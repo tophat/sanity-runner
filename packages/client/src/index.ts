@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 
 import { Cli, Command, Option } from 'clipanion'
-import glob from 'glob'
+import { glob } from 'glob'
 import * as t from 'typanion'
 
 import type { ClientConfiguration } from '@tophat/sanity-runner-types'
@@ -156,18 +156,16 @@ class BaseCommand extends Command<ExecutionContext> {
 
         logger.verbose(`Discovering test files in: ${config.testDir} 🔍`)
 
-        let testFilenames = await new Promise<string[]>((resolve, reject) => {
-            let pattern = '**/*.js'
-            if (config.testPathPatterns.length > 1) {
-                pattern = `{${config.testPathPatterns.join(',')}}`
-            } else if (config.testPathPatterns.length === 1) {
-                pattern = config.testPathPatterns[0]
-            }
-            glob(pattern, { cwd: config.testDir }, (err, matches) => {
-                if (err) return void reject(err)
-                return void resolve(matches.map((name) => path.resolve(config.testDir, name)))
-            })
-        })
+        let pattern = '**/*.js'
+        if (config.testPathPatterns.length > 1) {
+            pattern = `{${config.testPathPatterns.join(',')}}`
+        } else if (config.testPathPatterns.length === 1) {
+            pattern = config.testPathPatterns[0]
+        }
+
+        let testFilenames = (await glob(pattern, { cwd: config.testDir })).map((name) =>
+            path.resolve(config.testDir, name),
+        )
 
         if (!testFilenames.length) {
             logger.error(`No test files found in '${config.testDir}'.`)
