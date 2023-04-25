@@ -31,6 +31,6 @@
         "@tophat/sanity-runner-types": "workspace:^6.6.2"
     },
     "devDependencies": {
-        "@types/node": "^16.11.36"
+        "@types/node": "^18.16.0"
     }
 }

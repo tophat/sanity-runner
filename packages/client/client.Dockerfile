@@ -1,4 +1,4 @@
-FROM node:16.17-slim
+FROM node:18.16-slim
 
 RUN apt-get update && \
     apt-get install -yq jq git unzip && \

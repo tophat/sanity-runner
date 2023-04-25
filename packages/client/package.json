@@ -56,6 +56,6 @@
         "@tophat/sanity-runner-types": "workspace:*",
         "@types/cli-progress": "^3",
         "@types/lodash": "^4.14.192",
-        "@types/node": "^16.11.36"
+        "@types/node": "^18.16.0"
     }
 }
