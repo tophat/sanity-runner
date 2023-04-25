@@ -83,7 +83,7 @@
         "@tophat/sanity-runner-plugin-fullstory": "^6.5.3",
         "@tophat/sanity-runner-plugin-pagerduty": "^6.5.3",
         "@tophat/sanity-runner-plugin-slack": "^6.5.3",
-        "@types/aws-lambda": "^8.10.93",
+        "@types/aws-lambda": "^8.10.114",
         "@types/puppeteer": "^5.4.6",
         "chalk": "^4.1.2",
         "expect-puppeteer": "^6.1.0",
