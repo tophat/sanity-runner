@@ -1266,7 +1266,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:*, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.14.0, @babel/core@npm:^7.20.12, @babel/core@npm:^7.21.0":
+"@babel/core@npm:*, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.14.0, @babel/core@npm:^7.20.12, @babel/core@npm:^7.21.4":
   version: 7.21.4
   resolution: "@babel/core@npm:7.21.4"
   dependencies:
@@ -20381,7 +20381,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sanity-runner-docs@workspace:gatsby"
   dependencies:
-    "@babel/core": ^7.21.0
+    "@babel/core": ^7.21.4
     "@mdx-js/loader": ^2.3.0
     "@mdx-js/mdx": ^2.3.0
     "@mdx-js/react": ^2.3.0
