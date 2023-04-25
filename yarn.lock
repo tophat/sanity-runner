@@ -5872,14 +5872,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest-environment-puppeteer@npm:^5.0.2":
-  version: 5.0.2
-  resolution: "@types/jest-environment-puppeteer@npm:5.0.2"
+"@types/jest-environment-puppeteer@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "@types/jest-environment-puppeteer@npm:5.0.3"
   dependencies:
     "@jest/types": ">=24 <=27"
-    "@types/puppeteer": "*"
+    "@types/puppeteer": ^5.4.0
     jest-environment-node: ">=24 <=27"
-  checksum: bb3314a80f6d096ce0054ede7608f9f948884ef838b6d9d4b2502fa9d672ac6e36c123f6c25c085cdc85be7e4a273258d46926bd2cb6df2ba97c6c1dd1cebb8f
+  checksum: eb865f9ea9ee44587167fac1e3a0ecc56d09e20b8cf5200226ddd0b7d31a8cc38636045f6709be605d3730ba4002c1a87bc7749ee2bf8a96fbb709572d5176ae
   languageName: node
   linkType: hard
 
@@ -6086,7 +6086,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/puppeteer@npm:^5.4.7":
+"@types/puppeteer@npm:^5.4.0, @types/puppeteer@npm:^5.4.7":
   version: 5.4.7
   resolution: "@types/puppeteer@npm:5.4.7"
   dependencies:
@@ -20450,7 +20450,7 @@ __metadata:
     "@types/expect-puppeteer": ^4.4.7
     "@types/express": ^4.17.13
     "@types/jest": ^28.1.6
-    "@types/jest-environment-puppeteer": ^5.0.2
+    "@types/jest-environment-puppeteer": ^5.0.3
     "@types/morgan": ^1.9.4
     "@types/node": ^16.11.36
     "@types/puppeteer": ^5.4.7
