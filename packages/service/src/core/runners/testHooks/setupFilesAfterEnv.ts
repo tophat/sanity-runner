@@ -50,7 +50,7 @@ async function pause() {
 function getCurrentTestName() {
     // Note that this is the "display name" of the test and not the filename.
     // Nothing guarantees this name is unique across all sanity tests.
-    return expect.getState().currentTestName
+    return expect.getState().currentTestName ?? 'Test'
 }
 
 beforeEach(async () => {

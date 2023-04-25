@@ -3,7 +3,8 @@ import os from 'os'
 import path from 'path'
 
 import { runCLI } from '@jest/core'
-import chromium from '@sparticuz/chrome-aws-lambda'
+import chromium from '@sparticuz/chromium'
+import puppeteer, { type Browser, type PuppeteerLaunchOptions } from 'puppeteer-core'
 import xml2js from 'xml2js'
 
 import type {
@@ -17,7 +18,6 @@ import { trace } from '../tracer'
 
 import type { RunTestContext } from '../types'
 import type { Config } from '@jest/types'
-import type { Browser, PuppeteerLaunchOptions } from 'puppeteer-core'
 
 declare let global: typeof globalThis & {
     browser?: Browser
@@ -156,7 +156,7 @@ export default class JestPuppeteerTestRunner {
                 isMobile: false,
                 ...this.context.defaultViewport,
             },
-            executablePath: await chromium.executablePath,
+            executablePath: await chromium.executablePath(),
             headless: chromium.headless,
             userDataDir: this.tmpDataDir,
             ...(chromium.headless
@@ -171,7 +171,7 @@ export default class JestPuppeteerTestRunner {
                   }),
         }
 
-        global.browser = await chromium.puppeteer.launch(config)
+        global.browser = await puppeteer.launch(config)
     }
 
     private async teardownPuppeteer(): Promise<void> {

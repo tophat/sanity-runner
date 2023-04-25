@@ -1,5 +1,5 @@
 # Use aws lambda base image
-FROM public.ecr.aws/lambda/nodejs:16 as base
+FROM public.ecr.aws/lambda/nodejs:18 as base
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
@@ -16,7 +16,7 @@ RUN yarn add sanity-runner-service@file:sanity-runner-service.tgz
 CMD ["node_modules/sanity-runner-service/bundle/handler.handler"]
 
 FROM base as datadog
-COPY --from=public.ecr.aws/datadog/lambda-extension:24 /opt/extensions/ /opt/extensions
+COPY --from=public.ecr.aws/datadog/lambda-extension:41 /opt/extensions/ /opt/extensions
 RUN yarn add \
     datadog-lambda-js@$(cat node_modules/sanity-runner-service/package.json | jq -r '.peerDependencies."datadog-lambda-js"') \
     dd-trace@$(cat node_modules/sanity-runner-service/package.json | jq -r '.peerDependencies."dd-trace"')
