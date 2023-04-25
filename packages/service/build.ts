@@ -5,17 +5,12 @@
 import path from 'path'
 
 import { type Plugin, build } from 'esbuild'
-import glob from 'glob'
+import { glob } from 'glob'
 
 const serviceDir = path.resolve(__dirname)
 
 async function findFiles(pattern: string, cwd: string): Promise<Array<string>> {
-    return new Promise((resolve, reject) => {
-        glob(pattern, { cwd }, (err, matches) => {
-            if (err) return void reject(err)
-            return void resolve(matches.map((name) => path.relative(cwd, name)))
-        })
-    })
+    return glob(pattern, { cwd }).then((matches) => matches.map((name) => path.relative(cwd, name)))
 }
 
 const ExternalPlugin: Plugin = {
