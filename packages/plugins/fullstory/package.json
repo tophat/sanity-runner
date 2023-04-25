@@ -1,6 +1,6 @@
 {
     "name": "@tophat/sanity-runner-plugin-fullstory",
-    "version": "6.5.3",
+    "version": "6.6.2",
     "description": "Sanity runner plugin for fullstory",
     "group": "sanity-runner",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
@@ -27,7 +27,7 @@
         "directory": "packages/plugins/fullstory"
     },
     "dependencies": {
-        "@tophat/sanity-runner-types": "workspace:^6.5.3"
+        "@tophat/sanity-runner-types": "workspace:^6.6.2"
     },
     "devDependencies": {
         "@types/node": "^16.11.36"

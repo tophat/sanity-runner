@@ -1,6 +1,6 @@
 {
     "name": "@tophat/sanity-runner-plugin-slack",
-    "version": "6.5.3",
+    "version": "6.6.2",
     "description": "Sanity runner plugin for slack alerts",
     "author": "Top Hat Monocle Corp. <opensource@tophat.com>",
     "group": "sanity-runner",
@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "@slack/web-api": "^6.8.1",
-        "@tophat/sanity-runner-types": "workspace:^6.5.3"
+        "@tophat/sanity-runner-types": "workspace:^6.6.2"
     },
     "devDependencies": {
         "@types/node": "^16.11.36"

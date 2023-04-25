@@ -2,6 +2,46 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.6.2](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-plugin-slack@6.5.3...@tophat/sanity-runner-plugin-slack@6.6.2) "@tophat/sanity-runner-plugin-slack" (2023-04-25)<a name="6.6.2"></a>
+
+### Dependencies
+
+* update util dependencies ([9a9b41d](https://github.com/tophat/sanity-runner/commits/9a9b41d))
+* update glob to v10 ([9a9b41d](https://github.com/tophat/sanity-runner/commits/9a9b41d))
+
+
+## [6.6.2](https://github.com/tophat/sanity-runner/compare/@tophat/sanity-runner-types@6.5.3...@tophat/sanity-runner-types@6.6.2) "@tophat/sanity-runner-types" (2023-04-25)<a name="6.6.2"></a>
+
+### Dependencies
+
+* update util dependencies ([9a9b41d](https://github.com/tophat/sanity-runner/commits/9a9b41d))
+* update glob to v10 ([9a9b41d](https://github.com/tophat/sanity-runner/commits/9a9b41d))
+
+
+## [6.6.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-client@6.5.3...sanity-runner-client@6.6.2) "sanity-runner-client" (2023-04-25)<a name="6.6.2"></a>
+
+### Dependencies
+
+* update dependency @types/lodash to ^4.14.192 (#348) ([2ffd419](https://github.com/tophat/sanity-runner/commits/2ffd419))
+* update dependency clipanion to ^3.2.0 (#354) ([51a3b03](https://github.com/tophat/sanity-runner/commits/51a3b03))
+* update util dependencies ([9a9b41d](https://github.com/tophat/sanity-runner/commits/9a9b41d))
+* update glob to v10 ([9a9b41d](https://github.com/tophat/sanity-runner/commits/9a9b41d))
+
+
+## [6.6.2](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.6.1...sanity-runner-service@6.6.2) "sanity-runner-service" (2023-04-25)<a name="6.6.2"></a>
+
+### Dependencies
+
+* update dependency @swc/jest to ^0.2.24 (#342) ([11c6a9e](https://github.com/tophat/sanity-runner/commits/11c6a9e))
+* update dependency xml2js to ^0.5.0 [security] (#341) ([e4dd5e4](https://github.com/tophat/sanity-runner/commits/e4dd5e4))
+* update dependency @types/morgan to ^1.9.4 (#349) ([85c76e3](https://github.com/tophat/sanity-runner/commits/85c76e3))
+* update dependency @types/aws-lambda to ^8.10.114 (#344) ([7266469](https://github.com/tophat/sanity-runner/commits/7266469))
+* update dependency @types/puppeteer to ^5.4.7 (#350) ([4325324](https://github.com/tophat/sanity-runner/commits/4325324))
+* update util dependencies ([9a9b41d](https://github.com/tophat/sanity-runner/commits/9a9b41d))
+* update glob to v10 ([9a9b41d](https://github.com/tophat/sanity-runner/commits/9a9b41d))
+* update jest-junit to v16 (#360) ([fcca21f](https://github.com/tophat/sanity-runner/commits/fcca21f))
+
+
 ## [6.6.1](https://github.com/tophat/sanity-runner/compare/sanity-runner-service@6.6.0...sanity-runner-service@6.6.1) "sanity-runner-service" (2023-04-12)<a name="6.6.1"></a>
 
 ### Dependencies
