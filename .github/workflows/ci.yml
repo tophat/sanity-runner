@@ -103,6 +103,8 @@ jobs:
           token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
           fetch-depth: 0
       - uses: ./.github/actions/setup-env
+        with:
+          node-version: lts/hydrogen
       - name: Build Website
         if: "github.event_name == 'pull_request'"
         run: yarn docs
