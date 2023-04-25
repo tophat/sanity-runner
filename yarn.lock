@@ -8862,7 +8862,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clipanion@npm:^3.2.0, clipanion@npm:^3.2.0-rc.11":
+"clipanion@npm:^3.2.0":
   version: 3.2.0
   resolution: "clipanion@npm:3.2.0"
   dependencies:
@@ -20365,7 +20365,7 @@ __metadata:
     axios: ^0.27.2
     chalk: ^4.1.2
     cli-progress: ^3.11.2
-    clipanion: ^3.2.0-rc.11
+    clipanion: ^3.2.0
     glob: ^7.2.0
     junit-report-builder: ^3.0.1
     lodash: ^4.17.21
