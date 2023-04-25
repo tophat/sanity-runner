@@ -15,6 +15,10 @@
       "jsx": "preserve",
       "lib": ["ES2021"]
   },
-  "include": ["./packages", "./declarations"],
-  "exclude": ["./**/lib"]
+  "include": ["./packages", "./declarations", "monodeploy.config.ts"],
+  "exclude": ["./**/lib"],
+  "ts-node": {
+    "transpileOnly": true,
+    "ignore": ["(?:^|/)node_modules/", ".yarn/plugins/.*"],
+  }
 }

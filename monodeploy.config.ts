@@ -1,14 +1,22 @@
-module.exports = {
+import {
+    type MonodeployConfiguration,
+    type RecursivePartial,
+    RegistryMode,
+} from '@monodeploy/types'
+
+const config: RecursivePartial<MonodeployConfiguration> = {
     conventionalChangelogConfig: '@tophat/conventional-changelog-config',
     changelogFilename: 'CHANGELOG.md',
     persistVersions: true,
     autoCommitMessage: 'chore: release sanity runner [skip ci]',
 
     packageGroupManifestField: 'group',
-    registryMode: 'npm',
+    registryMode: RegistryMode.NPM,
     packageGroups: {
         'sanity-runner-terraform': {
-            registryMode: 'manifest',
+            registryMode: RegistryMode.Manifest,
         },
     },
 }
+
+module.exports = config
