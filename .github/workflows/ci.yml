@@ -71,7 +71,7 @@ jobs:
           echo ::set-output name=changelog::$changelog_body
         id: dry-release
       - name: Check for Changelog Comment
-        uses: peter-evans/find-comment@v1
+        uses: peter-evans/find-comment@v2
         id: found-comment
         if: github.event_name == 'pull_request' && steps.dry-release.outcome == 'success'
         with:
