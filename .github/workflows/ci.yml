@@ -18,7 +18,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.6.0
       - uses: ./.github/actions/setup-env
       - name: ESLint
         run: yarn eslint --format junit --output-file artifacts/eslint.junit.xml .
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [linting]
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.6.0
       - uses: ./.github/actions/setup-env
       - name: Build Packages
         run: yarn workspaces foreach -vpt --no-private --topological-dev run prepack
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.6.0
         with:
           token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
           fetch-depth: 0
@@ -98,7 +98,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     needs: [linting, build]
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.6.0
         with:
           token: ${{ secrets.TOPHAT_BOT_GH_TOKEN }}
           fetch-depth: 0
