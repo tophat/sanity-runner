@@ -5,6 +5,7 @@
     "group": "sanity-runner",
     "main": "bundle/handler.js",
     "bin": "src/local.ts",
+    "deprecated": "The sanity runner has been deprecated. It is no longer supported.",
     "files": [
         "lib",
         "bundle"

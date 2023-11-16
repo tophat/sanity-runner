@@ -1,3 +1,7 @@
+# DEPRECATED
+
+> ⚠️ This project has been deprecated as of Nov 16, 2023 without replacement. It will eventually be archived.
+
 <div align="center">
 <img src="./gatsby/src/images/logo.png" width="400px;"/>
 
