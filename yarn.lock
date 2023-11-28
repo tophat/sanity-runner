@@ -5628,12 +5628,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cli-progress@npm:^3":
-  version: 3.11.0
-  resolution: "@types/cli-progress@npm:3.11.0"
+"@types/cli-progress@npm:^3.11.5":
+  version: 3.11.5
+  resolution: "@types/cli-progress@npm:3.11.5"
   dependencies:
     "@types/node": "*"
-  checksum: d4401622333e888925b47c5d5bb0b89dddae17cc020f909a64ad7275b326bf3c6e9cd467f625a197fd958a1e49220d32f4a2b0bf2948fee330c719a9b985674e
+  checksum: 571fb3b11646415ac49c90e8003b82f3ac58d75fde5952caf40b4a079517b6e25e79ab0a7455d0ab0398d0b2de062646dba075d3d1f8d147eed2ab4d41abbf64
   languageName: node
   linkType: hard
 
@@ -20467,7 +20467,7 @@ __metadata:
     "@aws-sdk/client-lambda": ^3.319.0
     "@aws-sdk/node-http-handler": ^3.310.0
     "@tophat/sanity-runner-types": "workspace:*"
-    "@types/cli-progress": ^3
+    "@types/cli-progress": ^3.11.5
     "@types/lodash": ^4.14.192
     "@types/node": ^16.11.36
     axios: ^1.3.6
